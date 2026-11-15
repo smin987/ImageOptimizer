@@ -79,11 +79,18 @@ jobs:
                       main_gui.py
           chmod +x dist/ImageOptimizer-linux-x86_64
 
+      - name: Build Debian (.deb) package
+        run: |
+          chmod +x build/package_deb.sh
+          ./build/package_deb.sh amd64 "${{ github.ref_name || '1.0.3' }}" dist/ImageOptimizer-linux-x86_64 dist
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: linux-x86_64-bin
-          path: dist/ImageOptimizer-linux-x86_64
+          path: |
+            dist/ImageOptimizer-linux-x86_64
+            dist/*.deb
 
   build-linux-arm64:
     name: Build Linux ARM64 (aarch64)
@@ -119,11 +126,18 @@ jobs:
                       main_gui.py
           chmod +x dist/ImageOptimizer-linux-arm64
 
+      - name: Build Debian (.deb) package
+        run: |
+          chmod +x build/package_deb.sh
+          ./build/package_deb.sh arm64 "${{ github.ref_name || '1.0.3' }}" dist/ImageOptimizer-linux-arm64 dist
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: linux-arm64-bin
-          path: dist/ImageOptimizer-linux-arm64
+          path: |
+            dist/ImageOptimizer-linux-arm64
+            dist/*.deb
 
   build-macos:
     name: Build macOS (.app & .dmg)
@@ -196,11 +210,21 @@ jobs:
             
             All-in-one cross-platform image & animation optimizer (WebP, JPG).
             
-            ### 📦 Download Assets
+            ### 📦 Download Assets & Packages
             - **Windows**: `ImageOptimizer-windows-x64.exe` (Single standalone portable executable)
             - **macOS**: `ImageOptimizer-macos.dmg` / `ImageOptimizer-macos-app.zip` (Apple Silicon & Intel)
-            - **Linux x86_64**: `ImageOptimizer-linux-x86_64` (ELF standalone binary)
-            - **Linux ARM64 (aarch64)**: `ImageOptimizer-linux-arm64` (Raspberry Pi 4/5, ARM SBCs, Cloud ARM)
+            - **Linux (Debian/Ubuntu/Raspberry Pi .deb)**:
+              - `ImageOptimizer_${{ github.ref_name }}_amd64.deb` (`sudo apt install ./ImageOptimizer_*.deb`)
+              - `ImageOptimizer_${{ github.ref_name }}_arm64.deb` (`sudo apt install ./ImageOptimizer_*.deb`)
+            - **Linux (Standalone Binaries)**:
+              - `ImageOptimizer-linux-x86_64`
+              - `ImageOptimizer-linux-arm64` (Raspberry Pi 4/5, ARM SBCs, Cloud ARM)
+            
+            ### 🍺 Homebrew (macOS)
+            ```bash
+            brew tap smin987/tap
+            brew install --cask image-optimizer
+            ```
             
             ### 💖 Support & Sponsor
             If you find this project useful, consider sponsoring the author!

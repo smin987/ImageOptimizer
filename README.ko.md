@@ -59,21 +59,40 @@
 
 ## 💻 지원 플랫폼 (Platform Support)
 
-| 플랫폼 | 아키텍처 | 실행 파일 형식 | 지원 상태 |
+| 플랫폼 | 아키텍처 | 설치 및 패키지 형식 | 지원 상태 |
 | :--- | :--- | :--- | :--- |
 | **Windows 11 / 10** | x64 (AMD64) | 무설치 단일 파일 (`.exe`) / 설치 마법사 | ✅ 지원 완료 |
-| **macOS (Apple Silicon & Intel)** | Universal (M1/M2/M3/M4 & Intel) | 디스크 이미지 (`.dmg`) / 앱 번들 (`.app`) | ✅ 지원 완료 |
-| **Linux (Debian, Ubuntu, Mint)** | x86_64 | 단일 독립 바이너리 | ✅ 지원 완료 |
-| **Linux (라즈베리 파이, ARM SBC)** | ARM64 (aarch64) | 단일 독립 바이너리 | ✅ 지원 완료 |
+| **macOS (Apple Silicon & Intel)** | Universal (M1/M2/M3/M4 & Intel) | **Homebrew Cask** / 디스크 이미지 (`.dmg`) | ✅ 지원 완료 |
+| **Linux (Debian, Ubuntu, Mint)** | x86_64 | **APT 데비안 패키지 (`.deb`)** / 단일 바이너리 | ✅ 지원 완료 |
+| **Linux (라즈베리 파이, ARM SBC)** | ARM64 (aarch64) | **APT 데비안 패키지 (`.deb`)** / 단일 바이너리 | ✅ 지원 완료 |
 
 ---
 
-## 📥 다운로드 (Downloads)
+## 📥 설치 및 다운로드 (Installation & Downloads)
 
-별도의 파이썬 설치 없이 바로 사용할 수 있는 실행 파일은 **[GitHub Releases](https://github.com/smin987/ImageOptimizer/releases)**에서 다운로드하실 수 있습니다:
+### 🍺 macOS 환경 : Homebrew를 통한 원클릭 설치
+[Homebrew](https://brew.sh/)를 사용하면 터미널에서 명령어 한 줄로 편리하게 설치할 수 있습니다:
+```bash
+brew tap smin987/tap
+brew install --cask image-optimizer
+```
+
+### 🐧 리눅스 환경 : APT / 데비안 패키지 (.deb) 설치
+[GitHub Releases](https://github.com/smin987/ImageOptimizer/releases)에서 본인 아키텍처에 맞는 `.deb` 파일을 다운로드한 후 설치하세요:
+```bash
+# Ubuntu / Debian / Linux Mint (x86_64)
+sudo apt install ./ImageOptimizer_*_amd64.deb
+
+# 라즈베리 파이 OS / ARM64 SBC (ARM64)
+sudo apt install ./ImageOptimizer_*_arm64.deb
+```
+> *`.deb` 패키지로 설치하면 시작 메뉴(애플리케이션 목록)에 아이콘이 자동 등록되며 터미널 어디서나 `image-optimizer` 명령어로 실행할 수 있습니다.*
+
+### 📦 무설치 포터블 단일 파일 (Direct Downloads)
+별도의 설치 과정 없이 다운로드 후 바로 사용하시려면 **[GitHub Releases](https://github.com/smin987/ImageOptimizer/releases)**에서 다운로드하세요:
 
 - **Windows**: `ImageOptimizer-windows-x64.exe` (다운로드 후 더블클릭으로 즉시 실행)
-- **macOS**: `ImageOptimizer-macos.dmg` (열어서 Applications 폴더로 드래그 앤 드롭)
+- **macOS**: `ImageOptimizer-macos.dmg` (열어서 응용 프로그램 폴더로 드래그 앤 드롭)
 - **Linux x86_64**: `ImageOptimizer-linux-x86_64` (실행 권한 부여 후 실행: `chmod +x`)
 - **Linux ARM64**: `ImageOptimizer-linux-arm64` (라즈베리 파이 4/5 및 ARM64 SBC용)
 
