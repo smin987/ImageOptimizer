@@ -66,7 +66,8 @@
 최신 사전 컴파일된 단일 실행 파일은 [GitHub Releases](https://github.com/smin987/ImageOptimizer/releases) 페이지에서 다운로드할 수 있습니다:
 
 - **Windows**: `ImageOptimizer-windows-x64.exe` (설치 없이 더블클릭 실행)
-- **Linux**: `ImageOptimizer-linux-x86_64` (실행 권한 부여 후 실행: `chmod +x`)
+- **Linux (x86_64)**: `ImageOptimizer-linux-x86_64` (실행 권한 부여 후 실행: `chmod +x`)
+- **Linux (ARM64 / aarch64)**: `ImageOptimizer-linux-arm64` (라즈베리 파이 4/5, ARM SBC 등)
 - **macOS**: `ImageOptimizer-macos.dmg` (응용 프로그램 폴더로 드래그 앤 드롭)
 
 ---
