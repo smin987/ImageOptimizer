@@ -1,11 +1,21 @@
-Image Optimizer Software License Agreement
-(Source-Available Freeware License)
+Image Optimizer Fair-Code License Agreement
+(Source-Available Software License)
 
 Copyright (c) 2026 smin987. All rights reserved.
 
-IMPORTANT: PLEASE READ THIS LICENSE AGREEMENT CAREFULLY. BY DOWNLOADING,
-INSTALLING, COPYING, OR USING ALL OR ANY PORTION OF THE SOFTWARE, YOU ACCEPT
-AND AGREE TO BE BOUND BY ALL THE TERMS AND CONDITIONS OF THIS AGREEMENT.
+==============================================================================
+QUICK SUMMARY / TL;DR (요약)
+==============================================================================
+- [YES] FREE FOR EVERYONE: You may download and run official compiled binaries
+  (.exe, .dmg, .deb) for FREE for personal, educational, non-profit, and
+  commercial use.
+- [YES] PERSONAL RESEARCH & PRs: You may inspect the source code, modify it
+  locally for personal research/testing, and submit Pull Requests to the
+  official repository.
+- [NO] NO COMPETING PRODUCTS: You may NOT distribute modified versions or use
+  this code to build and publish a competing image optimization tool/product.
+- [NO] NO UNAUTHORIZED RESALE: You may NOT sell, rent, or commercialize the
+  source code or binaries.
 
 ==============================================================================
 1. DEFINITIONS
@@ -17,37 +27,42 @@ AND AGREE TO BE BOUND BY ALL THE TERMS AND CONDITIONS OF THIS AGREEMENT.
   scripts, build recipes, and project assets making up the Software.
 - "Compiled Binaries" refers to the machine-executable files, packages, and
   installers (including Windows .exe, macOS .dmg/.app, and Linux binaries/.deb)
-  officially compiled, packaged, and published by the Author.
-- "Derivative Work" refers to any translation, modification, adaptation,
-  fork, porting, or work based upon the Source Code or any portion thereof.
+  officially compiled and published by the Author.
+- "Competing Product" refers to any software, application, library, service, or
+  derivative work that provides similar core image/animation optimization
+  functionality and is distributed to third parties.
 
 ==============================================================================
-2. SOURCE CODE LICENSE: VIEW-ONLY / NO DERIVATIVES
+2. SOURCE CODE TERMS: RESEARCH & CONTRIBUTION GRANTED
 ==============================================================================
-The Source Code is made publicly available for the sole purposes of security
-auditing, transparency, educational review, and issue reporting.
+The Author makes the Source Code publicly available under the following terms:
 
 (a) PERMITTED USES:
-    You are granted a non-exclusive, non-transferable, royalty-free license to
-    inspect, view, and locally clone the Source Code strictly for the purposes
-    of verification, security review, and personal educational study.
+    You are granted a non-exclusive, worldwide, royalty-free license to:
+    1. Inspect, audit, and view the Source Code for security review, transparency,
+       and educational learning.
+    2. Modify, adapt, and build the Source Code locally for your own private,
+       internal, and personal research, debugging, and experimentation.
+    3. Fork the repository solely for the purpose of creating and submitting
+       bug fixes, enhancements, or Pull Requests (PRs) back to the official
+       upstream repository (https://github.com/smin987/ImageOptimizer).
 
-(b) PROHIBITION ON MODIFICATIONS:
-    You may NOT modify, alter, adapt, translate, or patch the Source Code, in
-    whole or in part, for any purpose.
+(b) PROHIBITION ON PUBLIC DISTRIBUTION OF MODIFIED VERSIONS:
+    You may NOT publicly distribute, publish, host, mirror, or make available
+    to third parties any modified versions, patches, forks, or derivative works
+    of the Source Code without the Author's explicit prior written consent.
 
-(c) PROHIBITION ON DERIVATIVE WORKS & FORKS:
-    You may NOT create Derivative Works from the Source Code. Publicly distributing
-    or publishing forks, modified versions, or alternative distributions built
-    from the Source Code is strictly prohibited without the Author's explicit
-    prior written consent.
+(c) PROHIBITION ON COMPETING PRODUCTS:
+    You may NOT use the Source Code, in whole or in part, modified or unmodified,
+    to build, market, distribute, or license any Competing Product or service,
+    whether offered for free or for a fee.
 
-(d) PROHIBITION ON REDISTRIBUTION:
-    You may NOT redistribute, sublicense, lease, sell, or commercialize the
-    Source Code, whether in original or modified form.
+(d) PROHIBITION ON REDISTRIBUTION & RESALE:
+    You may NOT sublicense, lease, rent, sell, or commercialize the Source Code
+    in any manner.
 
 ==============================================================================
-3. COMPILED BINARIES LICENSE: FREEWARE GRANT
+3. COMPILED BINARIES TERMS: FREE USE GRANT (FREEWARE)
 ==============================================================================
 (a) FREE USE GRANT:
     Subject to the terms of this Agreement, the Author grants you a perpetual,
@@ -59,29 +74,23 @@ auditing, transparency, educational review, and issue reporting.
     - Commercial businesses and corporate enterprises of any size.
 
 (b) UNALTERED REDISTRIBUTION:
-    You may redistribute exact, byte-for-byte identical copies of the official
-    Compiled Binaries to third parties, provided that:
-    - The binaries are distributed without modification, bundling, or wrappers.
-    - No monetary fee, subscription, or payment is charged for the distribution.
+    You may share exact, unaltered, byte-for-byte identical copies of the official
+    Compiled Binaries, provided that:
+    - The distribution is completely free of charge.
+    - No bundling with adware, malware, or third-party wrappers is performed.
     - This License Agreement is preserved and included with the distribution.
 
-(c) RESTRICTIONS ON BINARIES:
-    - You shall not reverse engineer, decompile, disassemble, or attempt to
-      derive the underlying logic of the Compiled Binaries, except and only to
-      the extent permitted by applicable law.
-    - You shall not crack, bypass, or alter any functional behavior, copyright
-      notices, or watermarks within the Compiled Binaries.
-    - You shall not bundle the Compiled Binaries with adware, toolbars, spyware,
-      or unauthorized promotional installers.
+(c) RESTRICTIONS:
+    You shall not crack, reverse engineer, decompile, or remove any copyright
+    notices or attribution from the Compiled Binaries.
 
 ==============================================================================
 4. RESERVATION OF RIGHTS & OWNERSHIP
 ==============================================================================
 The Author retains all right, title, interest, and intellectual property rights
 in and to the Software, including all copyrights, patents, trademarks, and trade
-secrets. No license or rights are granted to any person or entity by implication,
-estoppel, or otherwise, except for the limited express licenses set forth in
-Sections 2 and 3 above.
+secrets. All rights not expressly granted herein are reserved exclusively by
+the Author.
 
 ==============================================================================
 5. DISCLAIMER OF WARRANTY
@@ -90,6 +99,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. IN NO EVENT
 SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.
+OTHER LIABILITY, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+THE USE OR OTHER DEALINGS IN THE SOFTWARE.

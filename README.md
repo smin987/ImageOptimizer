@@ -6,7 +6,7 @@
   <b>English</b> • <a href="README.ko.md"><b>한국어 (Korean)</b></a>
 </p>
 
-[![License](https://img.shields.io/badge/License-Freeware-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Fair--code-blue.svg)](LICENSE)
 [![Source](https://img.shields.io/badge/Source-Available-orange.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](https://www.python.org/)
 [![GUI](https://img.shields.io/badge/GUI-PySide6%20(Qt6)-41cd52.svg)](https://www.qt.io/)
@@ -155,6 +155,6 @@ If you find this project valuable, please consider sponsoring the developer. You
 
 ## 📄 License
 
-This software is distributed under the **[Image Optimizer Software License](LICENSE)** (Source-Available Freeware):
-- **Source Code**: Publicly available for security review, transparency, and personal study. **Modifications, alterations, forks, and derivative works are strictly prohibited.**
+This software is distributed under the **[Image Optimizer Fair-Code License](LICENSE)** (Source-Available Freeware):
+- **Source Code**: You are free to inspect the code, modify it locally for personal research/testing, and submit Pull Requests (PRs) back to the official repository. **Public distribution of modified versions and building competing products are strictly prohibited.**
 - **Compiled Binaries**: Official executables (`.exe`, `.dmg`, `.deb`, standalone Linux binaries) are **100% Free (Freeware)** for personal, educational, non-profit, and commercial use.

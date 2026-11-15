@@ -238,8 +238,8 @@ jobs:
             ```
 
             ### 📄 License
-            This software is distributed under the **[Source-Available Freeware License](https://github.com/smin987/ImageOptimizer/blob/main/LICENSE)**.
-            The source code is public for verification and auditing (modifications/derivatives prohibited), while compiled binaries are 100% free to use for personal and commercial purposes.
+            This software is distributed under the **[Image Optimizer Fair-Code License](https://github.com/smin987/ImageOptimizer/blob/main/LICENSE)**.
+            The source code is public for research and Pull Requests (public distribution of forks & competing products prohibited), while compiled binaries are 100% free to use for personal and commercial purposes.
 
             ---
 

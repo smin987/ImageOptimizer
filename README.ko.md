@@ -6,7 +6,7 @@
   <a href="README.md"><b>English</b></a> • <b>한국어 (Korean)</b>
 </p>
 
-[![License](https://img.shields.io/badge/License-Freeware-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Fair--code-blue.svg)](LICENSE)
 [![Source](https://img.shields.io/badge/Source-Available-orange.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](https://www.python.org/)
 [![GUI](https://img.shields.io/badge/GUI-PySide6%20(Qt6)-41cd52.svg)](https://www.qt.io/)
@@ -154,6 +154,6 @@ python main_gui.py
 
 ## 📄 라이선스 (License)
 
-본 소프트웨어는 **[Image Optimizer 라이선스 계약](LICENSE)** (Source-Available Freeware)에 따라 배포됩니다:
-- **소스코드(Source Code)**: 투명한 보안 검증, 감사 및 개인 학습 목적으로 공개되어 있습니다. **무단 수정, 변형, 포크(Fork), 파생 저작물 제작 및 2차 배포는 엄격히 금지**됩니다.
+본 소프트웨어는 **[Image Optimizer Fair-Code 라이선스](LICENSE)** (Source-Available Freeware)에 따라 배포됩니다:
+- **소스코드(Source Code)**: 투명한 보안 검증, 감사, 개인 연구/학습 및 **공식 저장소 기여(Pull Request) 목적의 로컬 수정은 자유롭게 허용**됩니다. 단, **수정본의 무단 외부 배포 및 이를 활용한 경쟁 제품/대체 앱 출시는 엄격히 금지**됩니다.
 - **실행 산출물(바이너리)**: 공식 빌드된 실행 파일(`.exe`, `.dmg`, `.deb`, Linux 독립 바이너리)은 개인, 교육 기관, 비영리 단체, 상업 기업 누구나 **100% 무료(프리웨어)**로 영구 사용할 수 있습니다.
