@@ -79,8 +79,7 @@ winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimiz
 ### 🍺 macOS 환경 : Homebrew를 통한 원클릭 설치
 [Homebrew](https://brew.sh/)를 사용하면 Mac 터미널에서 명령어 한 줄로 편리하게 설치할 수 있습니다:
 ```bash
-brew tap smin987/tap
-brew install --cask image-optimizer
+brew install --cask https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/homebrew/Casks/image-optimizer.rb
 ```
 
 ### 🐧 리눅스 환경 : 공식 APT 저장소 등록 (자동 업데이트 지원)

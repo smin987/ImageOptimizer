@@ -77,10 +77,9 @@ winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimiz
 ```
 
 ### 🍺 macOS via Homebrew
-Install **Image Optimizer** on macOS using [Homebrew](https://brew.sh/):
+Install **Image Optimizer** on macOS using [Homebrew](https://brew.sh/) directly:
 ```bash
-brew tap smin987/tap
-brew install --cask image-optimizer
+brew install --cask https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/homebrew/Casks/image-optimizer.rb
 ```
 
 ### 🐧 Linux via Official APT Repository (Ubuntu / Debian / Raspberry Pi OS)

@@ -222,8 +222,7 @@ jobs:
             
             ### 🍺 Homebrew (macOS)
             ```bash
-            brew tap smin987/tap
-            brew install --cask image-optimizer
+            brew install --cask https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/homebrew/Casks/image-optimizer.rb
             ```
 
             ### 🐧 APT Repository (Ubuntu / Debian / Raspberry Pi)
