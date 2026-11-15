@@ -1,0 +1,24 @@
+Origin: Image Optimizer
+Label: Image Optimizer
+Suite: stable
+Codename: stable
+Architectures: amd64 arm64
+Components: main
+Description: Official APT Repository for Image Optimizer
+Date: Sun, 15 Nov 2026 14:59:19 +0000
+MD5Sum:
+ da951c7661c4486b2b401629b08b68b7             3289 Packages
+ 25ed91aef44ad79226b5efc744fd286b              706 Packages.gz
+ 3b7503af108e525b192cd44947b72204              217 Release
+SHA1:
+ cb5f0b3050f200ff72f9487369290e3f2f09b569             3289 Packages
+ 8ec1238aae018eb42272143005a96d9b4064e11a              706 Packages.gz
+ 11065769555d028492f077e2c760faf7f6410ead              217 Release
+SHA256:
+ 3aa151882eedcd3229be70b57bf12a1456212f9c20da9e2df5f64a3f1ffdbdcb             3289 Packages
+ eed4bc42f3d92673ff4aad84e6db1e0efc9bc6a54e090879a1b4c93f9c4abf36              706 Packages.gz
+ bb192cde965ac6400c977b125cddb2cf88e5a20e37467c2e2d4d96b111072454              217 Release
+SHA512:
+ 28361b888e22e6aaaa26bfedd6d28d36cc4ebf52e95133783db75ef6a7c27c4f2fae994bb1bb045f9e73bc3c0b1c2070b172dad3f990a0f9f86704e27cf6ac71             3289 Packages
+ 34b1f864c3aea532f347d8b14b7207c816f1252990dd0618dd04f305698465dfbc6c58dd81c914315b07794e5cd0d9171b30a660cd52d3a38b9d7280415061f8              706 Packages.gz
+ 10ce6bc35b813bf8c439bda7f96ddc817bd950d26eb13cbf99d0a93f17cc85110cf0ceb4cd0bb09d410c8be338d0c19718aa4e8c0d01bc03889453c5de79a209              217 Release
