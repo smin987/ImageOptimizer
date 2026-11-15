@@ -77,6 +77,8 @@ I18N = {
         "theme_dark": "🌙 다크 모드로 전환",
         "theme_light": "☀️ 기본(라이트) 모드로 전환",
         "lang_toggle": "🌐 English",
+        "btn_sponsor": "💖 후원하기",
+        "btn_sponsor_tip": "GitHub Sponsors를 통해 개발자를 후원하고 지속적인 업데이트를 응원합니다.",
         "desc_text": (
             "원본 이미지를 웹사이트 게시전용으로 최적화하여 경량화된 이미지로 변경해주는 도구입니다.\n"
             "원본 이미지와 화질차이는 거의 없지만 최대 90% 정도의 이미지 용량을 줄일 수 있습니다. "
@@ -164,6 +166,8 @@ I18N = {
         "theme_dark": "🌙 Dark Mode",
         "theme_light": "☀️ Light Mode",
         "lang_toggle": "🌐 한국어",
+        "btn_sponsor": "💖 Sponsor",
+        "btn_sponsor_tip": "Support the developer on GitHub Sponsors to keep this tool growing.",
         "desc_text": (
             "Optimize and compress original images for website publishing with minimal quality loss.\n"
             "Reduce file size by up to 90% with virtually no noticeable visual difference. "
@@ -347,6 +351,21 @@ QPushButton#btn_theme_toggle:hover, QPushButton#btn_lang_toggle:hover {
     background-color: #2b3345;
     border-color: #38bdf8;
     color: #38bdf8;
+}
+
+QPushButton#btn_sponsor {
+    background-color: #2a1523;
+    border: 1px solid #701a45;
+    border-radius: 14px;
+    padding: 4px 12px;
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #f472b6;
+}
+QPushButton#btn_sponsor:hover {
+    background-color: #3b1930;
+    border-color: #ec4899;
+    color: #fbcfe8;
 }
 
 QPushButton[segment="true"] {
@@ -615,6 +634,21 @@ QPushButton#btn_theme_toggle:hover, QPushButton#btn_lang_toggle:hover {
     background-color: #f1f5f9;
     border-color: #2563eb;
     color: #2563eb;
+}
+
+QPushButton#btn_sponsor {
+    background-color: #fdf2f8;
+    border: 1px solid #fbcfe8;
+    border-radius: 14px;
+    padding: 4px 12px;
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #db2777;
+}
+QPushButton#btn_sponsor:hover {
+    background-color: #fce7f3;
+    border-color: #f472b6;
+    color: #be185d;
 }
 
 QPushButton[segment="true"] {
@@ -1204,6 +1238,11 @@ class MainWindow(QWidget):
             border-radius: 4px;
         """)
 
+        self.btn_sponsor = QPushButton("💖 후원하기")
+        self.btn_sponsor.setObjectName("btn_sponsor")
+        self.btn_sponsor.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_sponsor.clicked.connect(self.open_sponsor_page)
+
         self.btn_lang_toggle = QPushButton("🌐 English")
         self.btn_lang_toggle.setObjectName("btn_lang_toggle")
         self.btn_lang_toggle.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -1217,6 +1256,7 @@ class MainWindow(QWidget):
         header_bar.addWidget(lbl_brand)
         header_bar.addWidget(lbl_badge)
         header_bar.addStretch()
+        header_bar.addWidget(self.btn_sponsor)
         header_bar.addWidget(self.btn_lang_toggle)
         header_bar.addWidget(self.btn_theme_toggle)
         main_layout.addLayout(header_bar)
@@ -1772,6 +1812,9 @@ class MainWindow(QWidget):
         i18n = I18N[self.current_lang]
 
         # 0. 헤더 바 버튼 문구
+        if hasattr(self, "btn_sponsor"):
+            self.btn_sponsor.setText(i18n.get("btn_sponsor", "💖 Sponsor"))
+            self.btn_sponsor.setToolTip(i18n.get("btn_sponsor_tip", ""))
         self.btn_lang_toggle.setText(i18n["lang_toggle"])
         if self.current_theme == "light":
             self.btn_theme_toggle.setText(i18n["theme_dark"])
@@ -2269,6 +2312,19 @@ class MainWindow(QWidget):
             pa.open_folder(self.last_output_dir)
         elif self.queued_files:
             pa.open_folder(self.queued_files[0].parent)
+
+    def open_sponsor_page(self):
+        """GitHub Sponsors 개발자 후원 페이지 브라우저 열기"""
+        url = "https://github.com/sponsors/smin987"
+        try:
+            from PySide6.QtGui import QDesktopServices
+            from PySide6.QtCore import QUrl
+            if not QDesktopServices.openUrl(QUrl(url)):
+                import webbrowser
+                webbrowser.open(url)
+        except Exception:
+            import webbrowser
+            webbrowser.open(url)
 
 
 def main():
