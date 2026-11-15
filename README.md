@@ -118,13 +118,18 @@ python main_gui.py
 ## 💖 Support & Sponsorship
 
 **Image Optimizer** is free and open-source software distributed under the **Apache License 2.0**.  
-If you find this project valuable, please consider sponsoring the developer. Your support helps maintain the project, improve performance, and build new features! ☕✨
+If you find this project valuable, please consider sponsoring the developer. Your support directly helps maintain the project, cover infrastructure costs, improve performance, and build new features! ☕✨
 
 <div align="center">
 
 [![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsors-ea4aaa?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sponsors/smin987)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/smin987)
+[![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/smin987)
 
-**Sponsor Page**: **[https://github.com/sponsors/smin987](https://github.com/sponsors/smin987)**
+> **💖 Sponsor Perks & Appreciation**:
+> - 🎖️ Listed on the official **Backers & Sponsors** honor roll in README and release notes
+> - 🚀 High priority review for bug reports and feature requests
+> - 💬 Direct communication and early access to experimental updates
 
 </div>
 
