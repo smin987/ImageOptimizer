@@ -70,23 +70,32 @@
 
 ## 📥 설치 및 다운로드 (Installation & Downloads)
 
+### 🪟 Windows 환경 : winget을 통한 원클릭 설치
+Windows 10/11의 공식 패키지 관리자(`winget`)를 통해 터미널에서 즉시 설치할 수 있습니다:
+```powershell
+winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/winget/manifests/s/smin987/ImageOptimizer/1.0.3/smin987.ImageOptimizer.yaml
+```
+
 ### 🍺 macOS 환경 : Homebrew를 통한 원클릭 설치
-[Homebrew](https://brew.sh/)를 사용하면 터미널에서 명령어 한 줄로 편리하게 설치할 수 있습니다:
+[Homebrew](https://brew.sh/)를 사용하면 Mac 터미널에서 명령어 한 줄로 편리하게 설치할 수 있습니다:
 ```bash
 brew tap smin987/tap
 brew install --cask image-optimizer
 ```
 
-### 🐧 리눅스 환경 : APT / 데비안 패키지 (.deb) 설치
-[GitHub Releases](https://github.com/smin987/ImageOptimizer/releases)에서 본인 아키텍처에 맞는 `.deb` 파일을 다운로드한 후 설치하세요:
+### 🐧 리눅스 환경 : 공식 APT 저장소 등록 (자동 업데이트 지원)
+공식 APT 저장소를 등록해 두면 `apt upgrade` 시 항상 최신 버전으로 자동 업데이트됩니다:
 ```bash
-# Ubuntu / Debian / Linux Mint (x86_64)
-sudo apt install ./ImageOptimizer_*_amd64.deb
+# 1. 저장소 공개키 등록
+curl -fsSL https://smin987.github.io/ImageOptimizer/repo.key | sudo gpg --dearmor -o /etc/apt/keyrings/image-optimizer.gpg
 
-# 라즈베리 파이 OS / ARM64 SBC (ARM64)
-sudo apt install ./ImageOptimizer_*_arm64.deb
+# 2. 저장소 소스 추가
+echo "deb [signed-by=/etc/apt/keyrings/image-optimizer.gpg] https://smin987.github.io/ImageOptimizer ./" | sudo tee /etc/apt/sources.list.d/image-optimizer.list
+
+# 3. 설치 및 자동 업데이트
+sudo apt update && sudo apt install image-optimizer
 ```
-> *`.deb` 패키지로 설치하면 시작 메뉴(애플리케이션 목록)에 아이콘이 자동 등록되며 터미널 어디서나 `image-optimizer` 명령어로 실행할 수 있습니다.*
+> *단일 `.deb` 패키지만 다운로드하여 직접 설치하시려면 [GitHub Releases](https://github.com/smin987/ImageOptimizer/releases)에서 다운로드 후 `sudo apt install ./ImageOptimizer_*_amd64.deb` (또는 `arm64.deb`)를 실행하세요.*
 
 ### 📦 무설치 포터블 단일 파일 (Direct Downloads)
 별도의 설치 과정 없이 다운로드 후 바로 사용하시려면 **[GitHub Releases](https://github.com/smin987/ImageOptimizer/releases)**에서 다운로드하세요:

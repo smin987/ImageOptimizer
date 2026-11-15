@@ -70,26 +70,36 @@ In addition to static formats (`PNG`, `JPG`, `BMP`, `TIFF`, etc.), it fully supp
 
 ## 📥 Installation & Downloads
 
+### 🪟 Windows 11 / 10 via winget
+Install or update **Image Optimizer** using the official Windows Package Manager (`winget`):
+```powershell
+winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/winget/manifests/s/smin987/ImageOptimizer/1.0.3/smin987.ImageOptimizer.yaml
+```
+
 ### 🍺 macOS via Homebrew
-You can install **Image Optimizer** with [Homebrew](https://brew.sh/) in a single command:
+Install **Image Optimizer** on macOS using [Homebrew](https://brew.sh/):
 ```bash
 brew tap smin987/tap
 brew install --cask image-optimizer
 ```
 
-### 🐧 Linux via APT / Debian Package (.deb)
-Download the `.deb` package for your architecture from [GitHub Releases](https://github.com/smin987/ImageOptimizer/releases) and install via APT:
+### 🐧 Linux via Official APT Repository (Ubuntu / Debian / Raspberry Pi OS)
+Add the official Image Optimizer APT repository to receive automatic updates with `apt upgrade`:
 ```bash
-# For Ubuntu / Debian / Linux Mint (x86_64)
-sudo apt install ./ImageOptimizer_*_amd64.deb
+# 1. Add repository key
+curl -fsSL https://smin987.github.io/ImageOptimizer/repo.key | sudo gpg --dearmor -o /etc/apt/keyrings/image-optimizer.gpg
 
-# For Raspberry Pi OS / ARM64 SBCs (ARM64)
-sudo apt install ./ImageOptimizer_*_arm64.deb
+# 2. Add repository source
+echo "deb [signed-by=/etc/apt/keyrings/image-optimizer.gpg] https://smin987.github.io/ImageOptimizer ./" | sudo tee /etc/apt/sources.list.d/image-optimizer.list
+
+# 3. Install and keep updated
+sudo apt update && sudo apt install image-optimizer
 ```
-> *Installing via `.deb` automatically adds Image Optimizer to your desktop application menu and sets up the `image-optimizer` CLI command.*
+
+> *Alternatively, download standalone `.deb` packages directly from [GitHub Releases](https://github.com/smin987/ImageOptimizer/releases) (`sudo apt install ./ImageOptimizer_*_amd64.deb` or `arm64.deb`).*
 
 ### 📦 Direct Standalone Downloads (Portable)
-Pre-compiled standalone binaries are available on the **[GitHub Releases](https://github.com/smin987/ImageOptimizer/releases)** page (no Python installation required):
+Pre-compiled standalone binaries are available on the **[GitHub Releases](https://github.com/smin987/ImageOptimizer/releases)** page (no installation or Python required):
 
 - **Windows**: `ImageOptimizer-windows-x64.exe` (Single portable executable, double-click to run)
 - **macOS**: `ImageOptimizer-macos.dmg` (Open disk image and drag to Applications)

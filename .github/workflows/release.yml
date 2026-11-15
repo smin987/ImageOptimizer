@@ -225,8 +225,89 @@ jobs:
             brew tap smin987/tap
             brew install --cask image-optimizer
             ```
+
+            ### 🐧 APT Repository (Ubuntu / Debian / Raspberry Pi)
+            ```bash
+            curl -fsSL https://smin987.github.io/ImageOptimizer/repo.key | sudo gpg --dearmor -o /etc/apt/keyrings/image-optimizer.gpg
+            echo "deb [signed-by=/etc/apt/keyrings/image-optimizer.gpg] https://smin987.github.io/ImageOptimizer ./" | sudo tee /etc/apt/sources.list.d/image-optimizer.list
+            sudo apt update && sudo apt install image-optimizer
+            ```
+
+            ### 🪟 Windows 11 (winget)
+            ```powershell
+            winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/winget/manifests/s/smin987/ImageOptimizer/1.0.3/smin987.ImageOptimizer.yaml
+            ```
             
             ### 💖 Support & Sponsor
             If you find this project useful, consider sponsoring the author!
           draft: false
           prerelease: false
+
+  publish-apt-repo:
+    name: Publish Official APT Repository to GitHub Pages
+    needs: [create-release]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Download all release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: deb-artifacts
+
+      - name: Setup APT Repository files
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg-dev gnupg apt-utils
+
+          # 수집된 .deb 파일들을 gh-pages 루트로 복사
+          find deb-artifacts -name "*.deb" -exec cp {} ./ \;
+          ls -la *.deb
+
+          # GPG 키 생성 (배포 서명용)
+          cat << 'EOF' > gpg-batch
+          %no-protection
+          Key-Type: RSA
+          Key-Length: 4096
+          Subkey-Type: RSA
+          Subkey-Length: 4096
+          Name-Real: Image Optimizer Archive
+          Name-Email: smin987@users.noreply.github.com
+          Expire-Date: 0
+          EOF
+          gpg --batch --generate-key gpg-batch
+          rm -f gpg-batch
+          gpg --armor --export "Image Optimizer Archive" > repo.key
+
+          # Packages & Packages.gz 생성
+          dpkg-scanpackages --multiversion . > Packages
+          gzip -9c Packages > Packages.gz
+
+          # Release 파일 생성
+          cat << 'EOF' > Release
+          Origin: Image Optimizer
+          Label: Image Optimizer
+          Suite: stable
+          Codename: stable
+          Architectures: amd64 arm64
+          Components: main
+          Description: Official APT Repository for Image Optimizer
+          EOF
+          apt-ftparchive release . >> Release
+
+          # InRelease 및 Release.gpg 서명
+          gpg --default-key "Image Optimizer Archive" --clearsign -o InRelease Release
+          gpg --default-key "Image Optimizer Archive" -abs -o Release.gpg Release
+
+          rm -rf deb-artifacts
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: gh-pages
+          keep_files: false
