@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
+
+PackageIdentifier: smin987.ImageOptimizer
+PackageVersion: 1.0.4
+PackageLocale: en-US
+Publisher: smin987
+PublisherUrl: https://github.com/smin987
+PublisherSupportUrl: https://github.com/smin987/ImageOptimizer/issues
+PackageName: Image Optimizer
+PackageUrl: https://github.com/smin987/ImageOptimizer
+License: Freeware
+LicenseUrl: https://github.com/smin987/ImageOptimizer/blob/main/LICENSE
+ShortDescription: All-in-one cross-platform image & animated GIF optimizer for web & desktop.
+Description: |
+  Image Optimizer is a free, cross-platform desktop application designed to drastically compress image files by up to 90% while preserving outstanding visual fidelity.
+  It fully supports WebP, JPG, Animated GIF to WebP conversion, alpha channel preservation, and flexible resizing modes.
+Tags:
+  - image
+  - optimizer
+  - compression
+  - webp
+  - gif
+  - converter
+ReleaseNotesUrl: https://github.com/smin987/ImageOptimizer/releases/tag/v1.0.4
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0
