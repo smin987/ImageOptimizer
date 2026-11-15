@@ -236,9 +236,29 @@ jobs:
             ```powershell
             winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/winget/manifests/s/smin987/ImageOptimizer/1.0.4/smin987.ImageOptimizer.yaml
             ```
-            
-            ### 💖 Support & Sponsor
-            If you find this project useful, consider sponsoring the author!
+
+            ### 📄 License
+            This software is distributed under the **[Source-Available Freeware License](https://github.com/smin987/ImageOptimizer/blob/main/LICENSE)**.
+            The source code is public for verification and auditing (modifications/derivatives prohibited), while compiled binaries are 100% free to use for personal and commercial purposes.
+
+            ---
+
+            ### 💖 Support & Sponsorship
+
+            If you find this project valuable, please consider sponsoring the developer. Your support directly helps maintain the project, cover infrastructure costs, improve performance, and build new features! ☕✨
+
+            <div align="center">
+
+            [![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsors-ea4aaa?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sponsors/smin987)
+            [![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/smin987)
+            [![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/smin987)
+
+            > **💖 Sponsor Perks & Appreciation**:
+            > - 🎖️ Listed on the official **Backers & Sponsors** honor roll in README and release notes
+            > - 🚀 High priority review for bug reports and feature requests
+            > - 💬 Direct communication and early access to experimental updates
+
+            </div>
           draft: false
           prerelease: false
 
