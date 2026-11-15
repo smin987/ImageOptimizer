@@ -234,7 +234,7 @@ jobs:
 
             ### 🪟 Windows 11 (winget)
             ```powershell
-            winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/winget/manifests/s/smin987/ImageOptimizer/1.0.3/smin987.ImageOptimizer.yaml
+            winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/winget/manifests/s/smin987/ImageOptimizer/1.0.4/smin987.ImageOptimizer.yaml
             ```
             
             ### 💖 Support & Sponsor
