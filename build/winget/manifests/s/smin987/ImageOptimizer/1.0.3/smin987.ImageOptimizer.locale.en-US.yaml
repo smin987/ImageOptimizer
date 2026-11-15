@@ -8,11 +8,11 @@ PublisherUrl: https://github.com/smin987
 PublisherSupportUrl: https://github.com/smin987/ImageOptimizer/issues
 PackageName: Image Optimizer
 PackageUrl: https://github.com/smin987/ImageOptimizer
-License: Apache-2.0
+License: Freeware
 LicenseUrl: https://github.com/smin987/ImageOptimizer/blob/main/LICENSE
 ShortDescription: All-in-one cross-platform image & animated GIF optimizer for web & desktop.
 Description: |
-  Image Optimizer is an open-source, cross-platform desktop application designed to drastically compress image files by up to 90% while preserving outstanding visual fidelity.
+  Image Optimizer is a free, cross-platform desktop application designed to drastically compress image files by up to 90% while preserving outstanding visual fidelity.
   It fully supports WebP, JPG, Animated GIF to WebP conversion, alpha channel preservation, and flexible resizing modes.
 Tags:
   - image

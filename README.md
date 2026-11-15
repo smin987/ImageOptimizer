@@ -6,7 +6,8 @@
   <b>English</b> • <a href="README.ko.md"><b>한국어 (Korean)</b></a>
 </p>
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Freeware-blue.svg)](LICENSE)
+[![Source](https://img.shields.io/badge/Source-Available-orange.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](https://www.python.org/)
 [![GUI](https://img.shields.io/badge/GUI-PySide6%20(Qt6)-41cd52.svg)](https://www.qt.io/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](#-platform-support)
@@ -23,7 +24,7 @@
 
 ## 🌟 Overview
 
-**Image Optimizer** is an open-source, cross-platform desktop application designed to drastically compress image files by up to **90%** while preserving outstanding visual fidelity. It accelerates website load times, reduces bandwidth usage, and optimizes local storage.
+**Image Optimizer** is a free, cross-platform desktop application designed to drastically compress image files by up to **90%** while preserving outstanding visual fidelity. It accelerates website load times, reduces bandwidth usage, and optimizes local storage.
 
 In addition to static formats (`PNG`, `JPG`, `BMP`, `TIFF`, etc.), it fully supports **Animated GIF optimization**, retaining every frame and animation timing while converting bulky GIFs into lightweight **Animated WebP** files.
 
@@ -134,7 +135,7 @@ python main_gui.py
 
 ## 💖 Support & Sponsorship
 
-**Image Optimizer** is free and open-source software distributed under the **Apache License 2.0**.  
+**Image Optimizer** is free software distributed under the **[Source-Available Freeware License](LICENSE)**.  
 If you find this project valuable, please consider sponsoring the developer. Your support directly helps maintain the project, cover infrastructure costs, improve performance, and build new features! ☕✨
 
 <div align="center">
@@ -154,5 +155,6 @@ If you find this project valuable, please consider sponsoring the developer. You
 
 ## 📄 License
 
-This project is licensed under the **[Apache License 2.0](LICENSE)**.  
-You are free to use, modify, distribute, and integrate this software for both personal and commercial purposes.
+This software is distributed under the **[Image Optimizer Software License](LICENSE)** (Source-Available Freeware):
+- **Source Code**: Publicly available for security review, transparency, and personal study. **Modifications, alterations, forks, and derivative works are strictly prohibited.**
+- **Compiled Binaries**: Official executables (`.exe`, `.dmg`, `.deb`, standalone Linux binaries) are **100% Free (Freeware)** for personal, educational, non-profit, and commercial use.

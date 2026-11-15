@@ -4,8 +4,8 @@
 
 #define MyAppName "Image Optimizer"
 #define MyAppVersion "1.0"
-#define MyAppPublisher "YourNameOrStudio"
-#define MyAppURL "https://github.com/your-repo/ImageOptimizer"
+#define MyAppPublisher="smin987"
+#define MyAppURL "https://github.com/smin987/ImageOptimizer"
 #define MyAppExeName "ImageOptimizer.exe"
 
 [Setup]
@@ -18,6 +18,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
+LicenseFile=..\LICENSE
 ; 설치 마법사 아이콘
 SetupIconFile=..\assets\icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}

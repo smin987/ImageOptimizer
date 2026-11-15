@@ -6,7 +6,8 @@
   <a href="README.md"><b>English</b></a> • <b>한국어 (Korean)</b>
 </p>
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Freeware-blue.svg)](LICENSE)
+[![Source](https://img.shields.io/badge/Source-Available-orange.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](https://www.python.org/)
 [![GUI](https://img.shields.io/badge/GUI-PySide6%20(Qt6)-41cd52.svg)](https://www.qt.io/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](#-지원-플랫폼)
@@ -23,7 +24,7 @@
 
 ## 🌟 개요 (Overview)
 
-**Image Optimizer**는 원본 이미지의 우수한 시각적 화질을 그대로 유지하면서 파일 용량을 최대 90%까지 경량화하여, 웹사이트 로딩 속도와 스토리지 효율을 극대화하는 **오픈소스 크로스 플랫폼 데스크톱 도구**입니다.
+**Image Optimizer**는 원본 이미지의 우수한 시각적 화질을 그대로 유지하면서 파일 용량을 최대 90%까지 경량화하여, 웹사이트 로딩 속도와 스토리지 효율을 극대화하는 **무료 크로스 플랫폼 데스크톱 도구**입니다.
 
 일반 정지 이미지(`PNG`, `JPG`, `BMP`, `TIFF` 등)뿐만 아니라 **움직이는 GIF(움짤)**의 모든 프레임과 타이밍을 온전히 보존하는 **애니메이션 WebP 변환**을 완벽하게 지원합니다.
 
@@ -133,7 +134,7 @@ python main_gui.py
 
 ## 💖 개발자 후원하기 (Sponsor)
 
-**Image Optimizer**는 누구나 자유롭게 사용할 수 있는 **무료 오픈소스 소프트웨어(Apache 2.0)**입니다.  
+**Image Optimizer**는 누구나 자유롭게 사용할 수 있는 **무료 소프트웨어(Source-Available Freeware)**입니다.  
 이 프로그램이 유용하셨거나 지속적인 기능 업데이트, 성능 개선, 멀티플랫폼 지원을 응원하고 싶으시다면 커피 한 잔의 따뜻한 후원을 부탁드립니다! 여러분의 따뜻한 후원은 프로젝트를 유지하는 데 매우 큰 힘이 됩니다. ☕✨
 
 <div align="center">
@@ -153,5 +154,6 @@ python main_gui.py
 
 ## 📄 라이선스 (License)
 
-본 프로젝트는 **[Apache License 2.0](LICENSE)**에 따라 배포됩니다.  
-개인 및 상업적 용도로 자유롭게 사용, 수정, 배포하실 수 있습니다.
+본 소프트웨어는 **[Image Optimizer 라이선스 계약](LICENSE)** (Source-Available Freeware)에 따라 배포됩니다:
+- **소스코드(Source Code)**: 투명한 보안 검증, 감사 및 개인 학습 목적으로 공개되어 있습니다. **무단 수정, 변형, 포크(Fork), 파생 저작물 제작 및 2차 배포는 엄격히 금지**됩니다.
+- **실행 산출물(바이너리)**: 공식 빌드된 실행 파일(`.exe`, `.dmg`, `.deb`, Linux 독립 바이너리)은 개인, 교육 기관, 비영리 단체, 상업 기업 누구나 **100% 무료(프리웨어)**로 영구 사용할 수 있습니다.

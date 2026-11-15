@@ -1,11 +1,12 @@
 cask "image-optimizer" do
-  version "1.0.3"
+  version "1.0.4"
   sha256 :no_check
 
   url "https://github.com/smin987/ImageOptimizer/releases/download/v#{version}/ImageOptimizer-macos.dmg"
   name "Image Optimizer"
   desc "All-in-one cross-platform image and animated GIF optimizer for web and desktop"
   homepage "https://github.com/smin987/ImageOptimizer"
+  license :freeware
 
   livecheck do
     url :url

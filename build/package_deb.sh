@@ -60,7 +60,7 @@ chmod 644 "$PKG_DIR/usr/share/applications/image-optimizer.desktop"
 cat <<EOF > "$PKG_DIR/DEBIAN/control"
 Package: image-optimizer
 Version: $VERSION
-Section: graphics
+Section: non-free/graphics
 Priority: optional
 Architecture: $ARCH
 Depends: libc6, libgl1, libegl1, libxkbcommon0, libdbus-1-3
