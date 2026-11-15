@@ -1,0 +1,5 @@
+pillow
+PySide6
+send2trash
+pyinstaller
+
