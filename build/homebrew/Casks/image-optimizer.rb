@@ -17,6 +17,8 @@ cask "image-optimizer" do
   depends_on macos: ">= :catalina"
 
   app "ImageOptimizer.app"
+  binary "#{appdir}/ImageOptimizer.app/Contents/MacOS/ImageOptimizer", target: "image-optimizer"
+  binary "#{appdir}/ImageOptimizer.app/Contents/MacOS/ImageOptimizer", target: "iopt"
 
   zap trash: [
     "~/Library/Application Support/ImageOptimizer",

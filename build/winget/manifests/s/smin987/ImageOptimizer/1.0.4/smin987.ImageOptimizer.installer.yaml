@@ -5,6 +5,7 @@ PackageVersion: 1.0.4
 InstallerType: portable
 Commands:
   - ImageOptimizer
+  - iopt
 Installers:
   - Architecture: x64
     InstallerUrl: https://github.com/smin987/ImageOptimizer/releases/download/v1.0.4/ImageOptimizer-windows-x64.exe

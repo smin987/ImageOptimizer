@@ -33,6 +33,8 @@ mkdir -p "$OUTPUT_DIR"
 # 1. 바이너리 복사 및 실행 권한 부여
 cp "$BIN_PATH" "$PKG_DIR/usr/bin/image-optimizer"
 chmod 755 "$PKG_DIR/usr/bin/image-optimizer"
+# 단축 명령어 심볼릭 링크 생성 (iopt -> image-optimizer)
+ln -sf image-optimizer "$PKG_DIR/usr/bin/iopt"
 
 # 2. 고해상도 앱 아이콘 복사
 if [ -f "$PROJECT_ROOT/assets/icon.png" ]; then

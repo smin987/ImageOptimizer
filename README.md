@@ -16,7 +16,7 @@
 **All-in-one Cross-Platform Image & Animation Optimizer for Web & Desktop**  
 *Ultra-efficient WebP / JPG conversion, animated GIF optimization, alpha channel preservation, and smart resizing.*
 
-[Key Features](#-key-features) • [Platform Support](#-platform-support) • [Installation & Downloads](#-installation--downloads) • [Build from Source](#-build--run-from-source) • [Sponsor](#-support--sponsorship)
+[Key Features](#-key-features) • [Platform Support](#-platform-support) • [Installation & Downloads](#-installation--downloads) • [CLI Usage (iopt)](#-cli-usage-iopt) • [Build from Source](#-build--run-from-source) • [Sponsor](#-support--sponsorship)
 
 </div>
 
@@ -105,6 +105,48 @@ Pre-compiled standalone binaries are available on the **[GitHub Releases](https:
 - **macOS**: `ImageOptimizer-macos.dmg` (Open disk image and drag to Applications)
 - **Linux x86_64**: `ImageOptimizer-linux-x86_64` (Make executable: `chmod +x` and run)
 - **Linux ARM64**: `ImageOptimizer-linux-arm64` (For Raspberry Pi 4/5, AWS Graviton, ARM SBCs)
+
+---
+
+## ⌨️ CLI Usage (`iopt`)
+
+**Image Optimizer** operates as a **Dual-Mode single binary**:
+- **Double-click / No arguments**: Launches the modern **GUI window**.
+- **Run with arguments in terminal**: Runs high-speed **headless CLI optimization** (alias: `iopt` or `image-optimizer`).
+
+### Common Commands:
+```bash
+# Convert a single image to WebP (quality: 85)
+iopt photo.png
+
+# Specify output format (webp, jpg, both) and quality
+iopt photo.png -f jpg -q 90
+iopt photo.png -f both
+
+# Batch convert an entire folder recursively
+iopt ./images/ -r
+
+# Convert animated GIF to ultra-lightweight animated WebP
+iopt animation.gif
+
+# Resize images: scale down if width exceeds 1920px
+iopt *.jpg --resize-width 1920
+
+# Scale by percentage and save to a specific directory
+iopt *.png --scale 50 -o ./optimized/
+
+# Flatten transparent alpha background onto clean white
+iopt logo.png --flatten-white
+
+# Move original files to system trash upon successful conversion
+iopt *.png --trash-orig
+
+# Launch the desktop GUI window from terminal
+iopt --gui
+```
+
+### Full Options:
+Run `iopt --help` to view all available parameters and options.
 
 ---
 
