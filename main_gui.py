@@ -86,7 +86,7 @@ I18N = {
             "※ 애니메이션 GIF도 WebP로 변환 가능"
         ),
         "drop_title": "이미지 또는 폴더를 드래그 앤 드롭하세요",
-        "queue_status_init": "최적화할 이미지 또는 폴더를 드래그하거나 아래 버튼으로 추가하세요.",
+        "queue_status_init": "최적화할 이미지 또는 폴더를 드래그하거나 버튼으로 추가하세요.",
         "queue_status_added": "✅ {count}개의 이미지가 최적화 대상 목록에 추가되었습니다.",
         "queue_status_cleared": "최적화 대상 목록이 초기화되었습니다.",
         "queue_status_auto_cleared": "변환이 완료되어 최적화 대상 목록이 자동으로 비워졌습니다.",
@@ -95,7 +95,9 @@ I18N = {
         "btn_clear_list": "🗑️ 대기 목록 비우기",
         "btn_queue_count": "최적화 대상 이미지: {count}개 🔍",
         "btn_queue_count_tip": "클릭하면 최적화 대상 이미지 전체 목록을 확인하고 개별 제외할 수 있습니다.",
-        "settings_title": "⚙️ 변환 설정",
+        "settings_title": "⚙️ 설정",
+        "settings_toggle_hide": "▲ ⚙️ 설정",
+        "settings_toggle_show": "▼ ⚙️ 설정",
         "lbl_format": "출력 포맷:",
         "fmt_both": "둘 다(BOTH)",
         "lbl_quality": "이미지 품질:",
@@ -123,6 +125,9 @@ I18N = {
         "status_ready": "파일을 드래그하여 추가한 후 [변환 시작]을 누르세요.",
         "status_cancelling": "작업 중단 요청 중...",
         "status_progress": "진행 중: {name} ({cur}/{total})",
+        "log_toggle_hide": "▲ 📋 실시간 변환 로그",
+        "log_toggle_show": "▼ 📋 실시간 변환 로그",
+        "log_toggle_count_suffix": " ({count}건)",
         "log_headers": ["상태", "파일명", "유형", "용량 변화", "절감률"],
         "log_done": "✅ 완료",
         "log_skipped": "⚠️ 건너뜀",
@@ -175,7 +180,7 @@ I18N = {
             "※ Supports converting animated GIF to WebP"
         ),
         "drop_title": "Drag & drop images or folders here",
-        "queue_status_init": "Drag and drop images or folders, or use the buttons below to add.",
+        "queue_status_init": "Drag and drop images or folders, or use the buttons to add.",
         "queue_status_added": "✅ {count} image(s) added to the optimization queue.",
         "queue_status_cleared": "Optimization queue has been cleared.",
         "queue_status_auto_cleared": "Conversion completed. Queue has been automatically cleared.",
@@ -184,7 +189,9 @@ I18N = {
         "btn_clear_list": "🗑️ Clear Queue",
         "btn_queue_count": "Queued Images: {count} 🔍",
         "btn_queue_count_tip": "Click to view full list and exclude individual images.",
-        "settings_title": "⚙️ Conversion Settings",
+        "settings_title": "⚙️ Settings",
+        "settings_toggle_hide": "▲ ⚙️ Settings",
+        "settings_toggle_show": "▼ ⚙️ Settings",
         "lbl_format": "Format:",
         "fmt_both": "Both (BOTH)",
         "lbl_quality": "Quality:",
@@ -212,6 +219,9 @@ I18N = {
         "status_ready": "Add files and click [Start Conversion].",
         "status_cancelling": "Cancelling task...",
         "status_progress": "Processing: {name} ({cur}/{total})",
+        "log_toggle_hide": "▲ 📋 Real-time Conversion Log",
+        "log_toggle_show": "▼ 📋 Real-time Conversion Log",
+        "log_toggle_count_suffix": " ({count} files)",
         "log_headers": ["Status", "Filename", "Type", "Size Change", "Saving"],
         "log_done": "✅ Done",
         "log_skipped": "⚠️ Skipped",
@@ -336,6 +346,52 @@ QPushButton#btn_cancel:hover {
 QPushButton#btn_cancel:disabled {
     background-color: #381a1d;
     color: #ffffff;
+}
+
+QPushButton#btn_open_folder {
+    background-color: #059669;
+    border: none;
+    color: #ffffff;
+    font-size: 11.5pt;
+    font-weight: bold;
+    padding: 10px 24px;
+    border-radius: 6px;
+}
+QPushButton#btn_open_folder:hover {
+    background-color: #10b981;
+}
+QPushButton#btn_open_folder:pressed {
+    background-color: #047857;
+}
+QPushButton#btn_open_folder:disabled {
+    background-color: #1e293b;
+    color: #64748b;
+}
+
+QPushButton#btn_toggle_log {
+    background-color: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 9.5pt;
+    font-weight: 600;
+    text-align: left;
+    padding: 3px 4px;
+}
+QPushButton#btn_toggle_log:hover {
+    color: #38bdf8;
+}
+
+QPushButton#btn_toggle_settings {
+    background-color: transparent;
+    border: none;
+    color: #38bdf8;
+    font-size: 11pt;
+    font-weight: bold;
+    text-align: left;
+    padding: 0px 2px;
+}
+QPushButton#btn_toggle_settings:hover {
+    color: #7dd3fc;
 }
 
 QPushButton#btn_theme_toggle, QPushButton#btn_lang_toggle {
@@ -619,6 +675,52 @@ QPushButton#btn_cancel:hover {
 QPushButton#btn_cancel:disabled {
     background-color: #fca5a5;
     color: #ffffff;
+}
+
+QPushButton#btn_open_folder {
+    background-color: #059669;
+    border: none;
+    color: #ffffff;
+    font-size: 11.5pt;
+    font-weight: bold;
+    padding: 10px 24px;
+    border-radius: 6px;
+}
+QPushButton#btn_open_folder:hover {
+    background-color: #047857;
+}
+QPushButton#btn_open_folder:pressed {
+    background-color: #065f46;
+}
+QPushButton#btn_open_folder:disabled {
+    background-color: #e2e8f0;
+    color: #94a3b8;
+}
+
+QPushButton#btn_toggle_log {
+    background-color: transparent;
+    border: none;
+    color: #64748b;
+    font-size: 9.5pt;
+    font-weight: 600;
+    text-align: left;
+    padding: 3px 4px;
+}
+QPushButton#btn_toggle_log:hover {
+    color: #2563eb;
+}
+
+QPushButton#btn_toggle_settings {
+    background-color: transparent;
+    border: none;
+    color: #2563eb;
+    font-size: 11pt;
+    font-weight: bold;
+    text-align: left;
+    padding: 0px 2px;
+}
+QPushButton#btn_toggle_settings:hover {
+    color: #1d4ed8;
 }
 
 QPushButton#btn_theme_toggle, QPushButton#btn_lang_toggle {
@@ -1190,7 +1292,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Image Optimizer")
-        self.resize(720, 750)
+        self.resize(720, 680)
         self.setMinimumSize(420, 380)
 
         # 앱 아이콘 설정 (Windows 작업표시줄 및 창 좌측 상단)
@@ -1204,6 +1306,8 @@ class MainWindow(QWidget):
         self.current_theme = "light"  # 기본 테마: 라이트(기본)
         self.current_lang = "ko"      # 기본 언어: 한국어
         self.last_stat_result = None
+        self.is_log_expanded = False       # 실시간 로그 접힘/펼침 상태 (기본값: 접힘)
+        self.is_settings_expanded = False  # 변환 설정 접힘/펼침 상태 (기본값: 접힘)
 
         self.init_ui()
 
@@ -1218,6 +1322,7 @@ class MainWindow(QWidget):
 
         container = QWidget()
         main_layout = QVBoxLayout(container)
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         main_layout.setSpacing(10)
         main_layout.setContentsMargins(12, 12, 12, 12)
 
@@ -1285,17 +1390,11 @@ class MainWindow(QWidget):
         desc_layout.addWidget(self.lbl_desc_text, 1)
         main_layout.addWidget(self.desc_card)
 
-        # 1. 드래그 앤 드롭 영역
-        self.drop_area = DropAreaWidget()
-        self.drop_area.files_dropped.connect(self.on_files_added)
-        main_layout.addWidget(self.drop_area)
-
-        # 드래그 앤 드롭 영역 바로 밑 상태 알림 라벨
-        self.lbl_queue_status = QLabel("최적화할 이미지 또는 폴더를 드래그하거나 아래 버튼으로 추가하세요.")
+        # 1. 파일 상태 알림 라벨 및 파일 추가 버튼 툴바 (드롭 영역 상단 배치)
+        self.lbl_queue_status = QLabel("최적화할 이미지 또는 폴더를 드래그하거나 버튼으로 추가하세요.")
         self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 9.5pt; padding: 2px 4px;")
         main_layout.addWidget(self.lbl_queue_status)
 
-        # 파일 목록 조작 버튼 및 대기 개수 표시 (클릭 시 세부 목록 팝업)
         file_btn_layout = QHBoxLayout()
         self.btn_add_files = QPushButton("📄 파일 추가")
         self.btn_add_files.clicked.connect(self.choose_files)
@@ -1333,16 +1432,83 @@ class MainWindow(QWidget):
         file_btn_layout.addWidget(self.btn_queue_count)
         main_layout.addLayout(file_btn_layout)
 
-        # 2. 변환 설정 패널 (모던 카드 형태)
+        # 2. 드래그 앤 드롭 영역
+        self.drop_area = DropAreaWidget()
+        self.drop_area.files_dropped.connect(self.on_files_added)
+        main_layout.addWidget(self.drop_area)
+
+        # 2. 작업 액션 버튼 바 ([변환 시작] [작업 중단] [결과 열기] 1:1:1 균등 배치)
+        ctrl_layout = QHBoxLayout()
+        ctrl_layout.setSpacing(10)
+
+        self.btn_start = QPushButton("🚀 변환 시작")
+        self.btn_start.setObjectName("btn_start")
+        self.btn_start.setMinimumHeight(44)
+        self.btn_start.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_start.clicked.connect(self.start_conversion)
+
+        self.btn_cancel = QPushButton("⏹️ 작업 중단")
+        self.btn_cancel.setObjectName("btn_cancel")
+        self.btn_cancel.setMinimumHeight(44)
+        self.btn_cancel.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_cancel.setEnabled(False)
+        self.btn_cancel.clicked.connect(self.cancel_conversion)
+
+        self.btn_open_folder = QPushButton("📂 결과 열기")
+        self.btn_open_folder.setObjectName("btn_open_folder")
+        self.btn_open_folder.setMinimumHeight(44)
+        self.btn_open_folder.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_open_folder.setEnabled(False)
+        self.btn_open_folder.clicked.connect(self.open_output_folder)
+
+        ctrl_layout.addWidget(self.btn_start, 1)
+        ctrl_layout.addWidget(self.btn_cancel, 1)
+        ctrl_layout.addWidget(self.btn_open_folder, 1)
+        main_layout.addLayout(ctrl_layout)
+
+        # 3. 실시간 진행 상태 및 진행률 바
+        progress_layout = QVBoxLayout()
+        progress_layout.setSpacing(6)
+        progress_layout.setContentsMargins(0, 2, 0, 4)
+
+        status_header_layout = QHBoxLayout()
+        self.lbl_status = QLabel("파일을 드래그하여 추가한 후 [변환 시작]을 누르세요.")
+        self.lbl_status.setStyleSheet("color: #8892b0; font-size: 9.5pt;")
+        status_header_layout.addWidget(self.lbl_status)
+        status_header_layout.addStretch()
+
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setValue(0)
+        self.progress_bar.setMinimumHeight(20)
+
+        progress_layout.addLayout(status_header_layout)
+        progress_layout.addWidget(self.progress_bar)
+        main_layout.addLayout(progress_layout)
+
+        # 3. 변환 설정 패널 (모던 카드 형태)
         self.settings_card = QFrame()
         self.settings_card.setObjectName("settings_card")
-        settings_layout = QVBoxLayout(self.settings_card)
-        settings_layout.setContentsMargins(16, 14, 16, 14)
-        settings_layout.setSpacing(10)
+        settings_card_layout = QVBoxLayout(self.settings_card)
+        settings_card_layout.setContentsMargins(16, 12, 16, 12)
+        settings_card_layout.setSpacing(6)
 
-        self.lbl_settings_header = QLabel("⚙️ 변환 설정")
-        self.lbl_settings_header.setObjectName("lbl_settings_header")
-        settings_layout.addWidget(self.lbl_settings_header)
+        # 설정 헤더 (접이식 토글 버튼)
+        settings_header_layout = QHBoxLayout()
+        settings_header_layout.setContentsMargins(0, 0, 0, 0)
+        self.btn_toggle_settings = QPushButton("▼ ⚙️ 설정")
+        self.btn_toggle_settings.setObjectName("btn_toggle_settings")
+        self.btn_toggle_settings.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_toggle_settings.clicked.connect(self.toggle_settings_section)
+        settings_header_layout.addWidget(self.btn_toggle_settings)
+        settings_header_layout.addStretch()
+        settings_card_layout.addLayout(settings_header_layout)
+
+        # 설정 세부 내용 컨테이너 (접힘/펼침 대상 - 초기값: 접힘)
+        self.settings_body = QWidget()
+        self.settings_body.setVisible(False)
+        settings_layout = QVBoxLayout(self.settings_body)
+        settings_layout.setContentsMargins(0, 4, 0, 0)
+        settings_layout.setSpacing(10)
 
         # 2-1. 포맷 선택 (모던 세그먼트 컨트롤)
         fmt_layout = QHBoxLayout()
@@ -1542,39 +1708,23 @@ class MainWindow(QWidget):
         opt_chk_layout.addWidget(self.chk_remove_alpha)
         opt_chk_layout.addWidget(self.chk_delete_orig)
         settings_layout.addLayout(opt_chk_layout)
+        settings_card_layout.addWidget(self.settings_body)
 
         main_layout.addWidget(self.settings_card)
 
-        # 3. 진행 상태 및 제어 버튼
-        ctrl_layout = QHBoxLayout()
-        self.btn_start = QPushButton("🚀 변환 시작")
-        self.btn_start.setObjectName("btn_start")
-        self.btn_start.clicked.connect(self.start_conversion)
+        # 4. 실시간 로그 테이블 (접이식 섹션 - 초기값: 접힘)
+        log_header_layout = QHBoxLayout()
+        log_header_layout.setContentsMargins(0, 2, 0, 0)
 
-        self.btn_cancel = QPushButton("⏹️ 작업 중단")
-        self.btn_cancel.setObjectName("btn_cancel")
-        self.btn_cancel.setEnabled(False)
-        self.btn_cancel.clicked.connect(self.cancel_conversion)
+        self.btn_toggle_log = QPushButton("▼ 📋 실시간 변환 로그")
+        self.btn_toggle_log.setObjectName("btn_toggle_log")
+        self.btn_toggle_log.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_toggle_log.clicked.connect(self.toggle_log_section)
 
-        self.btn_open_folder = QPushButton("📂 결과 열기")
-        self.btn_open_folder.setEnabled(False)
-        self.btn_open_folder.clicked.connect(self.open_output_folder)
+        log_header_layout.addWidget(self.btn_toggle_log)
+        log_header_layout.addStretch()
+        main_layout.addLayout(log_header_layout)
 
-        ctrl_layout.addWidget(self.btn_start, 2)
-        ctrl_layout.addWidget(self.btn_cancel, 1)
-        ctrl_layout.addWidget(self.btn_open_folder, 1)
-        main_layout.addLayout(ctrl_layout)
-
-        # 진행률 바 & 상태 라벨
-        self.progress_bar = QProgressBar()
-        self.progress_bar.setValue(0)
-        main_layout.addWidget(self.progress_bar)
-
-        self.lbl_status = QLabel("파일을 드래그하여 추가한 후 [변환 시작]을 누르세요.")
-        self.lbl_status.setStyleSheet("color: #aaaaaa;")
-        main_layout.addWidget(self.lbl_status)
-
-        # 4. 실시간 로그 테이블
         self.table_log = QTableWidget(0, 5)
         self.table_log.setHorizontalHeaderLabels(
             ["상태", "파일명", "유형", "용량 변화", "절감률"]
@@ -1589,6 +1739,7 @@ class MainWindow(QWidget):
             QTableWidget.EditTrigger.NoEditTriggers
         )
         self.table_log.setMinimumHeight(110)
+        self.table_log.setVisible(False)
         main_layout.addWidget(self.table_log)
 
         # 5. 하단 종합 성과 대시보드 카드
@@ -1629,6 +1780,7 @@ class MainWindow(QWidget):
         stat_card_layout.addLayout(stat_metrics_layout)
 
         main_layout.addWidget(self.stat_card)
+        main_layout.addStretch()
 
         scroll_area.setWidget(container)
         root_layout.addWidget(scroll_area)
@@ -1710,14 +1862,8 @@ class MainWindow(QWidget):
                         border-radius: 8px;
                     }
                 """)
-                self.lbl_settings_header.setStyleSheet("""
-                    color: #2563eb;
-                    font-size: 11pt;
-                    font-weight: bold;
-                    background-color: transparent;
-                    padding-bottom: 6px;
-                    border-bottom: 1px solid #f1f5f9;
-                """)
+            if hasattr(self, "lbl_status"):
+                self.lbl_status.setStyleSheet("color: #64748b; font-size: 9.5pt;")
         else:
             self.setStyleSheet(DARK_STYLE)
             self.btn_theme_toggle.setText(I18N[lang]["theme_light"])
@@ -1758,14 +1904,8 @@ class MainWindow(QWidget):
                         border-radius: 8px;
                     }
                 """)
-                self.lbl_settings_header.setStyleSheet("""
-                    color: #38bdf8;
-                    font-size: 11pt;
-                    font-weight: bold;
-                    background-color: transparent;
-                    padding-bottom: 6px;
-                    border-bottom: 1px solid #1e2430;
-                """)
+            if hasattr(self, "lbl_status"):
+                self.lbl_status.setStyleSheet("color: #94a3b8; font-size: 9.5pt;")
             if hasattr(self, "stat_card"):
                 self.stat_card.setStyleSheet("""
                     QFrame#stat_card {
@@ -1842,7 +1982,7 @@ class MainWindow(QWidget):
         self.btn_queue_count.setToolTip(i18n["btn_queue_count_tip"])
 
         # 2. 변환 설정 패널
-        self.lbl_settings_header.setText(i18n["settings_title"])
+        self.update_settings_toggle_button()
         self.lbl_fmt.setText(i18n["lbl_format"])
         self.btn_fmt_both.setText(i18n["fmt_both"])
         self.lbl_quality.setText(i18n["lbl_quality"])
@@ -1872,12 +2012,94 @@ class MainWindow(QWidget):
         if not (self.worker and self.worker.isRunning()):
             self.lbl_status.setText(i18n["status_ready"])
 
-        # 4. 실시간 로그 테이블 헤더
+        # 4. 실시간 로그 테이블 헤더 및 접기/펼치기 토글
+        self.update_log_toggle_button()
         self.table_log.setHorizontalHeaderLabels(i18n["log_headers"])
 
         # 5. 하단 대시보드 카드
         self.lbl_stat_title.setText(i18n["stat_title"])
         self.update_stat_dashboard()
+
+    def set_settings_expanded(self, expanded: bool, resize_window: bool = True):
+        """변환 설정 패널 접힘/펼침 상태 명시적 설정 및 창 높이 동적 조절"""
+        if getattr(self, "is_settings_expanded", None) == expanded:
+            return
+        self.is_settings_expanded = expanded
+
+        if not hasattr(self, "settings_body"):
+            return
+
+        if not self.is_settings_expanded:
+            # 접기: 현재 settings_body 높이를 기억하고 창 하단을 줄임
+            body_h = self.settings_body.height()
+            self.saved_settings_height = max(body_h, 240)
+            self.settings_body.setVisible(False)
+            if resize_window:
+                new_h = max(self.minimumHeight(), self.height() - self.saved_settings_height)
+                self.resize(self.width(), new_h)
+        else:
+            # 펼치기: settings_body를 표시하고 기억된 높이만큼 창 하단을 늘림
+            self.settings_body.setVisible(True)
+            if resize_window:
+                expand_h = getattr(self, "saved_settings_height", 260)
+                self.resize(self.width(), self.height() + expand_h)
+
+        self.update_settings_toggle_button()
+        self.save_settings()
+
+    def toggle_settings_section(self):
+        """변환 설정 패널 접기/펼치기 토글"""
+        self.set_settings_expanded(not getattr(self, "is_settings_expanded", True), resize_window=True)
+
+    def update_settings_toggle_button(self):
+        """변환 설정 토글 버튼 텍스트 업데이트 (다국어 반영)"""
+        if not hasattr(self, "btn_toggle_settings"):
+            return
+        i18n = I18N[self.current_lang]
+        expanded = getattr(self, "is_settings_expanded", True)
+        base_text = i18n["settings_toggle_hide"] if expanded else i18n["settings_toggle_show"]
+        self.btn_toggle_settings.setText(base_text)
+
+    def set_log_expanded(self, expanded: bool, resize_window: bool = True):
+        """실시간 로그 테이블 접힘/펼침 상태 명시적 설정 및 창 높이 동적 조절"""
+        if getattr(self, "is_log_expanded", None) == expanded:
+            return
+        self.is_log_expanded = expanded
+
+        if not self.is_log_expanded:
+            # 접기: 현재 로그 테이블 높이를 기록하고 창 하단을 줄임
+            log_h = self.table_log.height()
+            self.saved_log_height = max(log_h, 160)
+            self.table_log.setVisible(False)
+            if resize_window:
+                new_h = max(self.minimumHeight(), self.height() - self.saved_log_height)
+                self.resize(self.width(), new_h)
+        else:
+            # 펼치기: 로그 테이블을 표시하고 기억된 높이만큼 창 하단을 늘림
+            self.table_log.setVisible(True)
+            if resize_window:
+                expand_h = getattr(self, "saved_log_height", 160)
+                self.resize(self.width(), self.height() + expand_h)
+
+        self.update_log_toggle_button()
+        self.save_settings()
+
+    def toggle_log_section(self):
+        """실시간 로그 테이블 접기/펼치기 토글"""
+        self.set_log_expanded(not getattr(self, "is_log_expanded", True), resize_window=True)
+
+    def update_log_toggle_button(self):
+        """로그 토글 버튼 텍스트 업데이트 (다국어 및 행 개수 반영)"""
+        if not hasattr(self, "btn_toggle_log") or not hasattr(self, "table_log"):
+            return
+        i18n = I18N[self.current_lang]
+        expanded = getattr(self, "is_log_expanded", True)
+        base_text = i18n["log_toggle_hide"] if expanded else i18n["log_toggle_show"]
+        row_count = self.table_log.rowCount()
+        if row_count > 0:
+            count_suffix = i18n["log_toggle_count_suffix"].format(count=row_count)
+            base_text += count_suffix
+        self.btn_toggle_log.setText(base_text)
 
     def toggle_language(self):
         """한국어 ↔ 영어 즉각 토글 및 저장"""
@@ -2013,9 +2235,16 @@ class MainWindow(QWidget):
             self.chk_delete_orig.setChecked(data.get("delete_orig", False))
             self.chk_delete_orig.blockSignals(False)
 
-            # 6. 창 크기 복원
+            # 6. 접힘/펼침 상태 복원 (기본값: False 접힘)
+            saved_settings_expanded = data.get("settings_expanded", False)
+            self.set_settings_expanded(saved_settings_expanded, resize_window=False)
+
+            saved_log_expanded = data.get("log_expanded", False)
+            self.set_log_expanded(saved_log_expanded, resize_window=False)
+
+            # 7. 창 크기 복원
             w = data.get("window_width", 720)
-            h = data.get("window_height", 750)
+            h = data.get("window_height", 680)
             self.resize(w, h)
         except Exception as e:
             print(f"[Warning] 설정 불러오기 실패: {e}")
@@ -2035,6 +2264,8 @@ class MainWindow(QWidget):
                 "custom_dir": str(self.custom_dir_path) if self.custom_dir_path else "",
                 "remove_alpha": self.chk_remove_alpha.isChecked(),
                 "delete_orig": self.chk_delete_orig.isChecked(),
+                "settings_expanded": getattr(self, "is_settings_expanded", False),
+                "log_expanded": getattr(self, "is_log_expanded", False),
                 "window_width": self.width(),
                 "window_height": self.height(),
             }
@@ -2205,6 +2436,7 @@ class MainWindow(QWidget):
         self.btn_open_folder.setEnabled(False)
         self.progress_bar.setValue(0)
         self.table_log.setRowCount(0)
+        self.update_log_toggle_button()
 
         # 마지막 출력 폴더 기억용
         if options.output_mode == "custom" and options.custom_output_dir:
@@ -2271,6 +2503,7 @@ class MainWindow(QWidget):
         self.table_log.setItem(row, 3, QTableWidgetItem(size_text))
         self.table_log.setItem(row, 4, QTableWidgetItem(reduc_text))
         self.table_log.scrollToBottom()
+        self.update_log_toggle_button()
 
     def on_worker_finished(
         self,
