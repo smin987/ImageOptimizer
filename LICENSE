@@ -6,12 +6,17 @@ Copyright (c) 2026 smin987. All rights reserved.
 ==============================================================================
 QUICK SUMMARY / TL;DR (요약)
 ==============================================================================
-- [YES] FREE FOR EVERYONE: You may download and run official compiled binaries
-  (.exe, .dmg, .deb) for FREE for personal, educational, non-profit, and
-  commercial use.
-- [YES] PERSONAL RESEARCH & PRs: You may inspect the source code, modify it
-  locally for personal research/testing, and submit Pull Requests to the
-  official repository.
+- [YES] FREE BINARIES FOR EVERYONE: You may download and run official compiled
+  binaries (.exe, .dmg, .deb) 100% for FREE for personal, educational, non-profit,
+  and commercial/enterprise use.
+- [YES] PERSONAL RESEARCH & PRs: Individuals, students, educators, and non-profit
+  organizations may inspect the Source Code, locally modify it for testing, and
+  submit Pull Requests back to the official repository.
+- [NO] NO SOURCE MODIFICATION BY COMMERCIAL ENTITIES: Commercial businesses,
+  for-profit organizations, and corporate entities may inspect and audit the
+  Source Code, but are STRICTLY PROHIBITED from modifying, altering, or creating
+  custom builds of the Source Code. (Commercial entities must use the official
+  free Compiled Binaries.)
 - [NO] NO COMPETING PRODUCTS: You may NOT modify the Source Code to build,
   market, or release a competing product (provided that third-party open-source
   components remain governed by their respective license notices).
@@ -32,28 +37,47 @@ QUICK SUMMARY / TL;DR (요약)
 - "Competing Product" refers to any software, application, library, service, or
   derivative work that provides similar core image/animation optimization
   functionality and is distributed to third parties.
+- "Commercial Entity" refers to any for-profit corporation, company, partnership,
+  sole proprietorship, joint venture, or business enterprise of any size, as well
+  as any individual or contractor acting on behalf of or for the commercial benefit
+  of such an entity.
 
 ==============================================================================
-2. SOURCE CODE TERMS: RESEARCH & CONTRIBUTION GRANTED
+2. SOURCE CODE TERMS
 ==============================================================================
 The Author makes the Source Code publicly available under the following terms:
 
-(a) PERMITTED USES:
-    You are granted a non-exclusive, worldwide, royalty-free license to:
+(a) PERMITTED USES FOR INDIVIDUALS & NON-PROFIT ENTITIES:
+    Individuals (acting solely for private and non-commercial purposes), students,
+    educational institutions, and non-profit organizations are granted a non-exclusive,
+    worldwide, royalty-free license to:
     1. Inspect, audit, and view the Source Code for security review, transparency,
        and educational learning.
-    2. Modify, adapt, and build the Source Code locally for your own private,
-       internal, and personal research, debugging, and experimentation.
+    2. Modify, adapt, and build the Source Code locally for private, internal,
+       educational, and personal research, debugging, and experimentation.
     3. Fork the repository solely for the purpose of creating and submitting
        bug fixes, enhancements, or Pull Requests (PRs) back to the official
        upstream repository (https://github.com/smin987/ImageOptimizer).
 
-(b) PROHIBITION ON PUBLIC DISTRIBUTION OF MODIFIED VERSIONS:
+(b) COMMERCIAL ENTITY TERMS: AUDIT PERMITTED, MODIFICATION STRICTLY PROHIBITED:
+    Commercial Entities and for-profit businesses are granted the right to inspect,
+    view, and audit the Source Code strictly for security, safety, and compatibility
+    verification purposes. However:
+    1. MODIFICATION STRICTLY PROHIBITED: Commercial Entities are STRICTLY PROHIBITED
+       from modifying, altering, adapting, patching, or creating derivative works of
+       the Source Code for internal or external use.
+    2. CUSTOM BUILDS PROHIBITED: Commercial Entities may not compile or build custom
+       binaries for deployment or internal workflow automation.
+    3. OFFICIAL BINARIES USE: Commercial Entities are fully permitted and encouraged
+       to install, execute, and deploy the official Compiled Binaries free of charge
+       in accordance with Section 3.
+
+(c) PROHIBITION ON PUBLIC DISTRIBUTION OF MODIFIED VERSIONS:
     You may NOT publicly distribute, publish, host, mirror, or make available
     to third parties any modified versions, patches, forks, or derivative works
     of the Source Code without the Author's explicit prior written consent.
 
-(c) PROHIBITION ON COMPETING PRODUCTS & MODIFICATIONS FOR COMPETITION:
+(d) PROHIBITION ON COMPETING PRODUCTS & MODIFICATIONS FOR COMPETITION:
     Modifying the Source Code to develop, build, or release a Competing Product
     is strictly prohibited. You may NOT use the Source Code, in whole or in part,
     modified or unmodified, to build, market, distribute, or license any Competing
@@ -61,7 +85,7 @@ The Author makes the Source Code publicly available under the following terms:
     Provided, however, that third-party open-source components incorporated in or
     used by this Software remain subject to their respective license notices and terms.
 
-(d) PROHIBITION ON REDISTRIBUTION & RESALE:
+(e) PROHIBITION ON REDISTRIBUTION & RESALE:
     You may NOT sublicense, lease, rent, sell, or commercialize the Source Code
     in any manner.
 

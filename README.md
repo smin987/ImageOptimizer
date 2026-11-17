@@ -212,8 +212,11 @@ If you find this project valuable, please consider sponsoring the developer. You
 ## 📄 License
 
 This software is distributed under the **[Image Optimizer Fair-Code License](LICENSE)** (Source-Available Freeware):
-- **Source Code**: You are free to inspect the code, modify it locally for personal research/testing, and submit Pull Requests (PRs) back to the official repository. **Modifying the source code to release a competing product and unauthorized distribution are strictly prohibited. However, third-party open-source components follow their respective license notices and terms.**
-- **Compiled Binaries**: Official executables (`.exe`, `.dmg`, `.deb`, standalone Linux binaries) are **100% Free (Freeware)** for personal, educational, non-profit, and commercial use.
+- **Source Code**:
+  - **Individuals, Educational & Non-Profit**: Free to inspect, audit, study, and locally modify for personal research or submitting Pull Requests.
+  - **Commercial & Enterprise Entities**: Permitted to inspect and audit the Source Code for security review, but **modifying, altering, or creating custom builds of the Source Code is STRICTLY PROHIBITED**. (Commercial entities must use the official free Compiled Binaries.)
+  - **All Users**: Modifying the source code to release a competing product is strictly prohibited. (Third-party open-source components follow their respective license notices and terms.)
+- **Compiled Binaries**: Official executables (`.exe`, `.dmg`, `.deb`, standalone Linux binaries) are **100% Free (Freeware)** for individuals, non-profits, and **commercial/corporate enterprises of any size**.
 
 ### Third-Party Open Source Software Notices
 This software incorporates, bundles, or dynamically links against open-source libraries including Qt/PySide6 (LGPLv3), Pillow (HPND), Send2Trash (BSD-3), and Python runtime (PSF).
