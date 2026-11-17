@@ -199,11 +199,6 @@ python main_gui.py
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/smin987)
 [![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/smin987)
 
-> **💖 후원자 혜택**:
-> - 🎖️ README 및 릴리즈 노트의 공식 후원자(Backers / Sponsors) 명단 등재
-> - 🚀 버그 리포트 및 신규 기능 요청(Feature Request) 우선 검토
-> - 💬 신규 실험 기능 우선 체험 및 개발자와의 직접 소통
-
 </div>
 
 ---
