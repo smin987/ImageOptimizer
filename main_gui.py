@@ -1379,7 +1379,7 @@ class AboutLicenseDialog(QDialog):
                 <h4 style='color: {h_col}; margin-bottom: 6px;'>1. 소프트웨어 라이선스 정책</h4>
                 <ul style='margin-top: 4px;'>
                     <li><b>컴파일 바이너리 (Freeware)</b>: 공식 배포되는 실행 파일(.exe, .dmg, .deb 등)은 개인, 교육 기관, 비영리 단체, 상업 기업 누구나 <b>100% 영구 무료</b>로 자유롭게 사용할 수 있습니다.</li>
-                    <li><b>소스코드 (Source-Available)</b>: 투명한 코드 감사, 보안 검토, 개인 연구 및 공식 저장소 기여(PR) 목적의 로컬 수정이 자유롭게 허용됩니다. (단, 수정본의 무단 배포 및 이를 이용한 경쟁 대체 앱 출시는 제한됩니다.)</li>
+                    <li><b>소스코드 (Source-Available)</b>: 투명한 코드 감사, 보안 검토, 개인 연구 및 공식 저장소 기여(PR) 목적의 로컬 수정이 자유롭게 허용됩니다. (단, <b>경쟁 제품을 출시하기 위한 소스코드 수정 및 무단 배포는 엄격히 금지</b>되며, 제3자 오픈소스의 경우 해당 라이선스의 고지를 따릅니다.)</li>
                 </ul>
 
                 <h4 style='color: {h_col}; margin-bottom: 6px;'>2. 사용된 제3자 오픈소스 소프트웨어 (Third-Party OSS)</h4>
@@ -1447,7 +1447,7 @@ class AboutLicenseDialog(QDialog):
                 <h4 style='color: {h_col}; margin-bottom: 6px;'>1. Licensing Terms</h4>
                 <ul style='margin-top: 4px;'>
                     <li><b>Compiled Binaries (Freeware)</b>: Officially distributed executables (.exe, .dmg, .deb, etc.) are <b>100% free</b> for individuals, non-profits, educational use, and commercial companies.</li>
-                    <li><b>Source Code (Source-Available)</b>: You may inspect, audit, study, and locally modify the code for personal research and submitting Pull Requests back to the official upstream repository. (Public distribution of competing products or modified builds is prohibited.)</li>
+                    <li><b>Source Code (Source-Available)</b>: You may inspect, audit, study, and locally modify the code for personal research and submitting Pull Requests back to the official upstream repository. (<b>Modifying the source code to release a competing product is strictly prohibited</b>, provided that third-party open-source components follow their respective license notices.)</li>
                 </ul>
 
                 <h4 style='color: {h_col}; margin-bottom: 6px;'>2. Third-Party Open Source Components</h4>

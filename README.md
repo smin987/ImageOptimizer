@@ -198,7 +198,7 @@ If you find this project valuable, please consider sponsoring the developer. You
 ## 📄 License
 
 This software is distributed under the **[Image Optimizer Fair-Code License](LICENSE)** (Source-Available Freeware):
-- **Source Code**: You are free to inspect the code, modify it locally for personal research/testing, and submit Pull Requests (PRs) back to the official repository. **Public distribution of modified versions and building competing products are strictly prohibited.**
+- **Source Code**: You are free to inspect the code, modify it locally for personal research/testing, and submit Pull Requests (PRs) back to the official repository. **Modifying the source code to release a competing product and unauthorized distribution are strictly prohibited. However, third-party open-source components follow their respective license notices and terms.**
 - **Compiled Binaries**: Official executables (`.exe`, `.dmg`, `.deb`, standalone Linux binaries) are **100% Free (Freeware)** for personal, educational, non-profit, and commercial use.
 
 ### Third-Party Open Source Software Notices
