@@ -16,7 +16,7 @@
 **웹과 데스크톱을 위한 올인원 크로스 플랫폼 이미지 & 애니메이션 최적화 도구**  
 *초고효율 WebP / JPG 변환, 움직이는 GIF 애니메이션 최적화, 투명 배경 보존 및 스마트 리사이징*
 
-[주요 기능](#-주요-기능) • [다운로드](#-다운로드) • [터미널 명령어 (iopt)](#-터미널-명령어-사용법-iopt) • [소스코드 실행](#-소스코드-실행-및-빌드) • [후원하기](#-개발자-후원하기)
+[스크린샷](#-스크린샷-screenshots) • [주요 기능](#-주요-기능-key-features) • [지원 플랫폼](#-지원-플랫폼-platform-support) • [다운로드](#-설치-및-다운로드-installation--downloads) • [터미널 명령어 (iopt)](#-터미널-명령어-사용법-cli-iopt) • [후원하기](#-개발자-후원하기-sponsor)
 
 </div>
 
@@ -27,6 +27,20 @@
 **Image Optimizer**는 원본 이미지의 우수한 시각적 화질을 그대로 유지하면서 파일 용량을 최대 90%까지 경량화하여, 웹사이트 로딩 속도와 스토리지 효율을 극대화하는 **무료 크로스 플랫폼 데스크톱 도구**입니다.
 
 일반 정지 이미지(`PNG`, `JPG`, `BMP`, `TIFF` 등)뿐만 아니라 **움직이는 GIF(움짤)**의 모든 프레임과 타이밍을 온전히 보존하는 **애니메이션 WebP 변환**을 완벽하게 지원합니다.
+
+---
+
+## 📸 스크린샷 (Screenshots)
+
+<div align="center">
+
+| ☀️ 기본 라이트 모드 (Light Mode) | 🌙 다크 모드 (Dark Mode) |
+| :---: | :---: |
+| <a href="images/screenshot_normal_kor.png"><img src="images/screenshot_normal_kor.png" alt="Image Optimizer 한국어 라이트 모드" width="450"></a> | <a href="images/screenshot_dark_kor.png"><img src="images/screenshot_dark_kor.png" alt="Image Optimizer 한국어 다크 모드" width="450"></a> |
+
+*💡 상단 헤더의 테마 전환 버튼(☀️/🌙)으로 언제든지 원클릭으로 라이트 모드와 다크 모드를 전환할 수 있습니다.*
+
+</div>
 
 ---
 

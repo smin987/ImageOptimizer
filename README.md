@@ -16,7 +16,7 @@
 **All-in-one Cross-Platform Image & Animation Optimizer for Web & Desktop**  
 *Ultra-efficient WebP / JPG conversion, animated GIF optimization, alpha channel preservation, and smart resizing.*
 
-[Key Features](#-key-features) • [Platform Support](#-platform-support) • [Installation & Downloads](#-installation--downloads) • [CLI Usage (iopt)](#-cli-usage-iopt) • [Build from Source](#-build--run-from-source) • [Sponsor](#-support--sponsorship)
+[Screenshots](#-screenshots) • [Key Features](#-key-features) • [Platform Support](#-platform-support) • [Installation & Downloads](#-installation--downloads) • [CLI Usage (iopt)](#-cli-usage-iopt) • [Build from Source](#-build--run-from-source) • [Sponsor](#-support--sponsorship)
 
 </div>
 
@@ -27,6 +27,20 @@
 **Image Optimizer** is a free, cross-platform desktop application designed to drastically compress image files by up to **90%** while preserving outstanding visual fidelity. It accelerates website load times, reduces bandwidth usage, and optimizes local storage.
 
 In addition to static formats (`PNG`, `JPG`, `BMP`, `TIFF`, etc.), it fully supports **Animated GIF optimization**, retaining every frame and animation timing while converting bulky GIFs into lightweight **Animated WebP** files.
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+
+| ☀️ Light Mode | 🌙 Dark Mode |
+| :---: | :---: |
+| <a href="images/screenshot_normal_en.png"><img src="images/screenshot_normal_en.png" alt="Image Optimizer English Light Mode" width="450"></a> | <a href="images/screenshot_dark_en.png"><img src="images/screenshot_dark_en.png" alt="Image Optimizer English Dark Mode" width="450"></a> |
+
+*💡 Switch between Light and Dark themes anytime using the header toggle button.*
+
+</div>
 
 ---
 
