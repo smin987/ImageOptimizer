@@ -199,3 +199,7 @@ python main_gui.py
 본 소프트웨어는 **[Image Optimizer Fair-Code 라이선스](LICENSE)** (Source-Available Freeware)에 따라 배포됩니다:
 - **소스코드(Source Code)**: 투명한 보안 검증, 감사, 개인 연구/학습 및 **공식 저장소 기여(Pull Request) 목적의 로컬 수정은 자유롭게 허용**됩니다. 단, **수정본의 무단 외부 배포 및 이를 활용한 경쟁 제품/대체 앱 출시는 엄격히 금지**됩니다.
 - **실행 산출물(바이너리)**: 공식 빌드된 실행 파일(`.exe`, `.dmg`, `.deb`, Linux 독립 바이너리)은 개인, 교육 기관, 비영리 단체, 상업 기업 누구나 **100% 무료(프리웨어)**로 영구 사용할 수 있습니다.
+
+### 제3자 오픈소스 라이선스 고지 (Third-Party Open Source Notices)
+본 소프트웨어는 Qt/PySide6 (LGPLv3), Pillow (HPND), Send2Trash (BSD-3), Python (PSF) 등 훌륭한 오픈소스 컴포넌트를 기반으로 제작되었습니다.
+각 컴포넌트의 상세 저작권 고지, 라이선스 전문 링크 및 LGPLv3 라이브러리 교체 권리 안내는 **[THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)**를 참조하세요.

@@ -1,0 +1,50 @@
+@startuml image_optimizer_sequence
+!theme plain
+title ImageOptimizer 변환 처리 시퀀스 다이어그램 (Sequence Diagram)
+
+actor User as "사용자"
+participant "MainGUI\n(또는 CLI)" as UI
+participant "ConverterCore" as Core
+participant "Pillow\n(PIL)" as PIL
+participant "File System\n/ Send2Trash" as FS
+
+User -> UI: 이미지 파일/폴더 드롭 또는 선택
+User -> UI: 포맷(WebP/JPG), 리사이즈, 품질 옵션 설정
+User -> UI: [변환 시작] 클릭
+
+UI -> Core: process_single_file(file, options)
+activate Core
+
+Core -> PIL: Image.open(file)
+activate PIL
+PIL --> Core: img 객체 반환
+
+Core -> Core: EXIF 회전 보정 (ImageOps.exif_transpose)
+
+alt remove_alpha == True
+    Core -> Core: flatten_alpha (흰색 배경 합성 및 RGB 변환)
+else remove_alpha == False (기본)
+    Core -> Core: 알파 채널 유지 (RGBA 보존)
+end
+
+opt resize_mode != "none"
+    Core -> Core: apply_resize (비율 축소 또는 Max Width 제한)
+end
+
+loop 각 선택된 출력 포맷 (WEBP, JPG)
+    Core -> PIL: img.save(out_path, format, quality, optimize=True)
+    PIL -> FS: 최적화 이미지 파일 쓰기
+    PIL --> Core: 저장 완료
+end
+
+opt delete_originals == True
+    Core -> FS: send2trash(original_file)
+end
+
+Core --> UI: FileResult (성공 여부, 용량 절감 통계)
+deactivate Core
+
+UI -> UI: 프로그레스바 및 실시간 로그 갱신
+UI --> User: 변환 완료 알림 및 절감률 요약 표시
+
+@enduml

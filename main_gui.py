@@ -50,6 +50,7 @@ from PySide6.QtWidgets import (
     QSpinBox,
     QTableWidget,
     QTableWidgetItem,
+    QTextBrowser,
     QVBoxLayout,
     QWidget,
 )
@@ -79,6 +80,12 @@ I18N = {
         "lang_toggle": "🌐 English",
         "btn_sponsor": "💖 후원하기",
         "btn_sponsor_tip": "GitHub Sponsors를 통해 개발자를 후원하고 지속적인 업데이트를 응원합니다.",
+        "btn_about": "ℹ️ 정보 / 라이선스",
+        "btn_about_tip": "앱 버전, 저작권 및 제3자 오픈소스 라이선스 정보를 확인합니다.",
+        "about_dlg_title": "정보 및 오픈소스 라이선스",
+        "about_dlg_btn_repo": "🌐 GitHub 저장소",
+        "about_dlg_btn_file": "📄 라이선스 문서 열기",
+        "about_dlg_btn_close": "닫기",
         "desc_text": (
             "원본 이미지를 웹사이트 게시전용으로 최적화하여 경량화된 이미지로 변경해주는 도구입니다.\n"
             "원본 이미지와 화질차이는 거의 없지만 최대 90% 정도의 이미지 용량을 줄일 수 있습니다. "
@@ -173,6 +180,12 @@ I18N = {
         "lang_toggle": "🌐 한국어",
         "btn_sponsor": "💖 Sponsor",
         "btn_sponsor_tip": "Support the developer on GitHub Sponsors to keep this tool growing.",
+        "btn_about": "ℹ️ About / Licenses",
+        "btn_about_tip": "View app version, copyright, and third-party open source licenses.",
+        "about_dlg_title": "About & Open Source Licenses",
+        "about_dlg_btn_repo": "🌐 GitHub Repository",
+        "about_dlg_btn_file": "📄 Open Licenses Document",
+        "about_dlg_btn_close": "Close",
         "desc_text": (
             "Optimize and compress original images for website publishing with minimal quality loss.\n"
             "Reduce file size by up to 90% with virtually no noticeable visual difference. "
@@ -394,7 +407,7 @@ QPushButton#btn_toggle_settings:hover {
     color: #7dd3fc;
 }
 
-QPushButton#btn_theme_toggle, QPushButton#btn_lang_toggle {
+QPushButton#btn_theme_toggle, QPushButton#btn_lang_toggle, QPushButton#btn_about {
     background-color: #1e2430;
     border: 1px solid #333a4a;
     border-radius: 14px;
@@ -403,7 +416,7 @@ QPushButton#btn_theme_toggle, QPushButton#btn_lang_toggle {
     font-weight: 600;
     color: #f1f5f9;
 }
-QPushButton#btn_theme_toggle:hover, QPushButton#btn_lang_toggle:hover {
+QPushButton#btn_theme_toggle:hover, QPushButton#btn_lang_toggle:hover, QPushButton#btn_about:hover {
     background-color: #2b3345;
     border-color: #38bdf8;
     color: #38bdf8;
@@ -723,7 +736,7 @@ QPushButton#btn_toggle_settings:hover {
     color: #1d4ed8;
 }
 
-QPushButton#btn_theme_toggle, QPushButton#btn_lang_toggle {
+QPushButton#btn_theme_toggle, QPushButton#btn_lang_toggle, QPushButton#btn_about {
     background-color: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 14px;
@@ -732,7 +745,7 @@ QPushButton#btn_theme_toggle, QPushButton#btn_lang_toggle {
     font-weight: 600;
     color: #334155;
 }
-QPushButton#btn_theme_toggle:hover, QPushButton#btn_lang_toggle:hover {
+QPushButton#btn_theme_toggle:hover, QPushButton#btn_lang_toggle:hover, QPushButton#btn_about:hover {
     background-color: #f1f5f9;
     border-color: #2563eb;
     color: #2563eb;
@@ -1286,6 +1299,229 @@ class QueueListDialog(QDialog):
             super().keyPressEvent(event)
 
 
+class AboutLicenseDialog(QDialog):
+    """앱 정보, 자체 라이선스 및 제3자 오픈소스 라이선스 고지 대화상자"""
+
+    def __init__(self, parent=None, theme: str = "dark", lang: str = "ko"):
+        super().__init__(parent)
+        self.theme = theme
+        self.lang = lang
+
+        self.setWindowTitle(I18N[lang]["about_dlg_title"])
+        self.resize(680, 560)
+        self.setMinimumSize(520, 400)
+        self.setStyleSheet(LIGHT_STYLE if theme == "light" else DARK_STYLE)
+
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(18, 18, 18, 18)
+        layout.setSpacing(12)
+
+        # 상단 헤더
+        header_layout = QHBoxLayout()
+        lbl_title = QLabel("Image Optimizer  <span style='font-size: 10pt; color: #38bdf8;'>v1.0.4</span>")
+        lbl_title.setStyleSheet(
+            "font-size: 14pt; font-weight: bold; color: #1e293b;"
+            if theme == "light"
+            else "font-size: 14pt; font-weight: bold; color: #f8fafc;"
+        )
+        header_layout.addWidget(lbl_title)
+        header_layout.addStretch()
+        layout.addLayout(header_layout)
+
+        # 라이선스 및 크레딧 내용 브라우저
+        browser = QTextBrowser()
+        browser.setOpenExternalLinks(True)
+        bg_col = "#ffffff" if theme == "light" else "#0f131a"
+        text_col = "#334155" if theme == "light" else "#cbd5e1"
+        border_col = "#e2e8f0" if theme == "light" else "#252d3d"
+        browser.setStyleSheet(
+            f"QTextBrowser {{ background-color: {bg_col}; color: {text_col}; "
+            f"border: 1px solid {border_col}; border-radius: 8px; padding: 12px; font-size: 9.5pt; }}"
+        )
+
+        browser.setHtml(self._get_about_html(theme, lang))
+        layout.addWidget(browser)
+
+        # 하단 버튼 영역
+        btn_bar = QHBoxLayout()
+        btn_repo = QPushButton(I18N[lang]["about_dlg_btn_repo"])
+        btn_repo.setCursor(Qt.CursorShape.PointingHandCursor)
+        btn_repo.clicked.connect(self._open_repo)
+
+        btn_doc = QPushButton(I18N[lang]["about_dlg_btn_file"])
+        btn_doc.setCursor(Qt.CursorShape.PointingHandCursor)
+        btn_doc.clicked.connect(self._open_license_file)
+
+        btn_close = QPushButton(I18N[lang]["about_dlg_btn_close"])
+        btn_close.setCursor(Qt.CursorShape.PointingHandCursor)
+        btn_close.clicked.connect(self.accept)
+
+        btn_bar.addWidget(btn_repo)
+        btn_bar.addWidget(btn_doc)
+        btn_bar.addStretch()
+        btn_bar.addWidget(btn_close)
+        layout.addLayout(btn_bar)
+
+    def _get_about_html(self, theme: str, lang: str) -> str:
+        link_col = "#2563eb" if theme == "light" else "#38bdf8"
+        h_col = "#0f172a" if theme == "light" else "#f1f5f9"
+        sub_col = "#475569" if theme == "light" else "#94a3b8"
+
+        if lang == "ko":
+            return f"""
+            <div style='line-height: 1.5;'>
+                <h3 style='color: {h_col}; margin-bottom: 4px;'>Image Optimizer (Source-Available Freeware)</h3>
+                <p style='color: {sub_col}; margin-top: 0px;'>저작권 (c) 2026 smin987. All rights reserved.<br>
+                공식 저장소: <a href='https://github.com/smin987/ImageOptimizer' style='color: {link_col};'>https://github.com/smin987/ImageOptimizer</a></p>
+
+                <hr style='border: 0; border-top: 1px solid #334155; margin: 12px 0;'>
+
+                <h4 style='color: {h_col}; margin-bottom: 6px;'>1. 소프트웨어 라이선스 정책</h4>
+                <ul style='margin-top: 4px;'>
+                    <li><b>컴파일 바이너리 (Freeware)</b>: 공식 배포되는 실행 파일(.exe, .dmg, .deb 등)은 개인, 교육 기관, 비영리 단체, 상업 기업 누구나 <b>100% 영구 무료</b>로 자유롭게 사용할 수 있습니다.</li>
+                    <li><b>소스코드 (Source-Available)</b>: 투명한 코드 감사, 보안 검토, 개인 연구 및 공식 저장소 기여(PR) 목적의 로컬 수정이 자유롭게 허용됩니다. (단, 수정본의 무단 배포 및 이를 이용한 경쟁 대체 앱 출시는 제한됩니다.)</li>
+                </ul>
+
+                <h4 style='color: {h_col}; margin-bottom: 6px;'>2. 사용된 제3자 오픈소스 소프트웨어 (Third-Party OSS)</h4>
+                <p style='color: {sub_col};'>본 애플리케이션은 검증된 우수한 오픈소스 생태계의 소프트웨어와 라이브러리를 기반으로 제작되었습니다.</p>
+                <table style='width: 100%; border-collapse: collapse; margin-top: 6px;'>
+                    <tr style='border-bottom: 1px solid #475569;'>
+                        <th style='text-align: left; padding: 4px;'>컴포넌트</th>
+                        <th style='text-align: left; padding: 4px;'>라이선스</th>
+                        <th style='text-align: left; padding: 4px;'>저작권자 / 비고</th>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>PySide6 (Qt 6)</b></td>
+                        <td style='padding: 5px;'><a href='https://www.gnu.org/licenses/lgpl-3.0.html' style='color: {link_col};'>LGPLv3</a></td>
+                        <td style='padding: 5px;'>The Qt Company Ltd. (GUI 프레임워크)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>Pillow</b></td>
+                        <td style='padding: 5px;'><a href='https://github.com/python-pillow/Pillow/blob/main/LICENSE' style='color: {link_col};'>HPND</a></td>
+                        <td style='padding: 5px;'>Jeffrey A. Clark and contributors (이미지 코어)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>└ libwebp</b></td>
+                        <td style='padding: 5px;'>BSD 3-Clause</td>
+                        <td style='padding: 5px;'>Google Inc. (WebP 인코더/디코더)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>└ libjpeg-turbo</b></td>
+                        <td style='padding: 5px;'>IJG / BSD-3</td>
+                        <td style='padding: 5px;'>libjpeg-turbo Project (JPEG 코덱)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>Send2Trash</b></td>
+                        <td style='padding: 5px;'><a href='https://github.com/arsenetar/send2trash/blob/master/LICENSE' style='color: {link_col};'>BSD 3-Clause</a></td>
+                        <td style='padding: 5px;'>Virgil Dupras and contributors (휴지통 이동)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>Python Runtime</b></td>
+                        <td style='padding: 5px;'><a href='https://docs.python.org/3/license.html' style='color: {link_col};'>PSF License</a></td>
+                        <td style='padding: 5px;'>Python Software Foundation</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>PyInstaller</b></td>
+                        <td style='padding: 5px;'>GPLv2 with Exception</td>
+                        <td style='padding: 5px;'>PyInstaller Team (부트로더 패키징)</td>
+                    </tr>
+                </table>
+
+                <h4 style='color: {h_col}; margin-bottom: 6px; margin-top: 14px;'>3. LGPLv3 컴플라이언스 및 라이브러리 교체 권리 안내</h4>
+                <p style='color: {sub_col};'>
+                    GNU LGPLv3 조건에 따라, 사용자는 본 프로그램에 포함된 PySide6/Qt 라이브러리를 자체 수정한 버전으로 교체하여 디버깅 및 실행할 수 있는 권리를 가집니다.<br>
+                    Image Optimizer는 전체 소스코드가 공개되어 있으므로, 저장소를 클론(Clone)하여 독립된 파이썬 가상환경에서 원하는 버전의 Qt 및 PySide6를 설치해 실행하실 수 있습니다.<br>
+                    상세 라이선스 고지는 배포 디렉터리의 <code>THIRD_PARTY_LICENSES.md</code> 문서를 참조해 주십시오.
+                </p>
+            </div>
+            """
+        else:
+            return f"""
+            <div style='line-height: 1.5;'>
+                <h3 style='color: {h_col}; margin-bottom: 4px;'>Image Optimizer (Source-Available Freeware)</h3>
+                <p style='color: {sub_col}; margin-top: 0px;'>Copyright (c) 2026 smin987. All rights reserved.<br>
+                Official Repository: <a href='https://github.com/smin987/ImageOptimizer' style='color: {link_col};'>https://github.com/smin987/ImageOptimizer</a></p>
+
+                <hr style='border: 0; border-top: 1px solid #334155; margin: 12px 0;'>
+
+                <h4 style='color: {h_col}; margin-bottom: 6px;'>1. Licensing Terms</h4>
+                <ul style='margin-top: 4px;'>
+                    <li><b>Compiled Binaries (Freeware)</b>: Officially distributed executables (.exe, .dmg, .deb, etc.) are <b>100% free</b> for individuals, non-profits, educational use, and commercial companies.</li>
+                    <li><b>Source Code (Source-Available)</b>: You may inspect, audit, study, and locally modify the code for personal research and submitting Pull Requests back to the official upstream repository. (Public distribution of competing products or modified builds is prohibited.)</li>
+                </ul>
+
+                <h4 style='color: {h_col}; margin-bottom: 6px;'>2. Third-Party Open Source Components</h4>
+                <p style='color: {sub_col};'>This software builds upon and bundles several open-source libraries:</p>
+                <table style='width: 100%; border-collapse: collapse; margin-top: 6px;'>
+                    <tr style='border-bottom: 1px solid #475569;'>
+                        <th style='text-align: left; padding: 4px;'>Component</th>
+                        <th style='text-align: left; padding: 4px;'>License</th>
+                        <th style='text-align: left; padding: 4px;'>Copyright / Role</th>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>PySide6 (Qt 6)</b></td>
+                        <td style='padding: 5px;'><a href='https://www.gnu.org/licenses/lgpl-3.0.html' style='color: {link_col};'>LGPLv3</a></td>
+                        <td style='padding: 5px;'>The Qt Company Ltd. (GUI Framework)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>Pillow</b></td>
+                        <td style='padding: 5px;'><a href='https://github.com/python-pillow/Pillow/blob/main/LICENSE' style='color: {link_col};'>HPND</a></td>
+                        <td style='padding: 5px;'>Jeffrey A. Clark and contributors (Image Engine)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>└ libwebp</b></td>
+                        <td style='padding: 5px;'>BSD 3-Clause</td>
+                        <td style='padding: 5px;'>Google Inc. (WebP Codec)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>└ libjpeg-turbo</b></td>
+                        <td style='padding: 5px;'>IJG / BSD-3</td>
+                        <td style='padding: 5px;'>libjpeg-turbo Project (JPEG Codec)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>Send2Trash</b></td>
+                        <td style='padding: 5px;'><a href='https://github.com/arsenetar/send2trash/blob/master/LICENSE' style='color: {link_col};'>BSD 3-Clause</a></td>
+                        <td style='padding: 5px;'>Virgil Dupras and contributors (Safe Trash)</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>Python Runtime</b></td>
+                        <td style='padding: 5px;'><a href='https://docs.python.org/3/license.html' style='color: {link_col};'>PSF License</a></td>
+                        <td style='padding: 5px;'>Python Software Foundation</td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 5px;'><b>PyInstaller</b></td>
+                        <td style='padding: 5px;'>GPLv2 with Exception</td>
+                        <td style='padding: 5px;'>PyInstaller Team (Bootloader Packaging)</td>
+                    </tr>
+                </table>
+
+                <h4 style='color: {h_col}; margin-bottom: 6px; margin-top: 14px;'>3. LGPLv3 Relinking Compliance Notice</h4>
+                <p style='color: {sub_col};'>
+                    In accordance with GNU LGPLv3, you are free to replace or relink the PySide6/Qt libraries with your own modified versions for debugging purposes.<br>
+                    Because Image Optimizer source code is available on GitHub, you can clone the repository and run it with any custom Qt installation in a virtual environment.<br>
+                    For complete attribution texts, please consult <code>THIRD_PARTY_LICENSES.md</code> included in the installation directory.
+                </p>
+            </div>
+            """
+
+    def _open_repo(self):
+        try:
+            from PySide6.QtGui import QDesktopServices
+            from PySide6.QtCore import QUrl
+            QDesktopServices.openUrl(QUrl("https://github.com/smin987/ImageOptimizer"))
+        except Exception:
+            pass
+
+    def _open_license_file(self):
+        target = resource_path("THIRD_PARTY_LICENSES.md")
+        if not target.exists():
+            target = resource_path("LICENSE")
+        if target.exists():
+            pa.open_in_file_manager(target)
+        else:
+            self._open_repo()
+
+
 class MainWindow(QWidget):
     """메인 애플리케이션 윈도우"""
 
@@ -1348,6 +1584,12 @@ class MainWindow(QWidget):
         self.btn_sponsor.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_sponsor.clicked.connect(self.open_sponsor_page)
 
+        self.btn_about = QPushButton(I18N[self.lang]["btn_about"])
+        self.btn_about.setObjectName("btn_about")
+        self.btn_about.setToolTip(I18N[self.lang]["btn_about_tip"])
+        self.btn_about.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_about.clicked.connect(self.show_about_dialog)
+
         self.btn_lang_toggle = QPushButton("🌐 English")
         self.btn_lang_toggle.setObjectName("btn_lang_toggle")
         self.btn_lang_toggle.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -1362,6 +1604,7 @@ class MainWindow(QWidget):
         header_bar.addWidget(lbl_badge)
         header_bar.addStretch()
         header_bar.addWidget(self.btn_sponsor)
+        header_bar.addWidget(self.btn_about)
         header_bar.addWidget(self.btn_lang_toggle)
         header_bar.addWidget(self.btn_theme_toggle)
         main_layout.addLayout(header_bar)
@@ -1955,6 +2198,9 @@ class MainWindow(QWidget):
         if hasattr(self, "btn_sponsor"):
             self.btn_sponsor.setText(i18n.get("btn_sponsor", "💖 Sponsor"))
             self.btn_sponsor.setToolTip(i18n.get("btn_sponsor_tip", ""))
+        if hasattr(self, "btn_about"):
+            self.btn_about.setText(i18n.get("btn_about", "ℹ️ About / Licenses"))
+            self.btn_about.setToolTip(i18n.get("btn_about_tip", ""))
         self.btn_lang_toggle.setText(i18n["lang_toggle"])
         if self.current_theme == "light":
             self.btn_theme_toggle.setText(i18n["theme_dark"])
@@ -2558,6 +2804,11 @@ class MainWindow(QWidget):
         except Exception:
             import webbrowser
             webbrowser.open(url)
+
+    def show_about_dialog(self):
+        """앱 정보 및 오픈소스 라이선스 고지 대화상자 표시"""
+        dlg = AboutLicenseDialog(parent=self, theme=self.current_theme, lang=self.lang)
+        dlg.exec()
 
 
 def main():

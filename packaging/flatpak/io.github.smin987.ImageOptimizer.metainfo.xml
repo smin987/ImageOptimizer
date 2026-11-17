@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.smin987.ImageOptimizer</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <name>Image Optimizer</name>
+  <summary>All-in-one cross-platform image &amp; animated GIF optimizer for web &amp; desktop</summary>
+  <developer id="io.github.smin987">
+    <name>smin987</name>
+  </developer>
+  <description>
+    <p>Image Optimizer is a desktop application that drastically compresses images by up to 90% while preserving visual fidelity — speeding up websites and saving storage.</p>
+    <ul>
+      <li>One-click WebP / JPG / BOTH conversion with quality control</li>
+      <li>Animated GIF to Animated WebP conversion — every frame and timing preserved</li>
+      <li>Alpha channel (transparency) preservation or flatten onto solid white</li>
+      <li>Three smart resizing modes: fit max width, scale %, keep original size</li>
+      <li>English / 한국어 bilingual interface</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">io.github.smin987.ImageOptimizer.desktop</launchable>
+  <categories>
+    <category>Graphics</category>
+    <category>Utility</category>
+  </categories>
+  <keywords>
+    <keyword>image</keyword>
+    <keyword>webp</keyword>
+    <keyword>converter</keyword>
+    <keyword>optimizer</keyword>
+    <keyword>gif</keyword>
+  </keywords>
+  <provides>
+    <binary>io.github.smin987.ImageOptimizer</binary>
+  </provides>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/smin987/ImageOptimizer/main/assets/screenshots/main.png</image>
+      <caption>Main window with conversion settings and file list</caption>
+    </screenshot>
+  </screenshots>
+  <branding>
+    <color type="primary" scheme_preference="light">#2563eb</color>
+    <color type="primary" scheme_preference="dark">#1d4ed8</color>
+  </branding>
+  <content_rating type="oars-1.1"/>
+  <requires>
+    <display_length compare="ge">760</display_length>
+  </requires>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </supports>
+  <url type="homepage">https://github.com/smin987/ImageOptimizer</url>
+  <url type="bugtracker">https://github.com/smin987/ImageOptimizer/issues</url>
+  <releases>
+    <!-- TODO(flathub-finalize): set the actual v1.0.5 release date -->
+    <release version="1.0.5" date="2026-11-16"/>
+  </releases>
+</component>

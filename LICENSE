@@ -82,7 +82,10 @@ The Author makes the Source Code publicly available under the following terms:
 
 (c) RESTRICTIONS:
     You shall not crack, reverse engineer, decompile, or remove any copyright
-    notices or attribution from the Compiled Binaries.
+    notices or attribution from the Compiled Binaries, except solely to the
+    extent that such restriction is expressly prohibited by applicable third-party
+    open-source licenses (such as the GNU Lesser General Public License v3 for
+    debugging modifications to LGPL-licensed libraries).
 
 ==============================================================================
 4. RESERVATION OF RIGHTS & OWNERSHIP
@@ -101,3 +104,17 @@ FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. IN NO EVENT
 SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR
 OTHER LIABILITY, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+==============================================================================
+6. THIRD-PARTY OPEN-SOURCE NOTICES
+==============================================================================
+This Software incorporates, bundles, or dynamically links against third-party
+open-source components (including Qt/PySide6, Pillow and its codecs, Send2Trash,
+and Python runtime libraries). Each component is governed by its respective
+open-source license (such as LGPLv3, HPND, BSD-3-Clause, and PSF).
+
+Nothing in this Agreement is intended to limit, alter, or restrict your rights
+under the applicable third-party open-source licenses. For complete third-party
+copyright notices, attribution statements, and full license texts, please refer
+to the accompanying THIRD_PARTY_LICENSES.md file or the "About / Open Source Licenses"
+dialog within the Software.

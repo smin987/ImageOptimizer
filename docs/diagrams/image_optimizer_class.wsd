@@ -1,0 +1,89 @@
+@startuml image_optimizer_class
+!theme plain
+title ImageOptimizer (img2webp) 시스템 구조 및 클래스 다이어그램
+
+package "Presentation Layer (UI / Entry)" {
+    class MainGUI {
+        - root: TkinterDnD.Tk
+        - options: ConversionOptions
+        - conversion_queue: Queue
+        - is_converting: bool
+        + setup_ui(): void
+        + on_drop_files(event): void
+        + start_batch_conversion(): void
+        + update_progress(current, total): void
+        + on_conversion_finished(results): void
+    }
+
+    class CLI {
+        + parse_args(): Namespace
+        + run_cli_batch(): void
+    }
+}
+
+package "Domain & Core Engine (Business Logic)" {
+    class ConversionOptions <<dataclass>> {
+        + output_formats: List[str]
+        + quality: int
+        + resize_mode: str
+        + max_width: int
+        + scale_percent: int
+        + remove_alpha: bool
+        + delete_originals: bool
+        + output_mode: str
+        + custom_output_dir: Path
+        + subfolder_name: str
+    }
+
+    class FileResult <<dataclass>> {
+        + file_path: Path
+        + status: str
+        + orig_size: int
+        + new_sizes: Dict[str, int]
+        + note: str
+        + error_message: str
+    }
+
+    class ConverterCore {
+        + process_single_file(path: Path, options: ConversionOptions): FileResult
+        + process_image(img: Image, out_file: Path, format: str, options: ConversionOptions): str
+        + process_animated_gif(img: Image, out_file: Path, format: str, options: ConversionOptions): str
+        + apply_resize(img: Image, options: ConversionOptions): Image
+        + flatten_alpha(img: Image, bg_color: Tuple): Tuple[Image, bool]
+        + has_alpha(img: Image, real_only: bool): bool
+        + has_alpha_any_frame(img: Image, real_only: bool): bool
+        + format_bytes(bytes: int): str
+    }
+}
+
+package "Infrastructure & OS Adapter" {
+    class PlatformAdapter {
+        + open_in_file_manager(path: Path): void
+        + get_desktop_path(): Path
+    }
+}
+
+package "External Libraries" {
+    class Pillow <<external>> {
+        + Image
+        + ImageOps
+        + ImageSequence
+    }
+    class Send2Trash <<external>> {
+        + send2trash(path: str): void
+    }
+}
+
+' Relations
+MainGUI --> ConversionOptions : 구성 및 전달
+MainGUI --> ConverterCore : 비동기 작업 위임 (Thread)
+MainGUI --> PlatformAdapter : 결과 폴더 열기 요청
+CLI --> ConversionOptions : 인자 파싱 후 생성
+CLI --> ConverterCore : 배치 변환 실행
+
+ConverterCore ..> ConversionOptions : 옵션 참조
+ConverterCore ..> FileResult : 결과 반환
+ConverterCore --> Pillow : 포맷 디코딩/인코딩 및 필터 적용
+ConverterCore --> Send2Trash : 원본 파일 안전 삭제
+
+@enduml
