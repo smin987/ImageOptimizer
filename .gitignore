@@ -31,8 +31,9 @@ desktop.ini
 # User configuration files (settings are stored in AppData/XDG)
 settings.json
 
-# Private internal strategy documents (DO NOT commit to public repo)
+# Private internal strategy documents & local docs (DO NOT commit to public repo)
 PROMOTION_STRATEGY.md
 MONETIZATION_STRATEGY.md
 internal/
 private/
+docs/
