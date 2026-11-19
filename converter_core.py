@@ -4,11 +4,12 @@ GUI 및 CLI에서 공통으로 재사용 가능한 비즈니스 로직 모듈
 """
 
 from dataclasses import dataclass, field
+import io
 import os
 from pathlib import Path
 from typing import Callable, Optional
 
-from PIL import Image, ImageOps, ImageSequence
+from PIL import Image, ImageCms, ImageOps, ImageSequence
 import send2trash
 
 # 8K 및 초대형 이미지 처리를 위해 Pillow의 픽셀 제한 해제 (DecompressionBomb 방지)
@@ -45,7 +46,6 @@ class ConversionOptions:
     # 인플루언서 / SNS 맞춤 프리셋 설정 (resize_mode == "sns_preset")
     sns_preset_target: str = "youtube_thumb_fhd"  # SNS_PRESETS 키값
     sns_crop_mode: str = "fit"  # 기본값: "fit"(비율유지 - 잘림 없음), "cover"(스마트 중앙 맞춤), "contain"(빈공간 흰색 레터박스), "contain_black"(빈공간 검은색 레터박스)
-    preserve_icc: bool = True  # True(기본): Display P3/ICC 색상 프로필 보존(색감 왜곡 방지), False: 메타데이터 제거(용량 최소화)
     remove_alpha: bool = False  # True: 투명 배경 제거(흰색 배경 합성), False(기본): 투명 배경(Alpha) 그대로 보존
     keep_alpha: bool = False  # 하위 호환용 (사용되지 않음)
     skip_only_real_alpha: bool = False  # 실제 투명 픽셀 존재 시에만 스킵
@@ -201,11 +201,54 @@ def apply_resize(img: Image.Image, options: ConversionOptions) -> Image.Image:
     return img
 
 
+def convert_image_to_srgb(img: Image.Image) -> tuple[Image.Image, bool]:
+    """
+    이미지에 광색역(Display P3, Adobe RGB 등) ICC 프로필이 포함되어 있는 경우,
+    픽셀 데이터 자체를 표준 sRGB 색공간으로 정밀 변환(Gamut Mapping)합니다.
+    변환 후 파일 자체의 픽셀이 sRGB로 확정되므로, 어떤 SNS나 모니터에서도 100% 동일한 원본 색감을 보장합니다.
+    (변환 성공 시 True 반환, 프로필이 없거나 이미 sRGB면 False 반환)
+    """
+    icc_bytes = img.info.get("icc_profile")
+    if not icc_bytes:
+        return img, False
+
+    try:
+        input_profile = ImageCms.ImageCmsProfile(io.BytesIO(icc_bytes))
+        srgb_profile = ImageCms.createProfile("sRGB")
+
+        # 이미 sRGB 프로필인 경우 불필요한 연산 방지
+        try:
+            desc = ImageCms.getProfileDescription(input_profile).strip()
+            if "srgb" in desc.lower():
+                return img, False
+        except Exception:
+            pass
+
+        output_mode = "RGBA" if img.mode in ("RGBA", "LA") else "RGB"
+        converted = ImageCms.profileToProfile(
+            img,
+            input_profile,
+            srgb_profile,
+            outputMode=output_mode,
+            renderingIntent=ImageCms.Intent.PERCEPTUAL,
+        )
+        return converted, True
+    except Exception:
+        # 손상된 ICC 프로필이거나 변환 실패 시 원본 그대로 안전하게 fallback
+        return img, False
+
+
 def prepare_static_image(img: Image.Image, options: ConversionOptions):
-    """일반 정지 이미지 회전 보정, 색상 변환(투명도 보존 or 알파 제거), 해상도 리사이즈 수행"""
+    """일반 정지 이미지 회전 보정, 광색역(P3) sRGB 픽셀 변환, 색상 변환, 해상도 리사이즈 수행"""
     img = ImageOps.exif_transpose(img)
     note = None
 
+    # 1. 광색역(Display P3, Adobe RGB 등) 이미지를 표준 sRGB 픽셀로 변환 (색감 왜곡 원천 차단)
+    img, converted_srgb = convert_image_to_srgb(img)
+    if converted_srgb:
+        note = "sRGB 색감 보정(광색역 변환)"
+
+    # 2. 알파 채널 처리
     if options.remove_alpha:
         # 사용자가 '투명 배경 제거'를 체크한 경우 -> 흰색 배경으로 합성
         img, had_real_alpha = flatten_alpha(img, options.flatten_background)
@@ -217,46 +260,29 @@ def prepare_static_image(img: Image.Image, options: ConversionOptions):
         # 기본값: 투명 배경(Alpha Channel) 보존
         if has_alpha(img, real_only=False):
             img = img.convert("RGBA")
-            note = "투명 배경(Alpha) 보존"
+            if not note:
+                note = "투명 배경(Alpha) 보존"
         elif img.mode != "RGB":
             img = img.convert("RGB")
 
+    # 3. 해상도 리사이즈
     img = apply_resize(img, options)
     return img, note
 
 
-def save_static_image(
-    img: Image.Image,
-    out_file: Path,
-    fmt: str,
-    options: ConversionOptions,
-    icc_profile: Optional[bytes] = None,
-):
-    """전처리된 정지 이미지를 WebP(투명도 보존) 또는 JPEG(배경 합성)로 저장 (ICC 프로필 보존 지원)"""
+def save_static_image(img: Image.Image, out_file: Path, fmt: str, options: ConversionOptions):
+    """전처리된 정지 이미지를 WebP(투명도 보존) 또는 JPEG(배경 합성)로 저장 (순수 sRGB 규격)"""
     save_fmt = "JPEG" if fmt.upper() in ("JPG", "JPEG") else "WEBP"
-    save_kwargs = {
-        "format": save_fmt,
-        "quality": options.quality,
-        "optimize": True,
-    }
-    if options.preserve_icc and icc_profile:
-        save_kwargs["icc_profile"] = icc_profile
-
     if save_fmt == "JPEG" and img.mode in ("RGBA", "LA"):
         # JPEG 규격은 알파 채널을 지원하지 않으므로 흰색 배경 합성 후 저장
         jpg_img, _ = flatten_alpha(img, options.flatten_background)
-        jpg_img.save(out_file, **save_kwargs)
+        jpg_img.save(out_file, format="JPEG", quality=options.quality, optimize=True)
     else:
-        img.save(out_file, **save_kwargs)
+        img.save(out_file, format=save_fmt, quality=options.quality, optimize=True)
 
 
-def process_animated_gif_to_webp(
-    img: Image.Image,
-    out_file: Path,
-    options: ConversionOptions,
-    icc_profile: Optional[bytes] = None,
-):
-    """움직이는 GIF의 모든 프레임을 유지하며 애니메이션 WebP로 저장 (투명 배경 및 ICC 보존 지원)"""
+def process_animated_gif_to_webp(img: Image.Image, out_file: Path, options: ConversionOptions):
+    """움직이는 GIF의 모든 프레임을 유지하며 애니메이션 WebP로 저장 (투명 배경 보존 지원)"""
     frames = []
     durations = []
     had_real_alpha = False
@@ -277,19 +303,16 @@ def process_animated_gif_to_webp(
         frames.append(f)
         durations.append(frame.info.get("duration", 100))
 
-    save_kwargs = {
-        "format": "WEBP",
-        "save_all": True,
-        "append_images": frames[1:],
-        "duration": durations,
-        "loop": img.info.get("loop", 0),
-        "quality": options.quality,
-        "optimize": True,
-    }
-    if options.preserve_icc and icc_profile:
-        save_kwargs["icc_profile"] = icc_profile
-
-    frames[0].save(out_file, **save_kwargs)
+    frames[0].save(
+        out_file,
+        format="WEBP",
+        save_all=True,
+        append_images=frames[1:],
+        duration=durations,
+        loop=img.info.get("loop", 0),
+        quality=options.quality,
+        optimize=True,
+    )
 
     if options.remove_alpha and had_real_alpha:
         note = "알파 제거(흰색 배경 합성)"
@@ -300,27 +323,13 @@ def process_animated_gif_to_webp(
     return len(frames), note
 
 
-def process_animated_gif_to_jpg(
-    img: Image.Image,
-    out_file: Path,
-    options: ConversionOptions,
-    icc_profile: Optional[bytes] = None,
-):
-    """움직이는 GIF의 첫 프레임을 추출하여 정지 이미지 JPG로 저장 (배경 합성 및 ICC 보존 지원)"""
+def process_animated_gif_to_jpg(img: Image.Image, out_file: Path, options: ConversionOptions):
+    """움직이는 GIF의 첫 프레임을 추출하여 정지 이미지 JPG로 저장 (배경 합성)"""
     first_frame = next(ImageSequence.Iterator(img)).copy()
     first_frame = ImageOps.exif_transpose(first_frame)
     first_frame, had_real_alpha = flatten_alpha(first_frame, options.flatten_background)
     first_frame = apply_resize(first_frame, options)
-
-    save_kwargs = {
-        "format": "JPEG",
-        "quality": options.quality,
-        "optimize": True,
-    }
-    if options.preserve_icc and icc_profile:
-        save_kwargs["icc_profile"] = icc_profile
-
-    first_frame.save(out_file, **save_kwargs)
+    first_frame.save(out_file, format="JPEG", quality=options.quality, optimize=True)
     note = "알파 제거(흰색 배경 합성)" if had_real_alpha else None
     return note
 
@@ -352,7 +361,6 @@ def process_single_file(file_path: Path, options: ConversionOptions) -> FileResu
 
     with Image.open(file_path) as img:
         is_animated = getattr(img, "is_animated", False)
-        raw_icc = img.info.get("icc_profile")
 
         if should_skip_for_alpha(img, is_animated, options):
             return FileResult(
@@ -372,14 +380,10 @@ def process_single_file(file_path: Path, options: ConversionOptions) -> FileResu
                 ext = ".jpg" if fmt == "JPG" else ".webp"
                 out_file = out_dir / f"{file_path.stem}{ext}"
                 if fmt == "WEBP":
-                    frame_count, n = process_animated_gif_to_webp(
-                        img, out_file, options, icc_profile=raw_icc
-                    )
+                    frame_count, n = process_animated_gif_to_webp(img, out_file, options)
                     tags.append(f"WebP({frame_count}프레임)")
                 else:  # JPG
-                    n = process_animated_gif_to_jpg(
-                        img, out_file, options, icc_profile=raw_icc
-                    )
+                    n = process_animated_gif_to_jpg(img, out_file, options)
                     tags.append("JPG(첫 프레임)")
                 if n:
                     note = n
@@ -390,9 +394,7 @@ def process_single_file(file_path: Path, options: ConversionOptions) -> FileResu
             for fmt in options.output_formats:
                 ext = ".jpg" if fmt == "JPG" else ".webp"
                 out_file = out_dir / f"{file_path.stem}{ext}"
-                save_static_image(
-                    processed_img, out_file, fmt, options, icc_profile=raw_icc
-                )
+                save_static_image(processed_img, out_file, fmt, options)
                 created_files[fmt] = out_file
             tag = f"[정지 이미지 -> {', '.join(options.output_formats)}]"
 

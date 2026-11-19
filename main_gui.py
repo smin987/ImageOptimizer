@@ -153,11 +153,6 @@ I18N = {
         "dest_same": "원본과 동일 폴더",
         "dest_custom": "지정 폴더",
         "btn_browse": "찾아보기...",
-        "chk_preserve_icc": "🎨 원본 색상 프로필(Display P3 / ICC) 보존",
-        "chk_preserve_icc_tip": (
-            "체크 시(권장): Figma, Photoshop, 아이폰 등에서 작업한 광색역(Display P3) 이미지의 색감 물 빠짐 왜곡을 방지하기 위해 ICC 프로필을 유지합니다.\n"
-            "체크 해제: 용량을 극단적으로 줄이기 위해 색상 프로필 메타데이터를 제거합니다."
-        ),
         "chk_remove_alpha": "투명 배경(Alpha Channel) 제거",
         "chk_remove_alpha_tip": (
             "체크 시: 투명 배경을 제거하고 흰색 배경으로 합성합니다.\n"
@@ -287,11 +282,6 @@ I18N = {
         "dest_same": "Same as original folder",
         "dest_custom": "Custom folder",
         "btn_browse": "Browse...",
-        "chk_preserve_icc": "🎨 Preserve Color Profile (Display P3 / ICC)",
-        "chk_preserve_icc_tip": (
-            "Checked (Recommended): Preserves ICC color profile to prevent washed-out colors on wide gamut (Display P3) images from Figma, Photoshop, iPhone, etc.\n"
-            "Unchecked: Strips color profile metadata to minimize file size."
-        ),
         "chk_remove_alpha": "Remove transparent background (Alpha)",
         "chk_remove_alpha_tip": (
             "Checked: Removes transparency and flattens onto a solid white background.\n"
@@ -2090,17 +2080,9 @@ class MainWindow(QWidget):
         dest_grid.addWidget(self.btn_browse_dest, 1, 2)
         settings_layout.addLayout(dest_grid)
 
-        # 2-5. 옵션 체크박스들
+        # 2-5. 옵션 체크박스들 (세로 2줄로 배치하여 가로폭 최소화)
         opt_chk_layout = QVBoxLayout()
         opt_chk_layout.setSpacing(6)
-
-        self.chk_preserve_icc = QCheckBox("🎨 원본 색상 프로필(Display P3 / ICC) 보존")
-        self.chk_preserve_icc.setChecked(True)  # 기본값: 체크 (색감 왜곡 방지)
-        self.chk_preserve_icc.setToolTip(
-            "체크 시(권장): Figma, Photoshop, 아이폰 등에서 작업한 광색역(Display P3) 이미지의 색감 물 빠짐 왜곡을 방지하기 위해 ICC 프로필을 유지합니다.\n"
-            "체크 해제: 용량을 극단적으로 줄이기 위해 색상 프로필 메타데이터를 제거합니다."
-        )
-
         self.chk_remove_alpha = QCheckBox(
             "투명 배경(Alpha Channel) 제거"
         )
@@ -2114,7 +2096,6 @@ class MainWindow(QWidget):
         self.chk_delete_orig.setChecked(False)
         self.chk_delete_orig.toggled.connect(self.on_delete_orig_toggled)
 
-        opt_chk_layout.addWidget(self.chk_preserve_icc)
         opt_chk_layout.addWidget(self.chk_remove_alpha)
         opt_chk_layout.addWidget(self.chk_delete_orig)
         settings_layout.addLayout(opt_chk_layout)
@@ -2444,10 +2425,6 @@ class MainWindow(QWidget):
         self.radio_dest_custom.setText(i18n["dest_custom"])
         self.btn_browse_dest.setText(i18n["btn_browse"])
 
-        if hasattr(self, "chk_preserve_icc"):
-            self.chk_preserve_icc.setText(i18n["chk_preserve_icc"])
-            self.chk_preserve_icc.setToolTip(i18n["chk_preserve_icc_tip"])
-
         self.chk_remove_alpha.setText(i18n["chk_remove_alpha"])
         self.chk_remove_alpha.setToolTip(i18n["chk_remove_alpha_tip"])
         self.chk_delete_orig.setText(i18n["chk_delete_orig"])
@@ -2698,7 +2675,6 @@ class MainWindow(QWidget):
                     dest_btn.setChecked(True)
 
                 # 5. 체크박스 옵션 복원
-                self.chk_preserve_icc.setChecked(data.get("preserve_icc", True))
                 self.chk_remove_alpha.setChecked(data.get("remove_alpha", False))
                 self.chk_delete_orig.blockSignals(True)
                 self.chk_delete_orig.setChecked(data.get("delete_orig", False))
@@ -2735,7 +2711,6 @@ class MainWindow(QWidget):
                 "sns_crop_mode_index": self.combo_sns_crop.currentIndex() if hasattr(self, "combo_sns_crop") else 0,
                 "dest_id": self.dest_group.checkedId(),
                 "custom_dir": str(self.custom_dir_path) if self.custom_dir_path else "",
-                "preserve_icc": self.chk_preserve_icc.isChecked(),
                 "remove_alpha": self.chk_remove_alpha.isChecked(),
                 "delete_orig": self.chk_delete_orig.isChecked(),
                 "settings_expanded": getattr(self, "is_settings_expanded", False),
@@ -2931,7 +2906,6 @@ class MainWindow(QWidget):
             scale_percent=self.spin_scale_percent.value(),
             sns_preset_target=sns_preset_target,
             sns_crop_mode=sns_crop_mode,
-            preserve_icc=self.chk_preserve_icc.isChecked(),
             remove_alpha=self.chk_remove_alpha.isChecked(),
             delete_originals=self.chk_delete_orig.isChecked(),
             output_mode=output_mode,
