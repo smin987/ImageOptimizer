@@ -22,13 +22,12 @@ SNS_PRESETS = {
     "youtube_thumb": {"width": 1280, "height": 720, "label": "YouTube Thumbnail HD (16:9)"},
     "youtube_shorts": {"width": 1080, "height": 1920, "label": "YouTube Shorts / Reels (9:16)"},
     "sns_standard": {"width": 1080, "height": 1350, "label": "SNS Universal Standard Portrait (4:5)"},
+    "sns_square": {"width": 1080, "height": 1080, "label": "SNS Universal / Blog Cover Square Feed (1:1)"},
     "x_feed": {"width": 1200, "height": 675, "label": "X / Threads Timeline Feed (16:9)"},
     "insta_portrait_3_4": {"width": 1080, "height": 1440, "label": "Instagram Modern Portrait (3:4 - 2026 최신)"},
-    "insta_feed": {"width": 1080, "height": 1080, "label": "Instagram Square Feed (1:1)"},
     "insta_wide": {"width": 1080, "height": 566, "label": "Instagram Wide Feed (1.91:1)"},
     "insta_story": {"width": 1080, "height": 1920, "label": "Instagram Story / Reels (9:16)"},
     "blog_content": {"width": 1200, "height": None, "label": "Blog Content Width (1200px)"},
-    "blog_thumb": {"width": 1080, "height": 1080, "label": "Blog Cover (1:1)"},
 }
 SNS_PRESET_KEYS = list(SNS_PRESETS.keys())
 SNS_CROP_MODE_KEYS = ["fit", "cover", "contain", "contain_black"]
