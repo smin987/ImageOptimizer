@@ -122,21 +122,23 @@ I18N = {
         "lbl_sns_preset": "플랫폼:",
         "lbl_sns_crop": "맞춤 방식:",
         "sns_presets": [
-            "🎬 [유튜브] 썸네일 (1280×720, 16:9)",
+            "🎬 [유튜브] 썸네일 - FHD (1920×1080, 16:9)",
+            "🎬 [유튜브] 썸네일 - HD 기본 (1280×720, 16:9)",
             "📱 [유튜브] 쇼츠 커버 (1080×1920, 9:16)",
-            "📸 [인스타그램] 최신 세로 피드 (1080×1440, 3:4)",
-            "📸 [인스타그램] 클래식 세로 피드 (1080×1350, 4:5)",
-            "🔲 [인스타그램] 정사각형 피드 (1080×1080, 1:1)",
-            "🚀 [인스타그램] 릴스 / 스토리 (1080×1920, 9:16)",
-            "📝 [블로그] 본문 최적 가로폭 (1200px)",
-            "📌 [블로그] 정사각형 썸네일 (1080×1080, 1:1)",
+            "📱 [SNS 공용] 세로 표준 규격 (1080×1350, 4:5)",
             "🐦 [X / 스레드] 타임라인 피드 (1200×675, 16:9)",
+            "📸 [인스타] 최신 세로 피드 (1080×1440, 3:4)",
+            "🔲 [인스타] 정사각형 피드 (1080×1080, 1:1)",
+            "🖼️ [인스타] 가로형 와이드 (1080×566, 1.91:1)",
+            "🚀 [인스타] 릴스 / 스토리 (1080×1920, 9:16)",
+            "📝 [블로그] 본문 최적 가로폭 (1200px)",
+            "📌 [블로그] 대표 썸네일 (1080×1080, 1:1)",
         ],
         "sns_crop_modes": [
             "비율유지(기본값)",
+            "스마트 중앙 맞춤 (화면 꽉 채우기)",
             "빈공간 흰색 레터박스",
             "빈공간 검은색 레터박스",
-            "스마트 중앙 맞춤 (화면 꽉 채우기)",
         ],
         "lbl_dest": "저장 위치:",
         "dest_sub": "하위 'optimized' 폴더",
@@ -242,21 +244,23 @@ I18N = {
         "lbl_sns_preset": "Platform:",
         "lbl_sns_crop": "Fit Mode:",
         "sns_presets": [
-            "🎬 [YouTube] Thumbnail (1280×720, 16:9)",
+            "🎬 [YouTube] Thumbnail - FHD (1920×1080, 16:9)",
+            "🎬 [YouTube] Thumbnail - HD (1280×720, 16:9)",
             "📱 [YouTube] Shorts Cover (1080×1920, 9:16)",
+            "📱 [Universal SNS] Portrait Standard (1080×1350, 4:5)",
+            "🐦 [X / Threads] Timeline Feed (1200×675, 16:9)",
             "📸 [Instagram] Modern Portrait (1080×1440, 3:4)",
-            "📸 [Instagram] Classic Portrait (1080×1350, 4:5)",
             "🔲 [Instagram] Square Feed (1080×1080, 1:1)",
+            "🖼️ [Instagram] Wide Feed (1080×566, 1.91:1)",
             "🚀 [Instagram] Reels / Stories (1080×1920, 9:16)",
             "📝 [Blog] Content Width (1200px)",
             "📌 [Blog] Square Cover (1080×1080, 1:1)",
-            "🐦 [X / Threads] Timeline Feed (1200×675, 16:9)",
         ],
         "sns_crop_modes": [
             "Keep Ratio (Default)",
+            "Smart Center Crop (Fill & Cover)",
             "White Letterbox Padding",
             "Black Letterbox Padding",
-            "Smart Center Crop (Fill & Cover)",
         ],
         "lbl_dest": "Save to:",
         "dest_sub": "Subfolder 'optimized'",
@@ -1977,39 +1981,39 @@ class MainWindow(QWidget):
         sns_chips_row = QHBoxLayout()
         sns_chips_row.setSpacing(4)
 
-        self.btn_sns_yt = QPushButton("🎬 유튜브(16:9)")
+        self.btn_sns_yt = QPushButton("🎬 유튜브 (1920×1080)")
         self.btn_sns_yt.setProperty("chip", "true")
         self.btn_sns_yt.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_sns_yt.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(0))
 
-        self.btn_sns_insta_3_4 = QPushButton("📸 인스타(3:4)")
+        self.btn_sns_standard = QPushButton("📱 SNS표준 (1080×1350)")
+        self.btn_sns_standard.setProperty("chip", "true")
+        self.btn_sns_standard.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_sns_standard.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(3))
+
+        self.btn_sns_insta_3_4 = QPushButton("📸 인스타 (1080×1440)")
         self.btn_sns_insta_3_4.setProperty("chip", "true")
         self.btn_sns_insta_3_4.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_sns_insta_3_4.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(2))
+        self.btn_sns_insta_3_4.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(5))
 
-        self.btn_sns_insta_port = QPushButton("📸 인스타(4:5)")
-        self.btn_sns_insta_port.setProperty("chip", "true")
-        self.btn_sns_insta_port.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_sns_insta_port.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(3))
-
-        self.btn_sns_insta_feed = QPushButton("🔲 인스타(1:1)")
+        self.btn_sns_insta_feed = QPushButton("🔲 인스타 (1080×1080)")
         self.btn_sns_insta_feed.setProperty("chip", "true")
         self.btn_sns_insta_feed.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_sns_insta_feed.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(4))
+        self.btn_sns_insta_feed.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(6))
 
-        self.btn_sns_reels = QPushButton("📱 릴스/쇼츠(9:16)")
+        self.btn_sns_reels = QPushButton("🚀 릴스/쇼츠 (1080×1920)")
         self.btn_sns_reels.setProperty("chip", "true")
         self.btn_sns_reels.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_sns_reels.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(1))
+        self.btn_sns_reels.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(2))
 
-        self.btn_sns_blog = QPushButton("📝 블로그(1200px)")
+        self.btn_sns_blog = QPushButton("📝 블로그 (1200px)")
         self.btn_sns_blog.setProperty("chip", "true")
         self.btn_sns_blog.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_sns_blog.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(6))
+        self.btn_sns_blog.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(9))
 
         sns_chips_row.addWidget(self.btn_sns_yt)
+        sns_chips_row.addWidget(self.btn_sns_standard)
         sns_chips_row.addWidget(self.btn_sns_insta_3_4)
-        sns_chips_row.addWidget(self.btn_sns_insta_port)
         sns_chips_row.addWidget(self.btn_sns_insta_feed)
         sns_chips_row.addWidget(self.btn_sns_reels)
         sns_chips_row.addWidget(self.btn_sns_blog)

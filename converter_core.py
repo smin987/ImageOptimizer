@@ -18,18 +18,20 @@ SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".gif"}
 
 # 인플루언서 / SNS 크리에이터 맞춤 권장 해상도 규격 (2026 최신 표준)
 SNS_PRESETS = {
-    "youtube_thumb": {"width": 1280, "height": 720, "label": "YouTube Thumbnail (16:9)"},
+    "youtube_thumb_fhd": {"width": 1920, "height": 1080, "label": "YouTube Thumbnail FHD (16:9)"},
+    "youtube_thumb": {"width": 1280, "height": 720, "label": "YouTube Thumbnail HD (16:9)"},
     "youtube_shorts": {"width": 1080, "height": 1920, "label": "YouTube Shorts / Reels (9:16)"},
-    "insta_portrait_3_4": {"width": 1080, "height": 1440, "label": "Instagram Portrait Feed (3:4 - 2026 최신)"},
-    "insta_portrait": {"width": 1080, "height": 1350, "label": "Instagram Classic Portrait (4:5)"},
+    "sns_standard": {"width": 1080, "height": 1350, "label": "SNS Universal Standard Portrait (4:5)"},
+    "x_feed": {"width": 1200, "height": 675, "label": "X / Threads Timeline Feed (16:9)"},
+    "insta_portrait_3_4": {"width": 1080, "height": 1440, "label": "Instagram Modern Portrait (3:4 - 2026 최신)"},
     "insta_feed": {"width": 1080, "height": 1080, "label": "Instagram Square Feed (1:1)"},
+    "insta_wide": {"width": 1080, "height": 566, "label": "Instagram Wide Feed (1.91:1)"},
     "insta_story": {"width": 1080, "height": 1920, "label": "Instagram Story / Reels (9:16)"},
     "blog_content": {"width": 1200, "height": None, "label": "Blog Content Width (1200px)"},
     "blog_thumb": {"width": 1080, "height": 1080, "label": "Blog Cover (1:1)"},
-    "x_feed": {"width": 1200, "height": 675, "label": "X / Threads Feed (16:9)"},
 }
 SNS_PRESET_KEYS = list(SNS_PRESETS.keys())
-SNS_CROP_MODE_KEYS = ["fit", "contain", "contain_black", "cover"]
+SNS_CROP_MODE_KEYS = ["fit", "cover", "contain", "contain_black"]
 
 
 @dataclass
@@ -42,8 +44,8 @@ class ConversionOptions:
     max_width: int = 1920  # resize_mode == "max_width"일 때 가로폭 제한
     scale_percent: int = 50  # resize_mode == "scale_percent"일 때 축소 비율 (1~100%)
     # 인플루언서 / SNS 맞춤 프리셋 설정 (resize_mode == "sns_preset")
-    sns_preset_target: str = "youtube_thumb"  # SNS_PRESETS 키값
-    sns_crop_mode: str = "fit"  # 기본값: "fit"(비율유지 - 잘림 없음), "contain"(빈공간 흰색 레터박스), "cover"(스마트 중앙 맞춤)
+    sns_preset_target: str = "youtube_thumb_fhd"  # SNS_PRESETS 키값
+    sns_crop_mode: str = "fit"  # 기본값: "fit"(비율유지 - 잘림 없음), "cover"(스마트 중앙 맞춤), "contain"(빈공간 흰색 레터박스), "contain_black"(빈공간 검은색 레터박스)
     remove_alpha: bool = False  # True: 투명 배경 제거(흰색 배경 합성), False(기본): 투명 배경(Alpha) 그대로 보존
     keep_alpha: bool = False  # 하위 호환용 (사용되지 않음)
     skip_only_real_alpha: bool = False  # 실제 투명 픽셀 존재 시에만 스킵
@@ -143,7 +145,7 @@ def apply_resize(img: Image.Image, options: ConversionOptions) -> Image.Image:
 
     elif options.resize_mode == "sns_preset":
         # 인플루언서 / SNS 맞춤 프리셋 규격 적용
-        preset_info = SNS_PRESETS.get(options.sns_preset_target, SNS_PRESETS["youtube_thumb"])
+        preset_info = SNS_PRESETS.get(options.sns_preset_target, SNS_PRESETS["youtube_thumb_fhd"])
         target_w = preset_info["width"]
         target_h = preset_info["height"]
 
