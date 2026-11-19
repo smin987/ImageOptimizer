@@ -18,7 +18,6 @@ cask "image-optimizer" do
 
   app "ImageOptimizer.app"
   binary "#{appdir}/ImageOptimizer.app/Contents/MacOS/ImageOptimizer", target: "image-optimizer"
-  binary "#{appdir}/ImageOptimizer.app/Contents/MacOS/ImageOptimizer", target: "iopt"
 
   zap trash: [
     "~/Library/Application Support/ImageOptimizer",

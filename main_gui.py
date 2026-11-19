@@ -2814,13 +2814,6 @@ class MainWindow(QWidget):
 
 
 def main():
-    # CLI 인자 감지: 터미널에서 옵션이나 파일 경로가 전달된 경우 헤드리스 CLI 실행
-    if len(sys.argv) > 1 and "--gui" not in sys.argv:
-        import cli
-        exit_code = cli.run_cli(sys.argv[1:])
-        if exit_code != -1:
-            sys.exit(exit_code)
-
     # Windows 환경에서 작업표시줄에 Python 기본 아이콘 대신 전용 앱 아이콘 표시
     if sys.platform == "win32":
         try:

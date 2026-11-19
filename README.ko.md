@@ -16,7 +16,7 @@
 **웹과 데스크톱을 위한 올인원 크로스 플랫폼 이미지 & 애니메이션 최적화 도구**  
 *초고효율 WebP / JPG 변환, 움직이는 GIF 애니메이션 최적화, 투명 배경 보존 및 스마트 리사이징*
 
-[스크린샷](#-스크린샷-screenshots) • [주요 기능](#-주요-기능-key-features) • [지원 플랫폼](#-지원-플랫폼-platform-support) • [다운로드](#-설치-및-다운로드-installation--downloads) • [터미널 명령어 (iopt)](#-터미널-명령어-사용법-cli-iopt) • [후원하기](#-개발자-후원하기-sponsor)
+[스크린샷](#-스크린샷-screenshots) • [주요 기능](#-주요-기능-key-features) • [지원 플랫폼](#-지원-플랫폼-platform-support) • [다운로드](#-설치-및-다운로드-installation--downloads) • [소스코드 빌드](#-소스코드-실행-및-빌드) • [후원하기](#-개발자-후원하기-sponsor)
 
 </div>
 
@@ -118,48 +118,6 @@ sudo apt update && sudo apt install image-optimizer
 - **macOS**: `ImageOptimizer-macos.dmg` (열어서 응용 프로그램 폴더로 드래그 앤 드롭)
 - **Linux x86_64**: `ImageOptimizer-linux-x86_64` (실행 권한 부여 후 실행: `chmod +x`)
 - **Linux ARM64**: `ImageOptimizer-linux-arm64` (라즈베리 파이 4/5 및 ARM64 SBC용)
-
----
-
-## ⌨️ 터미널 명령어 사용법 (`iopt`)
-
-**Image Optimizer**는 단 하나의 실행 파일로 **듀얼 모드(Dual-Mode)**를 지원합니다:
-- **아이콘 더블클릭 / 인자 없이 실행**: 세련된 **GUI 데스크톱 창** 실행
-- **터미널에서 명령어/옵션과 함께 실행**: 창을 띄우지 않고 초고속으로 일괄 변환하는 **CLI 모드** 자동 실행 (별칭: `iopt` 또는 `image-optimizer`)
-
-### 자주 쓰는 명령어 예시:
-```bash
-# 단일 이미지를 WebP(품질 85)로 변환
-iopt photo.png
-
-# 포맷 지정 (webp, jpg, both) 및 압축 품질 지정
-iopt photo.png -f jpg -q 90
-iopt photo.png -f both
-
-# 폴더 내 모든 이미지를 하위 폴더까지 일괄 변환
-iopt ./images/ -r
-
-# 움직이는 GIF(움짤)를 가벼운 애니메이션 WebP로 변환
-iopt animation.gif
-
-# 리사이즈: 가로폭이 1920px보다 클 때만 비율 유지 축소
-iopt *.jpg --resize-width 1920
-
-# 50% 비율 축소하여 output 폴더에 저장
-iopt *.png --scale 50 -o ./output/
-
-# 투명 배경(Alpha)을 흰색 배경으로 합성
-iopt logo.png --flatten-white
-
-# 변환 성공 시 원본 파일을 휴지통으로 안전 이동
-iopt *.png --trash-orig
-
-# 터미널에서 데스크톱 GUI 창 실행
-iopt --gui
-```
-
-### 전체 옵션 보기:
-터미널에서 `iopt --help`를 입력하시면 모든 옵션과 사용법을 확인하실 수 있습니다.
 
 ---
 
