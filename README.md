@@ -53,7 +53,8 @@ In addition to static formats (`PNG`, `JPG`, `BMP`, `TIFF`, etc.), it fully supp
 - 🎞️ **Animated GIF Optimization**
   - Keeps all animation frames and durations intact while converting bulky GIFs to ultra-lightweight **Animated WebP**
   - Optional still-image JPG extraction from the first frame
-- 📐 **3 Smart Resizing Modes**
+- 📐 **Smart Resizing & Influencer/SNS Presets**
+  - 🌟 **Social Media & Influencer Presets (NEW)**: One-click optimization for YouTube Thumbnails (16:9), Shorts/Reels (9:16), Instagram Feeds (1:1 / 4:5), Blog Posts (1200px) with smart center crop
   - **Fit Max Width**: Scales down large images (e.g., 4K, FHD) while preserving the original aspect ratio
   - **Scale %**: Proportionally resizes images by percentage (25%, 50%, 75%, etc.)
   - **Keep Original Size (100%)**: Pure format compression without resolution changes

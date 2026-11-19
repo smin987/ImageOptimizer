@@ -16,6 +16,20 @@ Image.MAX_IMAGE_PIXELS = None
 
 SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".gif"}
 
+# 인플루언서 / SNS 크리에이터 맞춤 권장 해상도 규격 (2026 최신 표준)
+SNS_PRESETS = {
+    "youtube_thumb": {"width": 1280, "height": 720, "label": "YouTube Thumbnail (16:9)"},
+    "youtube_shorts": {"width": 1080, "height": 1920, "label": "YouTube Shorts / Reels (9:16)"},
+    "insta_feed": {"width": 1080, "height": 1080, "label": "Instagram Square Feed (1:1)"},
+    "insta_portrait": {"width": 1080, "height": 1350, "label": "Instagram Portrait Feed (4:5)"},
+    "insta_story": {"width": 1080, "height": 1920, "label": "Instagram Story / Reels (9:16)"},
+    "blog_content": {"width": 1200, "height": None, "label": "Blog Content Width (1200px)"},
+    "blog_thumb": {"width": 1080, "height": 1080, "label": "Blog Cover (1:1)"},
+    "x_feed": {"width": 1200, "height": 675, "label": "X / Threads Feed (16:9)"},
+}
+SNS_PRESET_KEYS = list(SNS_PRESETS.keys())
+SNS_CROP_MODE_KEYS = ["cover", "contain", "fit"]
+
 
 @dataclass
 class ConversionOptions:
@@ -23,9 +37,12 @@ class ConversionOptions:
 
     output_formats: list[str] = field(default_factory=lambda: ["WEBP"])  # "WEBP", "JPG", 또는 둘 다
     quality: int = 90  # 1~100
-    resize_mode: str = "none"  # 기본값: "none" (원본 크기 유지). 선택 가능: "max_width", "scale_percent", "none"
+    resize_mode: str = "none"  # 기본값: "none" (원본 크기 유지). 선택 가능: "max_width", "scale_percent", "sns_preset", "none"
     max_width: int = 1920  # resize_mode == "max_width"일 때 가로폭 제한
     scale_percent: int = 50  # resize_mode == "scale_percent"일 때 축소 비율 (1~100%)
+    # 인플루언서 / SNS 맞춤 프리셋 설정 (resize_mode == "sns_preset")
+    sns_preset_target: str = "youtube_thumb"  # SNS_PRESETS 키값
+    sns_crop_mode: str = "cover"  # "cover"(스마트 중앙 크롭), "contain"(여백 채우기), "fit"(박스 맞춤)
     remove_alpha: bool = False  # True: 투명 배경 제거(흰색 배경 합성), False(기본): 투명 배경(Alpha) 그대로 보존
     keep_alpha: bool = False  # 하위 호환용 (사용되지 않음)
     skip_only_real_alpha: bool = False  # 실제 투명 픽셀 존재 시에만 스킵
@@ -122,6 +139,47 @@ def apply_resize(img: Image.Image, options: ConversionOptions) -> Image.Image:
             new_height = max(1, int(float(img.height) * float(ratio)))
             return img.resize((options.max_width, new_height), Image.Resampling.LANCZOS)
         return img
+
+    elif options.resize_mode == "sns_preset":
+        # 인플루언서 / SNS 맞춤 프리셋 규격 적용
+        preset_info = SNS_PRESETS.get(options.sns_preset_target, SNS_PRESETS["youtube_thumb"])
+        target_w = preset_info["width"]
+        target_h = preset_info["height"]
+
+        # 1. 가로폭만 지정된 프리셋 (예: blog_content 가로 1200px)
+        if target_h is None:
+            if target_w and img.width > target_w:
+                ratio = target_w / float(img.width)
+                new_h = max(1, int(float(img.height) * float(ratio)))
+                return img.resize((target_w, new_h), Image.Resampling.LANCZOS)
+            return img
+
+        # 2. 가로/세로 고정 규격 (유튜브 썸네일, 인스타 피드/릴스 등)
+        crop_mode = options.sns_crop_mode
+
+        if crop_mode == "cover":
+            # 스마트 중앙 크롭 (가장 자연스럽게 화면 꽉 채우기)
+            return ImageOps.fit(img, (target_w, target_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
+
+        elif crop_mode == "contain":
+            # 비율 유지 여백 채우기 (Letterbox / Pillarbox)
+            contained = ImageOps.contain(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
+            if img.mode in ("RGBA", "LA"):
+                canvas = Image.new("RGBA", (target_w, target_h), (0, 0, 0, 0))
+                canvas.paste(contained, ((target_w - contained.width) // 2, (target_h - contained.height) // 2))
+                return canvas
+            else:
+                bg_color = options.flatten_background if options.remove_alpha else (255, 255, 255)
+                canvas = Image.new("RGB", (target_w, target_h), bg_color)
+                canvas.paste(contained, ((target_w - contained.width) // 2, (target_h - contained.height) // 2))
+                return canvas
+
+        elif crop_mode == "fit":
+            # 박스 맞춤 (비율 유지 축소, 캔버스 확장 없음)
+            return ImageOps.contain(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
+
+        # 기본 fallback: 스마트 중앙 크롭
+        return ImageOps.fit(img, (target_w, target_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
 
     # "none" 또는 그 외: 원본 해상도 유지
     return img

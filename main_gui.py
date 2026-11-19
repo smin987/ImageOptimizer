@@ -57,6 +57,9 @@ from PySide6.QtWidgets import (
 
 from converter_core import (
     SUPPORTED_EXTENSIONS,
+    SNS_CROP_MODE_KEYS,
+    SNS_PRESET_KEYS,
+    SNS_PRESETS,
     ConversionOptions,
     FileResult,
     collect_target_files,
@@ -113,7 +116,25 @@ I18N = {
             "선택하세요",
             "최대 가로폭에 맞춤",
             "비율(%) 축소 (Scale %)",
+            "🌟 SNS / 인플루언서 맞춤 프리셋",
             "원본 크기 유지 (100%)",
+        ],
+        "lbl_sns_preset": "플랫폼 규격:",
+        "lbl_sns_crop": "맞춤 방식:",
+        "sns_presets": [
+            "🎬 [유튜브] 썸네일 (1280×720, 16:9)",
+            "📱 [유튜브] 쇼츠 커버 (1080×1920, 9:16)",
+            "🔲 [인스타그램] 정사각형 피드 (1080×1080, 1:1)",
+            "📸 [인스타그램] 세로 피드 (1080×1350, 4:5)",
+            "🚀 [인스타그램] 릴스 / 스토리 (1080×1920, 9:16)",
+            "📝 [블로그] 본문 최적 가로폭 (1200px)",
+            "📌 [블로그] 정사각형 썸네일 (1080×1080, 1:1)",
+            "🐦 [X / 스레드] 타임라인 피드 (1200×675, 16:9)",
+        ],
+        "sns_crop_modes": [
+            "스마트 중앙 맞춤 (꽉 채우기)",
+            "비율 유지 여백 채우기 (전체 포함)",
+            "박스 맞춤 (비율 유지 축소)",
         ],
         "lbl_dest": "저장 위치:",
         "dest_sub": "하위 'optimized' 폴더",
@@ -213,7 +234,25 @@ I18N = {
             "Select mode",
             "Fit Max Width",
             "Scale by Percent (%)",
+            "🌟 Influencer & Social Media Presets",
             "Keep Original Size (100%)",
+        ],
+        "lbl_sns_preset": "Platform Preset:",
+        "lbl_sns_crop": "Fit Mode:",
+        "sns_presets": [
+            "🎬 [YouTube] Thumbnail (1280×720, 16:9)",
+            "📱 [YouTube] Shorts Cover (1080×1920, 9:16)",
+            "🔲 [Instagram] Square Feed (1080×1080, 1:1)",
+            "📸 [Instagram] Portrait Feed (1080×1350, 4:5)",
+            "🚀 [Instagram] Reels / Stories (1080×1920, 9:16)",
+            "📝 [Blog] Content Width (1200px)",
+            "📌 [Blog] Square Cover (1080×1080, 1:1)",
+            "🐦 [X / Threads] Timeline Feed (1200×675, 16:9)",
+        ],
+        "sns_crop_modes": [
+            "Smart Center Crop (Fill & Cover)",
+            "Fit with Padding (Letterbox)",
+            "Fit Inside Box (Keep Ratio)",
         ],
         "lbl_dest": "Save to:",
         "dest_sub": "Subfolder 'optimized'",
@@ -1840,6 +1879,7 @@ class MainWindow(QWidget):
                 "선택하세요",
                 "최대 가로폭에 맞춤",
                 "비율(%) 축소 (Scale %)",
+                "🌟 SNS / 인플루언서 맞춤 프리셋",
                 "원본 크기 유지 (100%)",
             ]
         )
@@ -1848,8 +1888,12 @@ class MainWindow(QWidget):
         resize_grid.addWidget(self.lbl_resize, 0, 0)
         resize_grid.addWidget(self.combo_resize_mode, 0, 1, 1, 4)
 
-        # 리사이즈 세부 수치 입력 및 프리셋 버튼 라인
-        resize_detail_layout = QHBoxLayout()
+        # 리사이즈 세부 수치 입력 및 프리셋 버튼 라인 (Row 1)
+        self.resize_detail_widget = QWidget()
+        resize_detail_layout = QHBoxLayout(self.resize_detail_widget)
+        resize_detail_layout.setContentsMargins(0, 0, 0, 0)
+        resize_detail_layout.setSpacing(6)
+
         self.spin_max_width = QSpinBox()
         self.spin_max_width.setRange(100, 16383)
         self.spin_max_width.setValue(1920)
@@ -1901,7 +1945,70 @@ class MainWindow(QWidget):
         resize_detail_layout.addWidget(self.btn_preset_75)
         resize_detail_layout.addStretch()
 
-        resize_grid.addLayout(resize_detail_layout, 1, 1, 1, 4)
+        resize_grid.addWidget(self.resize_detail_widget, 1, 1, 1, 4)
+
+        # SNS 프리셋 전용 패널 (Row 2)
+        self.sns_detail_widget = QWidget()
+        sns_main_layout = QVBoxLayout(self.sns_detail_widget)
+        sns_main_layout.setContentsMargins(0, 4, 0, 0)
+        sns_main_layout.setSpacing(6)
+
+        sns_top_row = QHBoxLayout()
+        self.lbl_sns_preset = QLabel("플랫폼 규격:")
+        self.lbl_sns_preset.setFixedWidth(70)
+        self.combo_sns_preset = QComboBox()
+        self.combo_sns_preset.addItems(I18N[self.current_lang]["sns_presets"])
+
+        self.lbl_sns_crop = QLabel("맞춤 방식:")
+        self.lbl_sns_crop.setFixedWidth(65)
+        self.combo_sns_crop = QComboBox()
+        self.combo_sns_crop.addItems(I18N[self.current_lang]["sns_crop_modes"])
+
+        sns_top_row.addWidget(self.lbl_sns_preset)
+        sns_top_row.addWidget(self.combo_sns_preset, 3)
+        sns_top_row.addWidget(self.lbl_sns_crop)
+        sns_top_row.addWidget(self.combo_sns_crop, 2)
+        sns_main_layout.addLayout(sns_top_row)
+
+        sns_chips_row = QHBoxLayout()
+        sns_chips_row.setSpacing(4)
+
+        self.btn_sns_yt = QPushButton("🎬 유튜브(16:9)")
+        self.btn_sns_yt.setProperty("chip", "true")
+        self.btn_sns_yt.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_sns_yt.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(0))
+
+        self.btn_sns_insta_feed = QPushButton("🔲 인스타(1:1)")
+        self.btn_sns_insta_feed.setProperty("chip", "true")
+        self.btn_sns_insta_feed.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_sns_insta_feed.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(2))
+
+        self.btn_sns_insta_port = QPushButton("📸 인스타(4:5)")
+        self.btn_sns_insta_port.setProperty("chip", "true")
+        self.btn_sns_insta_port.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_sns_insta_port.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(3))
+
+        self.btn_sns_reels = QPushButton("📱 릴스/쇼츠(9:16)")
+        self.btn_sns_reels.setProperty("chip", "true")
+        self.btn_sns_reels.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_sns_reels.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(1))
+
+        self.btn_sns_blog = QPushButton("📝 블로그(1200px)")
+        self.btn_sns_blog.setProperty("chip", "true")
+        self.btn_sns_blog.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_sns_blog.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(5))
+
+        sns_chips_row.addWidget(self.btn_sns_yt)
+        sns_chips_row.addWidget(self.btn_sns_insta_feed)
+        sns_chips_row.addWidget(self.btn_sns_insta_port)
+        sns_chips_row.addWidget(self.btn_sns_reels)
+        sns_chips_row.addWidget(self.btn_sns_blog)
+        sns_chips_row.addStretch()
+        sns_main_layout.addLayout(sns_chips_row)
+
+        self.sns_detail_widget.setVisible(False)
+        resize_grid.addWidget(self.sns_detail_widget, 2, 1, 1, 4)
+
         settings_layout.addLayout(resize_grid)
 
         # 2-4. 저장 위치 설정 (그리드 2줄 배치)
@@ -2243,6 +2350,27 @@ class MainWindow(QWidget):
         self.combo_resize_mode.setCurrentIndex(cur_resize_idx)
         self.combo_resize_mode.blockSignals(False)
 
+        if hasattr(self, "combo_sns_preset"):
+            cur_p_idx = self.combo_sns_preset.currentIndex()
+            self.combo_sns_preset.blockSignals(True)
+            self.combo_sns_preset.clear()
+            self.combo_sns_preset.addItems(i18n["sns_presets"])
+            self.combo_sns_preset.setCurrentIndex(cur_p_idx)
+            self.combo_sns_preset.blockSignals(False)
+
+        if hasattr(self, "combo_sns_crop"):
+            cur_c_idx = self.combo_sns_crop.currentIndex()
+            self.combo_sns_crop.blockSignals(True)
+            self.combo_sns_crop.clear()
+            self.combo_sns_crop.addItems(i18n["sns_crop_modes"])
+            self.combo_sns_crop.setCurrentIndex(cur_c_idx)
+            self.combo_sns_crop.blockSignals(False)
+
+        if hasattr(self, "lbl_sns_preset"):
+            self.lbl_sns_preset.setText(i18n["lbl_sns_preset"])
+        if hasattr(self, "lbl_sns_crop"):
+            self.lbl_sns_crop.setText(i18n["lbl_sns_crop"])
+
         self.lbl_dest.setText(i18n["lbl_dest"])
         self.radio_dest_sub.setText(i18n["dest_sub"])
         self.radio_dest_same.setText(i18n["dest_same"])
@@ -2458,6 +2586,10 @@ class MainWindow(QWidget):
 
             self.spin_max_width.setValue(data.get("max_width", 1920))
             self.spin_scale_percent.setValue(data.get("scale_percent", 50))
+            if hasattr(self, "combo_sns_preset"):
+                self.combo_sns_preset.setCurrentIndex(data.get("sns_preset_index", 0))
+            if hasattr(self, "combo_sns_crop"):
+                self.combo_sns_crop.setCurrentIndex(data.get("sns_crop_mode_index", 0))
 
             custom_dir = data.get("custom_dir", "")
             if custom_dir and Path(custom_dir).exists():
@@ -2508,6 +2640,8 @@ class MainWindow(QWidget):
                 "resize_mode_index": self.combo_resize_mode.currentIndex(),
                 "max_width": self.spin_max_width.value(),
                 "scale_percent": self.spin_scale_percent.value(),
+                "sns_preset_index": self.combo_sns_preset.currentIndex() if hasattr(self, "combo_sns_preset") else 0,
+                "sns_crop_mode_index": self.combo_sns_crop.currentIndex() if hasattr(self, "combo_sns_crop") else 0,
                 "dest_id": self.dest_group.checkedId(),
                 "custom_dir": str(self.custom_dir_path) if self.custom_dir_path else "",
                 "remove_alpha": self.chk_remove_alpha.isChecked(),
@@ -2529,9 +2663,13 @@ class MainWindow(QWidget):
         event.accept()
 
     def on_resize_mode_changed(self, index: int):
-        # 0: 선택하세요(none), 1: Max Width, 2: Scale Percent, 3: 원본 크기 유지(none)
+        # 0: 선택하세요(none), 1: Max Width, 2: Scale Percent, 3: SNS 맞춤 프리셋, 4: 원본 크기 유지(none)
         is_max_w = index == 1
         is_scale = index == 2
+        is_sns = index == 3
+
+        if hasattr(self, "resize_detail_widget"):
+            self.resize_detail_widget.setVisible(is_max_w or is_scale)
 
         self.spin_max_width.setVisible(is_max_w)
         self.btn_preset_fhd.setVisible(is_max_w)
@@ -2541,6 +2679,9 @@ class MainWindow(QWidget):
         self.spin_scale_percent.setVisible(is_scale)
         self.btn_preset_50.setVisible(is_scale)
         self.btn_preset_75.setVisible(is_scale)
+
+        if hasattr(self, "sns_detail_widget"):
+            self.sns_detail_widget.setVisible(is_sns)
 
     def on_dest_custom_toggled(self, checked: bool):
         self.btn_browse_dest.setVisible(checked)
@@ -2646,8 +2787,22 @@ class MainWindow(QWidget):
             resize_mode = "max_width"
         elif resize_idx == 2:
             resize_mode = "scale_percent"
+        elif resize_idx == 3:
+            resize_mode = "sns_preset"
         else:
             resize_mode = "none"
+
+        sns_preset_target = "youtube_thumb"
+        if hasattr(self, "combo_sns_preset"):
+            p_idx = self.combo_sns_preset.currentIndex()
+            if 0 <= p_idx < len(SNS_PRESET_KEYS):
+                sns_preset_target = SNS_PRESET_KEYS[p_idx]
+
+        sns_crop_mode = "cover"
+        if hasattr(self, "combo_sns_crop"):
+            c_idx = self.combo_sns_crop.currentIndex()
+            if 0 <= c_idx < len(SNS_CROP_MODE_KEYS):
+                sns_crop_mode = SNS_CROP_MODE_KEYS[c_idx]
 
         if self.radio_dest_same.isChecked():
             output_mode = "same"
@@ -2662,6 +2817,8 @@ class MainWindow(QWidget):
             resize_mode=resize_mode,
             max_width=self.spin_max_width.value(),
             scale_percent=self.spin_scale_percent.value(),
+            sns_preset_target=sns_preset_target,
+            sns_crop_mode=sns_crop_mode,
             remove_alpha=self.chk_remove_alpha.isChecked(),
             delete_originals=self.chk_delete_orig.isChecked(),
             output_mode=output_mode,
