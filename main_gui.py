@@ -119,7 +119,7 @@ I18N = {
             "🌟 SNS / 인플루언서 맞춤 프리셋",
             "원본 크기 유지 (100%)",
         ],
-        "lbl_sns_preset": "플랫폼 규격:",
+        "lbl_sns_preset": "플랫폼:",
         "lbl_sns_crop": "맞춤 방식:",
         "sns_presets": [
             "🎬 [유튜브] 썸네일 (1280×720, 16:9)",
@@ -132,9 +132,9 @@ I18N = {
             "🐦 [X / 스레드] 타임라인 피드 (1200×675, 16:9)",
         ],
         "sns_crop_modes": [
-            "스마트 중앙 맞춤 (꽉 채우기)",
-            "비율 유지 여백 채우기 (전체 포함)",
-            "박스 맞춤 (비율 유지 축소)",
+            "비율유지(기본값)",
+            "빈공간 흰색 레터박스",
+            "스마트 중앙 맞춤 (화면 꽉 채우기)",
         ],
         "lbl_dest": "저장 위치:",
         "dest_sub": "하위 'optimized' 폴더",
@@ -237,7 +237,7 @@ I18N = {
             "🌟 Influencer & Social Media Presets",
             "Keep Original Size (100%)",
         ],
-        "lbl_sns_preset": "Platform Preset:",
+        "lbl_sns_preset": "Platform:",
         "lbl_sns_crop": "Fit Mode:",
         "sns_presets": [
             "🎬 [YouTube] Thumbnail (1280×720, 16:9)",
@@ -250,9 +250,9 @@ I18N = {
             "🐦 [X / Threads] Timeline Feed (1200×675, 16:9)",
         ],
         "sns_crop_modes": [
+            "Keep Ratio (Default)",
+            "White Letterbox Padding",
             "Smart Center Crop (Fill & Cover)",
-            "Fit with Padding (Letterbox)",
-            "Fit Inside Box (Keep Ratio)",
         ],
         "lbl_dest": "Save to:",
         "dest_sub": "Subfolder 'optimized'",
@@ -1954,8 +1954,8 @@ class MainWindow(QWidget):
         sns_main_layout.setSpacing(6)
 
         sns_top_row = QHBoxLayout()
-        self.lbl_sns_preset = QLabel("플랫폼 규격:")
-        self.lbl_sns_preset.setFixedWidth(70)
+        self.lbl_sns_preset = QLabel("플랫폼:")
+        self.lbl_sns_preset.setFixedWidth(50)
         self.combo_sns_preset = QComboBox()
         self.combo_sns_preset.addItems(I18N[self.current_lang]["sns_presets"])
 
@@ -2798,7 +2798,7 @@ class MainWindow(QWidget):
             if 0 <= p_idx < len(SNS_PRESET_KEYS):
                 sns_preset_target = SNS_PRESET_KEYS[p_idx]
 
-        sns_crop_mode = "cover"
+        sns_crop_mode = "fit"
         if hasattr(self, "combo_sns_crop"):
             c_idx = self.combo_sns_crop.currentIndex()
             if 0 <= c_idx < len(SNS_CROP_MODE_KEYS):

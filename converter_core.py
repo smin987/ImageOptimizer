@@ -28,7 +28,7 @@ SNS_PRESETS = {
     "x_feed": {"width": 1200, "height": 675, "label": "X / Threads Feed (16:9)"},
 }
 SNS_PRESET_KEYS = list(SNS_PRESETS.keys())
-SNS_CROP_MODE_KEYS = ["cover", "contain", "fit"]
+SNS_CROP_MODE_KEYS = ["fit", "contain", "cover"]
 
 
 @dataclass
@@ -42,7 +42,7 @@ class ConversionOptions:
     scale_percent: int = 50  # resize_mode == "scale_percent"일 때 축소 비율 (1~100%)
     # 인플루언서 / SNS 맞춤 프리셋 설정 (resize_mode == "sns_preset")
     sns_preset_target: str = "youtube_thumb"  # SNS_PRESETS 키값
-    sns_crop_mode: str = "cover"  # "cover"(스마트 중앙 크롭), "contain"(여백 채우기), "fit"(박스 맞춤)
+    sns_crop_mode: str = "fit"  # 기본값: "fit"(비율유지 - 잘림 없음), "contain"(빈공간 흰색 레터박스), "cover"(스마트 중앙 맞춤)
     remove_alpha: bool = False  # True: 투명 배경 제거(흰색 배경 합성), False(기본): 투명 배경(Alpha) 그대로 보존
     keep_alpha: bool = False  # 하위 호환용 (사용되지 않음)
     skip_only_real_alpha: bool = False  # 실제 투명 픽셀 존재 시에만 스킵
@@ -154,15 +154,19 @@ def apply_resize(img: Image.Image, options: ConversionOptions) -> Image.Image:
                 return img.resize((target_w, new_h), Image.Resampling.LANCZOS)
             return img
 
+        # 이미 목표 해상도와 정확히 일치하는 경우 추가 연산 없이 원본 그대로 보존
+        if (img.width, img.height) == (target_w, target_h):
+            return img
+
         # 2. 가로/세로 고정 규격 (유튜브 썸네일, 인스타 피드/릴스 등)
         crop_mode = options.sns_crop_mode
 
-        if crop_mode == "cover":
-            # 스마트 중앙 크롭 (가장 자연스럽게 화면 꽉 채우기)
-            return ImageOps.fit(img, (target_w, target_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
+        if crop_mode == "fit":
+            # 비율유지 (기본값: 잘림 없음, 여백 없음, 원본 비율 그대로 목표 박스에 축소)
+            return ImageOps.contain(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
 
         elif crop_mode == "contain":
-            # 비율 유지 여백 채우기 (Letterbox / Pillarbox)
+            # 빈공간 흰색 레터박스 (잘림 없음, 여백 채우기)
             contained = ImageOps.contain(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
             if img.mode in ("RGBA", "LA"):
                 canvas = Image.new("RGBA", (target_w, target_h), (0, 0, 0, 0))
@@ -174,12 +178,12 @@ def apply_resize(img: Image.Image, options: ConversionOptions) -> Image.Image:
                 canvas.paste(contained, ((target_w - contained.width) // 2, (target_h - contained.height) // 2))
                 return canvas
 
-        elif crop_mode == "fit":
-            # 박스 맞춤 (비율 유지 축소, 캔버스 확장 없음)
-            return ImageOps.contain(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
+        elif crop_mode == "cover":
+            # 스마트 중앙 맞춤 (화면 꽉 채우기, 잘림 발생)
+            return ImageOps.fit(img, (target_w, target_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
 
-        # 기본 fallback: 스마트 중앙 크롭
-        return ImageOps.fit(img, (target_w, target_h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
+        # 기본 fallback: 비율유지 (잘림 없음)
+        return ImageOps.contain(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
 
     # "none" 또는 그 외: 원본 해상도 유지
     return img
