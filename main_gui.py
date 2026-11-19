@@ -3134,7 +3134,7 @@ class MainWindow(QWidget):
         dlg.exec()
 
     def on_badge_clicked(self):
-        """버전 배지 클릭 시: 신버전이 있다면 GitHub Releases 다운로드 페이지 열기"""
+        """버전 배지 클릭 시: 신버전이 있을 때만 GitHub Releases 다운로드 페이지 열기"""
         if self.has_new_version:
             try:
                 from PySide6.QtGui import QDesktopServices
@@ -3143,9 +3143,7 @@ class MainWindow(QWidget):
                     webbrowser.open(LATEST_RELEASE_URL)
             except Exception:
                 webbrowser.open(LATEST_RELEASE_URL)
-        else:
-            # 최신 버전일 때 클릭하면 정보/라이선스 대화상자 표시
-            self.show_about_dialog()
+        # 최신 버전일 때는 클릭 무반응 (순수 정보 텍스트 라벨처럼 동작)
 
     def update_version_badge_ui(self):
         """신버전 여부 및 현재 테마/언어에 따른 배지 비주얼 동적 갱신"""
@@ -3198,14 +3196,13 @@ class MainWindow(QWidget):
                     }
                 """)
         else:
-            # 2. 최신 버전 모드: 배경 없이 단정한 텍스트만 표시
-            self.btn_badge.setCursor(Qt.CursorShape.PointingHandCursor)
+            # 2. 최신 버전 모드: 배경 없이 단정한 순수 텍스트 표시 (화살표 커서 + 클릭 효과 없음)
+            self.btn_badge.setCursor(Qt.CursorShape.ArrowCursor)
             self.btn_badge.setText(APP_VERSION)
             tip_fmt = i18n.get("badge_latest_tip", "최신 버전을 사용 중입니다. ({ver})")
             self.btn_badge.setToolTip(tip_fmt.format(ver=APP_VERSION))
 
             text_col = "#64748b" if theme == "light" else "#94a3b8"
-            hover_col = "#2563eb" if theme == "light" else "#38bdf8"
             self.btn_badge.setStyleSheet(f"""
                 QPushButton#btn_badge {{
                     background: transparent;
@@ -3214,10 +3211,6 @@ class MainWindow(QWidget):
                     font-weight: 600;
                     padding: 2px 5px;
                     border: none;
-                }}
-                QPushButton#btn_badge:hover {{
-                    color: {hover_col};
-                    text-decoration: underline;
                 }}
             """)
 
