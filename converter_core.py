@@ -45,6 +45,7 @@ class ConversionOptions:
     # 인플루언서 / SNS 맞춤 프리셋 설정 (resize_mode == "sns_preset")
     sns_preset_target: str = "youtube_thumb_fhd"  # SNS_PRESETS 키값
     sns_crop_mode: str = "fit"  # 기본값: "fit"(비율유지 - 잘림 없음), "cover"(스마트 중앙 맞춤), "contain"(빈공간 흰색 레터박스), "contain_black"(빈공간 검은색 레터박스)
+    preserve_icc: bool = True  # True(기본): Display P3/ICC 색상 프로필 보존(색감 왜곡 방지), False: 메타데이터 제거(용량 최소화)
     remove_alpha: bool = False  # True: 투명 배경 제거(흰색 배경 합성), False(기본): 투명 배경(Alpha) 그대로 보존
     keep_alpha: bool = False  # 하위 호환용 (사용되지 않음)
     skip_only_real_alpha: bool = False  # 실제 투명 픽셀 존재 시에만 스킵
@@ -224,19 +225,38 @@ def prepare_static_image(img: Image.Image, options: ConversionOptions):
     return img, note
 
 
-def save_static_image(img: Image.Image, out_file: Path, fmt: str, options: ConversionOptions):
-    """전처리된 정지 이미지를 WebP(투명도 보존) 또는 JPEG(배경 합성)로 저장"""
+def save_static_image(
+    img: Image.Image,
+    out_file: Path,
+    fmt: str,
+    options: ConversionOptions,
+    icc_profile: Optional[bytes] = None,
+):
+    """전처리된 정지 이미지를 WebP(투명도 보존) 또는 JPEG(배경 합성)로 저장 (ICC 프로필 보존 지원)"""
     save_fmt = "JPEG" if fmt.upper() in ("JPG", "JPEG") else "WEBP"
+    save_kwargs = {
+        "format": save_fmt,
+        "quality": options.quality,
+        "optimize": True,
+    }
+    if options.preserve_icc and icc_profile:
+        save_kwargs["icc_profile"] = icc_profile
+
     if save_fmt == "JPEG" and img.mode in ("RGBA", "LA"):
         # JPEG 규격은 알파 채널을 지원하지 않으므로 흰색 배경 합성 후 저장
         jpg_img, _ = flatten_alpha(img, options.flatten_background)
-        jpg_img.save(out_file, format="JPEG", quality=options.quality, optimize=True)
+        jpg_img.save(out_file, **save_kwargs)
     else:
-        img.save(out_file, format=save_fmt, quality=options.quality, optimize=True)
+        img.save(out_file, **save_kwargs)
 
 
-def process_animated_gif_to_webp(img: Image.Image, out_file: Path, options: ConversionOptions):
-    """움직이는 GIF의 모든 프레임을 유지하며 애니메이션 WebP로 저장 (투명 배경 보존 지원)"""
+def process_animated_gif_to_webp(
+    img: Image.Image,
+    out_file: Path,
+    options: ConversionOptions,
+    icc_profile: Optional[bytes] = None,
+):
+    """움직이는 GIF의 모든 프레임을 유지하며 애니메이션 WebP로 저장 (투명 배경 및 ICC 보존 지원)"""
     frames = []
     durations = []
     had_real_alpha = False
@@ -257,16 +277,19 @@ def process_animated_gif_to_webp(img: Image.Image, out_file: Path, options: Conv
         frames.append(f)
         durations.append(frame.info.get("duration", 100))
 
-    frames[0].save(
-        out_file,
-        format="WEBP",
-        save_all=True,
-        append_images=frames[1:],
-        duration=durations,
-        loop=img.info.get("loop", 0),
-        quality=options.quality,
-        optimize=True,
-    )
+    save_kwargs = {
+        "format": "WEBP",
+        "save_all": True,
+        "append_images": frames[1:],
+        "duration": durations,
+        "loop": img.info.get("loop", 0),
+        "quality": options.quality,
+        "optimize": True,
+    }
+    if options.preserve_icc and icc_profile:
+        save_kwargs["icc_profile"] = icc_profile
+
+    frames[0].save(out_file, **save_kwargs)
 
     if options.remove_alpha and had_real_alpha:
         note = "알파 제거(흰색 배경 합성)"
@@ -277,13 +300,27 @@ def process_animated_gif_to_webp(img: Image.Image, out_file: Path, options: Conv
     return len(frames), note
 
 
-def process_animated_gif_to_jpg(img: Image.Image, out_file: Path, options: ConversionOptions):
-    """움직이는 GIF의 첫 프레임을 추출하여 정지 이미지 JPG로 저장 (배경 합성)"""
+def process_animated_gif_to_jpg(
+    img: Image.Image,
+    out_file: Path,
+    options: ConversionOptions,
+    icc_profile: Optional[bytes] = None,
+):
+    """움직이는 GIF의 첫 프레임을 추출하여 정지 이미지 JPG로 저장 (배경 합성 및 ICC 보존 지원)"""
     first_frame = next(ImageSequence.Iterator(img)).copy()
     first_frame = ImageOps.exif_transpose(first_frame)
     first_frame, had_real_alpha = flatten_alpha(first_frame, options.flatten_background)
     first_frame = apply_resize(first_frame, options)
-    first_frame.save(out_file, format="JPEG", quality=options.quality, optimize=True)
+
+    save_kwargs = {
+        "format": "JPEG",
+        "quality": options.quality,
+        "optimize": True,
+    }
+    if options.preserve_icc and icc_profile:
+        save_kwargs["icc_profile"] = icc_profile
+
+    first_frame.save(out_file, **save_kwargs)
     note = "알파 제거(흰색 배경 합성)" if had_real_alpha else None
     return note
 
@@ -315,6 +352,7 @@ def process_single_file(file_path: Path, options: ConversionOptions) -> FileResu
 
     with Image.open(file_path) as img:
         is_animated = getattr(img, "is_animated", False)
+        raw_icc = img.info.get("icc_profile")
 
         if should_skip_for_alpha(img, is_animated, options):
             return FileResult(
@@ -334,10 +372,14 @@ def process_single_file(file_path: Path, options: ConversionOptions) -> FileResu
                 ext = ".jpg" if fmt == "JPG" else ".webp"
                 out_file = out_dir / f"{file_path.stem}{ext}"
                 if fmt == "WEBP":
-                    frame_count, n = process_animated_gif_to_webp(img, out_file, options)
+                    frame_count, n = process_animated_gif_to_webp(
+                        img, out_file, options, icc_profile=raw_icc
+                    )
                     tags.append(f"WebP({frame_count}프레임)")
                 else:  # JPG
-                    n = process_animated_gif_to_jpg(img, out_file, options)
+                    n = process_animated_gif_to_jpg(
+                        img, out_file, options, icc_profile=raw_icc
+                    )
                     tags.append("JPG(첫 프레임)")
                 if n:
                     note = n
@@ -348,7 +390,9 @@ def process_single_file(file_path: Path, options: ConversionOptions) -> FileResu
             for fmt in options.output_formats:
                 ext = ".jpg" if fmt == "JPG" else ".webp"
                 out_file = out_dir / f"{file_path.stem}{ext}"
-                save_static_image(processed_img, out_file, fmt, options)
+                save_static_image(
+                    processed_img, out_file, fmt, options, icc_profile=raw_icc
+                )
                 created_files[fmt] = out_file
             tag = f"[정지 이미지 -> {', '.join(options.output_formats)}]"
 
