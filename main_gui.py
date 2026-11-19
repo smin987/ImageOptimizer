@@ -114,9 +114,9 @@ I18N = {
         "lbl_resize": "해상도 조절:",
         "resize_modes": [
             "선택하세요",
+            "🌟 SNS / 인플루언서 맞춤 프리셋",
             "최대 가로폭에 맞춤",
             "비율(%) 축소 (Scale %)",
-            "🌟 SNS / 인플루언서 맞춤 프리셋",
             "원본 크기 유지 (100%)",
         ],
         "lbl_sns_preset": "플랫폼:",
@@ -243,9 +243,9 @@ I18N = {
         "lbl_resize": "Resize:",
         "resize_modes": [
             "Select mode",
+            "🌟 Influencer & Social Media Presets",
             "Fit Max Width",
             "Scale by Percent (%)",
-            "🌟 Influencer & Social Media Presets",
             "Keep Original Size (100%)",
         ],
         "lbl_sns_preset": "Platform:",
@@ -1590,7 +1590,8 @@ class MainWindow(QWidget):
         super().__init__()
         self.setWindowTitle("Image Optimizer")
         self.resize(720, 680)
-        self.setMinimumSize(420, 380)
+        self.setMinimumWidth(720)   # 스크린샷 기준 가로 최소사이즈 고정 (720px 이하 축소 방지)
+        self.setMinimumHeight(380)
 
         # 앱 아이콘 설정 (Windows 작업표시줄 및 창 좌측 상단)
         icon_path = get_resource_path("assets/icon.png")
@@ -1896,15 +1897,7 @@ class MainWindow(QWidget):
         self.lbl_resize.setFixedWidth(80)
 
         self.combo_resize_mode = QComboBox()
-        self.combo_resize_mode.addItems(
-            [
-                "선택하세요",
-                "최대 가로폭에 맞춤",
-                "비율(%) 축소 (Scale %)",
-                "🌟 SNS / 인플루언서 맞춤 프리셋",
-                "원본 크기 유지 (100%)",
-            ]
-        )
+        self.combo_resize_mode.addItems(I18N[self.current_lang]["resize_modes"])
         self.combo_resize_mode.currentIndexChanged.connect(self.on_resize_mode_changed)
 
         resize_grid.addWidget(self.lbl_resize, 0, 0)
@@ -2041,7 +2034,7 @@ class MainWindow(QWidget):
         sns_main_layout.addLayout(sns_chips_grid)
 
         self.sns_detail_widget.setVisible(False)
-        resize_grid.addWidget(self.sns_detail_widget, 2, 1, 1, 4)
+        resize_grid.addWidget(self.sns_detail_widget, 1, 1, 1, 4)
 
         settings_layout.addLayout(resize_grid)
 
@@ -2664,9 +2657,9 @@ class MainWindow(QWidget):
             saved_log_expanded = data.get("log_expanded", False)
             self.set_log_expanded(saved_log_expanded, resize_window=False)
 
-            # 7. 창 크기 복원
-            w = data.get("window_width", 720)
-            h = data.get("window_height", 680)
+            # 7. 창 크기 복원 (가로 최소사이즈 720px 보장)
+            w = max(720, data.get("window_width", 720))
+            h = max(380, data.get("window_height", 680))
             self.resize(w, h)
         except Exception as e:
             print(f"[Warning] 설정 불러오기 실패: {e}")
@@ -2705,10 +2698,10 @@ class MainWindow(QWidget):
         event.accept()
 
     def on_resize_mode_changed(self, index: int):
-        # 0: 선택하세요(none), 1: Max Width, 2: Scale Percent, 3: SNS 맞춤 프리셋, 4: 원본 크기 유지(none)
-        is_max_w = index == 1
-        is_scale = index == 2
-        is_sns = index == 3
+        # 0: 선택하세요(none), 1: SNS 맞춤 프리셋, 2: Max Width, 3: Scale Percent, 4: 원본 크기 유지(none)
+        is_sns = index == 1
+        is_max_w = index == 2
+        is_scale = index == 3
 
         if hasattr(self, "resize_detail_widget"):
             self.resize_detail_widget.setVisible(is_max_w or is_scale)
@@ -2826,11 +2819,11 @@ class MainWindow(QWidget):
 
         resize_idx = self.combo_resize_mode.currentIndex()
         if resize_idx == 1:
-            resize_mode = "max_width"
-        elif resize_idx == 2:
-            resize_mode = "scale_percent"
-        elif resize_idx == 3:
             resize_mode = "sns_preset"
+        elif resize_idx == 2:
+            resize_mode = "max_width"
+        elif resize_idx == 3:
+            resize_mode = "scale_percent"
         else:
             resize_mode = "none"
 
