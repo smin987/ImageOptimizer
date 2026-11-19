@@ -2261,7 +2261,7 @@ class MainWindow(QWidget):
                 }
             """)
             self.lbl_desc_text.setStyleSheet(
-                "color: #475569; font-size: 10pt; line-height: 140%; background: transparent; border: none;"
+                "color: #475569; font-size: 9pt; line-height: 140%; background: transparent; border: none;"
             )
             self.btn_queue_count.setStyleSheet("""
                 QPushButton {
@@ -2333,7 +2333,7 @@ class MainWindow(QWidget):
                 }
             """)
             self.lbl_desc_text.setStyleSheet(
-                "color: #94a3b8; font-size: 10pt; line-height: 140%; background: transparent; border: none;"
+                "color: #94a3b8; font-size: 9pt; line-height: 140%; background: transparent; border: none;"
             )
             self.btn_queue_count.setStyleSheet("""
                 QPushButton {
