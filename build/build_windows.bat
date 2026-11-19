@@ -18,6 +18,10 @@ python -m PyInstaller --noconsole ^
             --clean ^
             --icon="assets/icon.ico" ^
             --add-data="assets;assets" ^
+            --add-data="THIRD_PARTY_LICENSES.md;." ^
+            --add-data="LICENSE;." ^
+            --hidden-import="PIL._imagingcms" ^
+            --hidden-import="PIL.ImageCms" ^
             --name="ImageOptimizer" ^
             main_gui.py
 

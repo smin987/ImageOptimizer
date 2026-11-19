@@ -129,7 +129,7 @@ I18N = {
         "about_dlg_btn_close": "닫기",
         "desc_text": (
             "원본 이미지를 웹사이트 게시전용으로 최적화하여 경량화된 이미지로 변경해주는 도구입니다.\n"
-            "원본 이미지와 화질차이는 거의 없지만 최대 90% 정도의 이미지 용량을 줄일 수 있습니다. "
+            "원본 이미지와 화질차이는 거의 없지만 최대 90% 이상의 이미지 용량을 줄일 수 있습니다. "
             "('이미지 품질' 설정값에 따라 달라질 수 있음)\n"
             "※ 애니메이션 GIF도 WebP로 변환 가능"
         ),
@@ -1615,12 +1615,33 @@ class AboutLicenseDialog(QDialog):
             pass
 
     def _open_license_file(self):
-        target = resource_path("THIRD_PARTY_LICENSES.md")
-        if not target.exists():
-            target = resource_path("LICENSE")
-        if target.exists():
-            pa.open_in_file_manager(target)
-        else:
+        """라이선스 문서 로컬 파일 열기 (없으면 GitHub 저장소 라이선스 웹페이지 열기)"""
+        try:
+            candidates = [
+                get_resource_path("THIRD_PARTY_LICENSES.md"),
+                Path(sys.executable).parent / "THIRD_PARTY_LICENSES.md",
+                Path(__file__).resolve().parent / "THIRD_PARTY_LICENSES.md",
+                get_resource_path("LICENSE"),
+                Path(sys.executable).parent / "LICENSE",
+                Path(__file__).resolve().parent / "LICENSE",
+            ]
+            target = None
+            for p in candidates:
+                if p.exists() and p.is_file():
+                    target = p
+                    break
+
+            if target:
+                from PySide6.QtGui import QDesktopServices
+                from PySide6.QtCore import QUrl
+                if hasattr(os, "startfile"):
+                    os.startfile(str(target.resolve()))
+                elif not QDesktopServices.openUrl(QUrl.fromLocalFile(str(target.resolve()))):
+                    webbrowser.open(target.resolve().as_uri())
+            else:
+                webbrowser.open("https://github.com/smin987/ImageOptimizer/blob/main/THIRD_PARTY_LICENSES.md")
+        except Exception as e:
+            print(f"[Warning] 라이선스 문서 열기 실패: {e}")
             self._open_repo()
 
 
@@ -1729,7 +1750,7 @@ class MainWindow(QWidget):
 
         self.lbl_desc_text = QLabel(
             "원본 이미지를 웹사이트 게시전용으로 최적화하여 경량화된 이미지로 변경해주는 도구입니다.\n"
-            "원본 이미지와 화질차이는 거의 없지만 최대 90% 정도의 이미지 용량을 줄일 수 있습니다. "
+            "원본 이미지와 화질차이는 거의 없지만 최대 90% 이상의 이미지 용량을 줄일 수 있습니다. "
             "('이미지 품질' 설정값에 따라 달라질 수 있음)\n"
             "※ 애니메이션 GIF도 WebP로 변환 가능"
         )
