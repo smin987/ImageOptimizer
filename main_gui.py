@@ -1978,8 +1978,9 @@ class MainWindow(QWidget):
         sns_top_row.addWidget(self.combo_sns_crop, 2)
         sns_main_layout.addLayout(sns_top_row)
 
-        sns_chips_row = QHBoxLayout()
-        sns_chips_row.setSpacing(4)
+        # 원클릭 퀵 칩 버튼 2줄 배치 (한 줄에 3개씩 정렬)
+        sns_chips_grid = QGridLayout()
+        sns_chips_grid.setSpacing(6)
 
         self.btn_sns_yt = QPushButton("🎬 유튜브 (1920×1080)")
         self.btn_sns_yt.setProperty("chip", "true")
@@ -2011,14 +2012,17 @@ class MainWindow(QWidget):
         self.btn_sns_blog.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_sns_blog.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(9))
 
-        sns_chips_row.addWidget(self.btn_sns_yt)
-        sns_chips_row.addWidget(self.btn_sns_standard)
-        sns_chips_row.addWidget(self.btn_sns_insta_3_4)
-        sns_chips_row.addWidget(self.btn_sns_insta_feed)
-        sns_chips_row.addWidget(self.btn_sns_reels)
-        sns_chips_row.addWidget(self.btn_sns_blog)
-        sns_chips_row.addStretch()
-        sns_main_layout.addLayout(sns_chips_row)
+        # 1행 (3개)
+        sns_chips_grid.addWidget(self.btn_sns_yt, 0, 0)
+        sns_chips_grid.addWidget(self.btn_sns_standard, 0, 1)
+        sns_chips_grid.addWidget(self.btn_sns_insta_3_4, 0, 2)
+
+        # 2행 (3개)
+        sns_chips_grid.addWidget(self.btn_sns_insta_feed, 1, 0)
+        sns_chips_grid.addWidget(self.btn_sns_reels, 1, 1)
+        sns_chips_grid.addWidget(self.btn_sns_blog, 1, 2)
+
+        sns_main_layout.addLayout(sns_chips_grid)
 
         self.sns_detail_widget.setVisible(False)
         resize_grid.addWidget(self.sns_detail_widget, 2, 1, 1, 4)
