@@ -1617,9 +1617,9 @@ class MainWindow(QWidget):
         root_layout = QVBoxLayout(self)
         root_layout.setContentsMargins(0, 0, 0, 0)
 
-        scroll_area = QScrollArea(self)
-        scroll_area.setWidgetResizable(True)
-        scroll_area.setFrameShape(QFrame.Shape.NoFrame)
+        self.scroll_area = QScrollArea(self)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
 
         container = QWidget()
         main_layout = QVBoxLayout(container)
@@ -2129,7 +2129,7 @@ class MainWindow(QWidget):
         self.table_log.setEditTriggers(
             QTableWidget.EditTrigger.NoEditTriggers
         )
-        self.table_log.setMinimumHeight(110)
+        self.table_log.setFixedHeight(160)
         self.table_log.setVisible(False)
         main_layout.addWidget(self.table_log)
 
@@ -2173,8 +2173,8 @@ class MainWindow(QWidget):
         main_layout.addWidget(self.stat_card)
         main_layout.addStretch()
 
-        scroll_area.setWidget(container)
-        root_layout.addWidget(scroll_area)
+        self.scroll_area.setWidget(container)
+        root_layout.addWidget(self.scroll_area)
 
         # 마지막으로 저장된 사용자 설정 불러오기 (기본값: 원본 크기 유지)
         self.load_settings()
@@ -2490,20 +2490,29 @@ class MainWindow(QWidget):
             return
         self.is_log_expanded = expanded
 
+        if not hasattr(self, "table_log"):
+            return
+
+        # 로그 테이블(160px) + 레이아웃 간격(10px) = 정확히 170px 높이 변화
+        table_h = self.table_log.height() if self.table_log.height() > 0 else 160
+        delta_h = table_h + 10
+
         if not self.is_log_expanded:
-            # 접기: 현재 로그 테이블 높이를 기록하고 창 하단을 줄임
-            log_h = self.table_log.height()
-            self.saved_log_height = max(log_h, 160)
+            # 접기: 로그 테이블을 숨기고 창 높이를 정확히 줄여 불필요한 공백 제거
             self.table_log.setVisible(False)
             if resize_window:
-                new_h = max(self.minimumHeight(), self.height() - self.saved_log_height)
+                new_h = max(self.minimumHeight(), self.height() - delta_h)
                 self.resize(self.width(), new_h)
         else:
-            # 펼치기: 로그 테이블을 표시하고 기억된 높이만큼 창 하단을 늘림
+            # 펼치기: 로그 테이블을 표시하고 필요한 만큼만 창을 늘려 대시보드 잘림 방지
             self.table_log.setVisible(True)
             if resize_window:
-                expand_h = getattr(self, "saved_log_height", 160)
-                self.resize(self.width(), self.height() + expand_h)
+                new_h = self.height() + delta_h
+                self.resize(self.width(), new_h)
+                # 혹시 작은 해상도 모니터에서도 최적화 성과 대시보드가 항상 완전하게 보이도록 보장
+                if hasattr(self, "scroll_area") and hasattr(self, "stat_card"):
+                    from PySide6.QtCore import QTimer
+                    QTimer.singleShot(60, lambda: self.scroll_area.ensureWidgetVisible(self.stat_card))
 
         self.update_log_toggle_button()
         self.save_settings()
