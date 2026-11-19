@@ -1380,7 +1380,7 @@ class AboutLicenseDialog(QDialog):
 
         # 상단 헤더
         header_layout = QHBoxLayout()
-        lbl_title = QLabel("Image Optimizer  <span style='font-size: 10pt; color: #38bdf8;'>v1.0.4</span>")
+        lbl_title = QLabel("Image Optimizer  <span style='font-size: 10pt; color: #38bdf8;'>v1.1.0</span>")
         lbl_title.setStyleSheet(
             "font-size: 14pt; font-weight: bold; color: #1e293b;"
             if theme == "light"
@@ -1634,7 +1634,7 @@ class MainWindow(QWidget):
         lbl_brand = QLabel("🚀 Image Optimizer")
         lbl_brand.setStyleSheet("font-size: 13pt; font-weight: bold; background: transparent;")
 
-        lbl_badge = QLabel("v1.0")
+        lbl_badge = QLabel("v1.1.0")
         lbl_badge.setStyleSheet("""
             background-color: rgba(37, 99, 235, 0.12);
             color: #2563eb;
