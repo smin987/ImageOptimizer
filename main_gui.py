@@ -1541,6 +1541,7 @@ class MainWindow(QWidget):
         self.last_output_dir: Optional[Path] = None
         self.current_theme = "light"  # 기본 테마: 라이트(기본)
         self.current_lang = "ko"      # 기본 언어: 한국어
+        self.lang = self.current_lang
         self.last_stat_result = None
         self.is_log_expanded = False       # 실시간 로그 접힘/펼침 상태 (기본값: 접힘)
         self.is_settings_expanded = False  # 변환 설정 접힘/펼침 상태 (기본값: 접힘)
@@ -1584,9 +1585,9 @@ class MainWindow(QWidget):
         self.btn_sponsor.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_sponsor.clicked.connect(self.open_sponsor_page)
 
-        self.btn_about = QPushButton(I18N[self.lang]["btn_about"])
+        self.btn_about = QPushButton(I18N[self.current_lang]["btn_about"])
         self.btn_about.setObjectName("btn_about")
-        self.btn_about.setToolTip(I18N[self.lang]["btn_about_tip"])
+        self.btn_about.setToolTip(I18N[self.current_lang]["btn_about_tip"])
         self.btn_about.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_about.clicked.connect(self.show_about_dialog)
 
@@ -2192,6 +2193,7 @@ class MainWindow(QWidget):
     def set_language(self, lang: str):
         """한국어('ko')와 영어('en') 간 UI 전체 다국어 즉각 전환"""
         self.current_lang = lang if lang in I18N else "ko"
+        self.lang = self.current_lang
         i18n = I18N[self.current_lang]
 
         # 0. 헤더 바 버튼 문구
@@ -2807,7 +2809,7 @@ class MainWindow(QWidget):
 
     def show_about_dialog(self):
         """앱 정보 및 오픈소스 라이선스 고지 대화상자 표시"""
-        dlg = AboutLicenseDialog(parent=self, theme=self.current_theme, lang=self.lang)
+        dlg = AboutLicenseDialog(parent=self, theme=self.current_theme, lang=self.current_lang)
         dlg.exec()
 
 
