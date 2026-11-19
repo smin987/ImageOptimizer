@@ -1589,8 +1589,8 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Image Optimizer")
-        self.resize(720, 680)
-        self.setMinimumWidth(720)   # 스크린샷 기준 가로 최소사이즈 고정 (720px 이하 축소 방지)
+        self.resize(769, 680)
+        self.setMinimumWidth(769)   # 가로 최소사이즈 고정 (769px 이하 축소 방지)
         self.setMinimumHeight(380)
 
         # 앱 아이콘 설정 (Windows 작업표시줄 및 창 좌측 상단)
@@ -2657,8 +2657,8 @@ class MainWindow(QWidget):
             saved_log_expanded = data.get("log_expanded", False)
             self.set_log_expanded(saved_log_expanded, resize_window=False)
 
-            # 7. 창 크기 복원 (가로 최소사이즈 720px 보장)
-            w = max(720, data.get("window_width", 720))
+            # 7. 창 크기 복원 (가로 최소사이즈 769px 보장)
+            w = max(769, data.get("window_width", 769))
             h = max(380, data.get("window_height", 680))
             self.resize(w, h)
         except Exception as e:
