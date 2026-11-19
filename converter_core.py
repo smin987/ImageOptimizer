@@ -20,15 +20,16 @@ SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".gif"}
 SNS_PRESETS = {
     "youtube_thumb": {"width": 1280, "height": 720, "label": "YouTube Thumbnail (16:9)"},
     "youtube_shorts": {"width": 1080, "height": 1920, "label": "YouTube Shorts / Reels (9:16)"},
+    "insta_portrait_3_4": {"width": 1080, "height": 1440, "label": "Instagram Portrait Feed (3:4 - 2026 최신)"},
+    "insta_portrait": {"width": 1080, "height": 1350, "label": "Instagram Classic Portrait (4:5)"},
     "insta_feed": {"width": 1080, "height": 1080, "label": "Instagram Square Feed (1:1)"},
-    "insta_portrait": {"width": 1080, "height": 1350, "label": "Instagram Portrait Feed (4:5)"},
     "insta_story": {"width": 1080, "height": 1920, "label": "Instagram Story / Reels (9:16)"},
     "blog_content": {"width": 1200, "height": None, "label": "Blog Content Width (1200px)"},
     "blog_thumb": {"width": 1080, "height": 1080, "label": "Blog Cover (1:1)"},
     "x_feed": {"width": 1200, "height": 675, "label": "X / Threads Feed (16:9)"},
 }
 SNS_PRESET_KEYS = list(SNS_PRESETS.keys())
-SNS_CROP_MODE_KEYS = ["fit", "contain", "cover"]
+SNS_CROP_MODE_KEYS = ["fit", "contain", "contain_black", "cover"]
 
 
 @dataclass
@@ -166,17 +167,26 @@ def apply_resize(img: Image.Image, options: ConversionOptions) -> Image.Image:
             return ImageOps.contain(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
 
         elif crop_mode == "contain":
-            # 빈공간 흰색 레터박스 (잘림 없음, 여백 채우기)
+            # 빈공간 흰색 레터박스 (잘림 없음, 흰색 여백 채우기)
             contained = ImageOps.contain(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
-            if img.mode in ("RGBA", "LA"):
-                canvas = Image.new("RGBA", (target_w, target_h), (0, 0, 0, 0))
-                canvas.paste(contained, ((target_w - contained.width) // 2, (target_h - contained.height) // 2))
-                return canvas
+            bg_color = (255, 255, 255)
+            canvas = Image.new("RGB", (target_w, target_h), bg_color)
+            if contained.mode in ("RGBA", "LA"):
+                canvas.paste(contained, ((target_w - contained.width) // 2, (target_h - contained.height) // 2), mask=contained.convert("RGBA").getchannel("A"))
             else:
-                bg_color = options.flatten_background if options.remove_alpha else (255, 255, 255)
-                canvas = Image.new("RGB", (target_w, target_h), bg_color)
                 canvas.paste(contained, ((target_w - contained.width) // 2, (target_h - contained.height) // 2))
-                return canvas
+            return canvas
+
+        elif crop_mode == "contain_black":
+            # 빈공간 검은색 레터박스 (잘림 없음, 검은색 여백 채우기)
+            contained = ImageOps.contain(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
+            bg_color = (0, 0, 0)
+            canvas = Image.new("RGB", (target_w, target_h), bg_color)
+            if contained.mode in ("RGBA", "LA"):
+                canvas.paste(contained, ((target_w - contained.width) // 2, (target_h - contained.height) // 2), mask=contained.convert("RGBA").getchannel("A"))
+            else:
+                canvas.paste(contained, ((target_w - contained.width) // 2, (target_h - contained.height) // 2))
+            return canvas
 
         elif crop_mode == "cover":
             # 스마트 중앙 맞춤 (화면 꽉 채우기, 잘림 발생)
