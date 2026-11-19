@@ -60,6 +60,8 @@ In addition to static formats (`PNG`, `JPG`, `BMP`, `TIFF`, etc.), it fully supp
   - **Keep Original Size (100%)**: Pure format compression without resolution changes
 - 🎨 **Alpha Channel (Transparency) Preservation**
   - Retain 100% transparent backgrounds in WebP or optionally flatten onto solid white
+- 🌈 **Wide Gamut (Display P3 / Adobe RGB) to sRGB Auto-Color Transform**
+  - Powered by LittleCMS, automatically maps wide-gamut pixels into standard sRGB space, ensuring **100% true-to-life colors without washed-out hues** across all web browsers, monitors, and social platforms (Instagram, Twitter/X, KakaoTalk)
 - 🌐 **One-Click Bilingual UI**
   - Instant live toggle between **English** and **한국어 (Korean)** with persistent preferences
 - 🌗 **Dark Mode & Light Mode**
