@@ -46,6 +46,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QRadioButton,
     QScrollArea,
+    QSizePolicy,
     QSlider,
     QSpinBox,
     QTableWidget,
@@ -1969,24 +1970,31 @@ class MainWindow(QWidget):
         sns_main_layout.setContentsMargins(0, 4, 0, 0)
         sns_main_layout.setSpacing(6)
 
-        sns_top_row = QHBoxLayout()
+        # 1행: 플랫폼 선택 (전체 가로폭 활용, 라벨 너비 65px 통일)
+        sns_platform_row = QHBoxLayout()
+        sns_platform_row.setSpacing(6)
         self.lbl_sns_preset = QLabel("플랫폼:")
-        self.lbl_sns_preset.setFixedWidth(50)
+        self.lbl_sns_preset.setFixedWidth(65)
         self.combo_sns_preset = QComboBox()
+        self.combo_sns_preset.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
         self.combo_sns_preset.addItems(I18N[self.current_lang]["sns_presets"])
+        sns_platform_row.addWidget(self.lbl_sns_preset)
+        sns_platform_row.addWidget(self.combo_sns_preset)
+        sns_main_layout.addLayout(sns_platform_row)
 
+        # 2행: 맞춤 방식 선택 (전체 가로폭 활용, 라벨 너비 65px 통일)
+        sns_crop_row = QHBoxLayout()
+        sns_crop_row.setSpacing(6)
         self.lbl_sns_crop = QLabel("맞춤 방식:")
         self.lbl_sns_crop.setFixedWidth(65)
         self.combo_sns_crop = QComboBox()
+        self.combo_sns_crop.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
         self.combo_sns_crop.addItems(I18N[self.current_lang]["sns_crop_modes"])
+        sns_crop_row.addWidget(self.lbl_sns_crop)
+        sns_crop_row.addWidget(self.combo_sns_crop)
+        sns_main_layout.addLayout(sns_crop_row)
 
-        sns_top_row.addWidget(self.lbl_sns_preset)
-        sns_top_row.addWidget(self.combo_sns_preset, 3)
-        sns_top_row.addWidget(self.lbl_sns_crop)
-        sns_top_row.addWidget(self.combo_sns_crop, 2)
-        sns_main_layout.addLayout(sns_top_row)
-
-        # 원클릭 퀵 칩 버튼 2줄 배치 (한 줄에 3개씩 정렬)
+        # 원클릭 퀵 칩 버튼 2줄 배치 (한 줄에 3개씩 균등 분할)
         sns_chips_grid = QGridLayout()
         sns_chips_grid.setSpacing(6)
 
@@ -2021,6 +2029,10 @@ class MainWindow(QWidget):
         self.btn_sns_blog.setProperty("chip", "true")
         self.btn_sns_blog.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_sns_blog.clicked.connect(lambda: self.combo_sns_preset.setCurrentIndex(9))
+
+        for btn in (self.btn_sns_yt, self.btn_sns_standard, self.btn_sns_insta_feed,
+                    self.btn_sns_insta_3_4, self.btn_sns_reels, self.btn_sns_blog):
+            btn.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
 
         # 1행 (3개): 유튜브(1920×1080), SNS표준(1080×1350), 정사각형(1080×1080)
         sns_chips_grid.addWidget(self.btn_sns_yt, 0, 0)
@@ -2621,6 +2633,12 @@ class MainWindow(QWidget):
                 resize_idx = data.get("resize_mode_index", 0)
                 self.combo_resize_mode.setCurrentIndex(resize_idx)
                 self.on_resize_mode_changed(resize_idx)
+                if resize_idx == 1 and hasattr(self, "sns_detail_widget"):
+                    self._current_sub_h = self.sns_detail_widget.sizeHint().height() + 6
+                elif resize_idx in (2, 3) and hasattr(self, "resize_detail_widget"):
+                    self._current_sub_h = self.resize_detail_widget.sizeHint().height() + 6
+                else:
+                    self._current_sub_h = 0
 
                 self.spin_max_width.setValue(data.get("max_width", 1920))
                 self.spin_scale_percent.setValue(data.get("scale_percent", 50))
@@ -2708,13 +2726,6 @@ class MainWindow(QWidget):
         is_max_w = index == 2
         is_scale = index == 3
 
-        # 설정 패널이 펼쳐져 있을 때 이전 레이아웃 높이 측정
-        old_h = 0
-        has_body = hasattr(self, "settings_body") and self.settings_body is not None
-        if has_body and self.settings_body.layout() is not None:
-            self.settings_body.layout().activate()
-            old_h = self.settings_body.sizeHint().height()
-
         if hasattr(self, "resize_detail_widget"):
             self.resize_detail_widget.setVisible(is_max_w or is_scale)
 
@@ -2730,18 +2741,25 @@ class MainWindow(QWidget):
         if hasattr(self, "sns_detail_widget"):
             self.sns_detail_widget.setVisible(is_sns)
 
-        # 위젯 가시성 변경 후 새로운 레이아웃 높이 계산 및 창 높이 동적 조절
-        if has_body and self.settings_body.layout() is not None:
-            self.settings_body.layout().activate()
-            new_h = self.settings_body.sizeHint().height()
-            delta = new_h - old_h
-            self.saved_settings_height = max(new_h, 240)
+        # 각 모드별 하위 설정이 차지하는 추가 높이 계산
+        target_sub_h = 0
+        if is_sns and hasattr(self, "sns_detail_widget"):
+            target_sub_h = self.sns_detail_widget.sizeHint().height() + 6
+        elif (is_max_w or is_scale) and hasattr(self, "resize_detail_widget"):
+            target_sub_h = self.resize_detail_widget.sizeHint().height() + 6
 
-            # 설정 패널이 펼쳐져 있고 초기 설정 로딩 중이 아닐 때만 창 높이를 조절하여 기능 밀림/공백 방지
-            if getattr(self, "is_settings_expanded", False) and not getattr(self, "_is_loading_settings", False):
-                if delta != 0:
-                    new_win_h = max(self.minimumHeight(), self.height() + delta)
-                    self.resize(self.width(), new_win_h)
+        prev_sub_h = getattr(self, "_current_sub_h", 0)
+        delta = target_sub_h - prev_sub_h
+        self._current_sub_h = target_sub_h
+
+        if hasattr(self, "settings_body"):
+            self.saved_settings_height = max(self.settings_body.sizeHint().height(), 240)
+
+        # 설정 패널이 펼쳐져 있고 초기 설정 로딩 중이 아닐 때만 창 높이를 조절하여 기능 밀림/공백 방지
+        if getattr(self, "is_settings_expanded", False) and not getattr(self, "_is_loading_settings", False):
+            if delta != 0:
+                new_win_h = max(self.minimumHeight(), self.height() + delta)
+                self.resize(self.width(), new_win_h)
 
     def on_dest_custom_toggled(self, checked: bool):
         self.btn_browse_dest.setVisible(checked)
