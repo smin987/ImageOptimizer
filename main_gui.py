@@ -3,11 +3,15 @@ Image Optimizer - 크로스 플랫폼 GUI 메인 애플리케이션
 Windows 11, Linux Debian, macOS 지원 (PySide6)
 """
 
+from datetime import datetime
 import json
 import os
 from pathlib import Path
+import re
 import sys
 from typing import Optional
+import urllib.request
+import webbrowser
 
 # 4K / HiDPI 고해상도 모니터 자동 스케일링 환경 변수 활성화
 os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "1"
@@ -77,6 +81,36 @@ def get_resource_path(relative_path: str) -> Path:
 
 SETTINGS_FILE = pa.get_app_config_dir() / "settings.json"
 
+APP_VERSION = "v1.1.0"
+GITHUB_REPO = "smin987/ImageOptimizer"
+LATEST_RELEASE_URL = f"https://github.com/{GITHUB_REPO}/releases/latest"
+LATEST_RELEASE_API = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
+
+def parse_version_tuple(v_str: str) -> tuple:
+    """'v1.2.3' 형태의 버전 문자열을 (1, 2, 3) 숫자 튜플로 파싱하여 비교 가능하게 변환"""
+    nums = re.findall(r"\d+", v_str)
+    return tuple(map(int, nums)) if nums else (0, 0, 0)
+
+class VersionCheckWorker(QThread):
+    """GitHub Releases 최신 버전을 백그라운드에서 1회 비동기 조회하는 워커 (UI 멈춤 0ms)"""
+    version_checked = Signal(str)
+
+    def run(self):
+        try:
+            req = urllib.request.Request(
+                LATEST_RELEASE_API,
+                headers={"User-Agent": "ImageOptimizer-App"}
+            )
+            with urllib.request.urlopen(req, timeout=3.0) as resp:
+                if resp.status == 200:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    tag = data.get("tag_name", "")
+                    self.version_checked.emit(tag)
+                    return
+        except Exception:
+            pass
+        self.version_checked.emit("")
+
 I18N = {
     "ko": {
         "theme_dark": "🌙 다크 모드로 전환",
@@ -86,6 +120,9 @@ I18N = {
         "btn_sponsor_tip": "GitHub Sponsors를 통해 개발자를 후원하고 지속적인 업데이트를 응원합니다.",
         "btn_about": "ℹ️ 정보 / 라이선스",
         "btn_about_tip": "앱 버전, 저작권 및 제3자 오픈소스 라이선스 정보를 확인합니다.",
+        "badge_latest_tip": "최신 버전을 사용 중입니다. ({ver})",
+        "badge_update_text": "{ver} 업데이트 ✨",
+        "badge_update_tip": "새로운 버전({ver})이 출시되었습니다! 클릭하여 다운로드 페이지 열기",
         "about_dlg_title": "정보 및 오픈소스 라이선스",
         "about_dlg_btn_repo": "🌐 GitHub 저장소",
         "about_dlg_btn_file": "📄 라이선스 문서 열기",
@@ -215,6 +252,9 @@ I18N = {
         "btn_sponsor_tip": "Support the developer on GitHub Sponsors to keep this tool growing.",
         "btn_about": "ℹ️ About / Licenses",
         "btn_about_tip": "View app version, copyright, and third-party open source licenses.",
+        "badge_latest_tip": "You are using the latest version. ({ver})",
+        "badge_update_text": "{ver} Update ✨",
+        "badge_update_tip": "A new version ({ver}) is available! Click to open download page",
         "about_dlg_title": "About & Open Source Licenses",
         "about_dlg_btn_repo": "🌐 GitHub Repository",
         "about_dlg_btn_file": "📄 Open Licenses Document",
@@ -1610,6 +1650,12 @@ class MainWindow(QWidget):
         self.is_settings_expanded = False  # 변환 설정 접힘/펼침 상태 (기본값: 접힘)
         self._is_loading_settings = True   # 초기 UI 구성 및 설정 로딩 중 플래그
 
+        self.latest_remote_version = ""
+        self.has_new_version = False
+        self.last_version_check_date = ""
+        self.latest_cached_version = ""
+        self.version_worker: Optional[VersionCheckWorker] = None
+
         self.init_ui()
 
     def init_ui(self):
@@ -1634,15 +1680,10 @@ class MainWindow(QWidget):
         lbl_brand = QLabel("🚀 Image Optimizer")
         lbl_brand.setStyleSheet("font-size: 13pt; font-weight: bold; background: transparent;")
 
-        lbl_badge = QLabel("v1.1.0")
-        lbl_badge.setStyleSheet("""
-            background-color: rgba(37, 99, 235, 0.12);
-            color: #2563eb;
-            font-size: 8.5pt;
-            font-weight: bold;
-            padding: 2px 7px;
-            border-radius: 4px;
-        """)
+        self.btn_badge = QPushButton(APP_VERSION)
+        self.btn_badge.setObjectName("btn_badge")
+        self.btn_badge.clicked.connect(self.on_badge_clicked)
+        self.update_version_badge_ui()
 
         self.btn_sponsor = QPushButton("💖 후원하기")
         self.btn_sponsor.setObjectName("btn_sponsor")
@@ -1666,7 +1707,7 @@ class MainWindow(QWidget):
         self.btn_theme_toggle.clicked.connect(self.toggle_theme)
 
         header_bar.addWidget(lbl_brand)
-        header_bar.addWidget(lbl_badge)
+        header_bar.addWidget(self.btn_badge)
         header_bar.addStretch()
         header_bar.addWidget(self.btn_sponsor)
         header_bar.addWidget(self.btn_about)
@@ -2179,6 +2220,9 @@ class MainWindow(QWidget):
         # 마지막으로 저장된 사용자 설정 불러오기 (기본값: 원본 크기 유지)
         self.load_settings()
 
+        # 1일 1회 GitHub 최신 버전 비동기 확인 (0ms UI 멈춤 방지)
+        self.check_for_updates()
+
     def set_theme(self, theme: str):
         """라이트(기본) 테마와 다크 테마 간 UI 스타일 전환"""
         self.current_theme = theme
@@ -2330,6 +2374,8 @@ class MainWindow(QWidget):
 
         if hasattr(self, "drop_area"):
             self.drop_area.set_theme(theme)
+        if hasattr(self, "btn_badge"):
+            self.update_version_badge_ui()
 
     def toggle_theme(self):
         """다크/라이트 테마 즉각 토글"""
@@ -2443,6 +2489,10 @@ class MainWindow(QWidget):
         # 5. 하단 대시보드 카드
         self.lbl_stat_title.setText(i18n["stat_title"])
         self.update_stat_dashboard()
+
+        # 6. 헤더 버전 배지 문구/툴팁 갱신
+        if hasattr(self, "btn_badge"):
+            self.update_version_badge_ui()
 
     def set_settings_expanded(self, expanded: bool, resize_window: bool = True):
         """변환 설정 패널 접힘/펼침 상태 명시적 설정 및 창 높이 동적 조절"""
@@ -2691,6 +2741,10 @@ class MainWindow(QWidget):
                 w = max(769, data.get("window_width", 769))
                 h = max(380, data.get("window_height", 680))
                 self.resize(w, h)
+
+                # 8. GitHub 버전 확인 캐시 복원
+                self.last_version_check_date = data.get("last_version_check_date", "")
+                self.latest_cached_version = data.get("latest_cached_version", "")
             except Exception as e:
                 print(f"[Warning] 설정 불러오기 실패: {e}")
         finally:
@@ -2717,6 +2771,8 @@ class MainWindow(QWidget):
                 "log_expanded": getattr(self, "is_log_expanded", False),
                 "window_width": self.width(),
                 "window_height": self.height(),
+                "last_version_check_date": getattr(self, "last_version_check_date", ""),
+                "latest_cached_version": getattr(self, "latest_cached_version", ""),
             }
             SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
             with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
@@ -3055,6 +3111,135 @@ class MainWindow(QWidget):
         """앱 정보 및 오픈소스 라이선스 고지 대화상자 표시"""
         dlg = AboutLicenseDialog(parent=self, theme=self.current_theme, lang=self.current_lang)
         dlg.exec()
+
+    def on_badge_clicked(self):
+        """버전 배지 클릭 시: 신버전이 있다면 GitHub Releases 다운로드 페이지 열기"""
+        if self.has_new_version:
+            try:
+                from PySide6.QtGui import QDesktopServices
+                from PySide6.QtCore import QUrl
+                if not QDesktopServices.openUrl(QUrl(LATEST_RELEASE_URL)):
+                    webbrowser.open(LATEST_RELEASE_URL)
+            except Exception:
+                webbrowser.open(LATEST_RELEASE_URL)
+        else:
+            # 최신 버전일 때 클릭하면 정보/라이선스 대화상자 표시
+            self.show_about_dialog()
+
+    def update_version_badge_ui(self):
+        """신버전 여부 및 현재 테마/언어에 따른 배지 비주얼 동적 갱신"""
+        if not hasattr(self, "btn_badge"):
+            return
+        theme = getattr(self, "current_theme", "light")
+        lang = getattr(self, "current_lang", "ko")
+        i18n = I18N.get(lang, I18N["ko"])
+
+        if self.has_new_version:
+            # 1. 신버전 발견 모드: 파란색 버튼 배지 (강조 + 포인팅 커서 + 원클릭 링크)
+            self.btn_badge.setCursor(Qt.CursorShape.PointingHandCursor)
+            text_fmt = i18n.get("badge_update_text", "{ver} 업데이트 ✨")
+            tip_fmt = i18n.get("badge_update_tip", "새로운 버전({ver})이 출시되었습니다! 클릭하여 다운로드 페이지 열기")
+            self.btn_badge.setText(text_fmt.format(ver=self.latest_remote_version))
+            self.btn_badge.setToolTip(tip_fmt.format(ver=self.latest_remote_version))
+
+            if theme == "light":
+                self.btn_badge.setStyleSheet("""
+                    QPushButton#btn_badge {
+                        background-color: rgba(37, 99, 235, 0.12);
+                        color: #2563eb;
+                        font-size: 8.5pt;
+                        font-weight: bold;
+                        padding: 2px 8px;
+                        border: 1px solid rgba(37, 99, 235, 0.28);
+                        border-radius: 4px;
+                    }
+                    QPushButton#btn_badge:hover {
+                        background-color: rgba(37, 99, 235, 0.22);
+                        border-color: #2563eb;
+                        color: #1d4ed8;
+                    }
+                """)
+            else:
+                self.btn_badge.setStyleSheet("""
+                    QPushButton#btn_badge {
+                        background-color: rgba(56, 189, 248, 0.15);
+                        color: #38bdf8;
+                        font-size: 8.5pt;
+                        font-weight: bold;
+                        padding: 2px 8px;
+                        border: 1px solid rgba(56, 189, 248, 0.35);
+                        border-radius: 4px;
+                    }
+                    QPushButton#btn_badge:hover {
+                        background-color: rgba(56, 189, 248, 0.25);
+                        border-color: #38bdf8;
+                        color: #7dd3fc;
+                    }
+                """)
+        else:
+            # 2. 최신 버전 모드: 배경 없이 단정한 텍스트만 표시
+            self.btn_badge.setCursor(Qt.CursorShape.PointingHandCursor)
+            self.btn_badge.setText(APP_VERSION)
+            tip_fmt = i18n.get("badge_latest_tip", "최신 버전을 사용 중입니다. ({ver})")
+            self.btn_badge.setToolTip(tip_fmt.format(ver=APP_VERSION))
+
+            text_col = "#64748b" if theme == "light" else "#94a3b8"
+            hover_col = "#2563eb" if theme == "light" else "#38bdf8"
+            self.btn_badge.setStyleSheet(f"""
+                QPushButton#btn_badge {{
+                    background: transparent;
+                    color: {text_col};
+                    font-size: 8.5pt;
+                    font-weight: 600;
+                    padding: 2px 5px;
+                    border: none;
+                }}
+                QPushButton#btn_badge:hover {{
+                    color: {hover_col};
+                    text-decoration: underline;
+                }}
+            """)
+
+    def check_for_updates(self):
+        """1일 1회 주기 GitHub 최신 릴리즈 비동기 확인"""
+        today_str = datetime.now().strftime("%Y-%m-%d")
+
+        # 오늘 이미 확인했고 캐시된 버전 정보가 있다면 네트워크 쿼리 생략
+        if getattr(self, "last_version_check_date", "") == today_str and getattr(self, "latest_cached_version", ""):
+            self.apply_version_check_result(self.latest_cached_version)
+            return
+
+        # 오늘 첫 실행이거나 캐시가 없으면 백그라운드 스레드로 비동기 확인 (0ms 렌더링 블로킹 방지)
+        self.version_worker = VersionCheckWorker()
+        self.version_worker.version_checked.connect(self.on_version_checked)
+        self.version_worker.start()
+
+    def on_version_checked(self, remote_ver: str):
+        """GitHub 비동기 쿼리 완료 콜백"""
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        if remote_ver:
+            self.last_version_check_date = today_str
+            self.latest_cached_version = remote_ver
+            self.apply_version_check_result(remote_ver)
+            # 설정 파일에 갱신 내역 저장
+            self.save_settings()
+        else:
+            # 네트워크 실패 또는 오프라인: 기존 캐시 적용 또는 최신 상태 유지
+            if getattr(self, "latest_cached_version", ""):
+                self.apply_version_check_result(self.latest_cached_version)
+            else:
+                self.has_new_version = False
+                self.update_version_badge_ui()
+
+    def apply_version_check_result(self, remote_ver: str):
+        """버전 파싱 및 대소 비교 후 UI 반영"""
+        if remote_ver and parse_version_tuple(remote_ver) > parse_version_tuple(APP_VERSION):
+            self.has_new_version = True
+            self.latest_remote_version = remote_ver
+        else:
+            self.has_new_version = False
+            self.latest_remote_version = ""
+        self.update_version_badge_ui()
 
 
 def main():
