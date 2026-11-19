@@ -1607,6 +1607,7 @@ class MainWindow(QWidget):
         self.last_stat_result = None
         self.is_log_expanded = False       # 실시간 로그 접힘/펼침 상태 (기본값: 접힘)
         self.is_settings_expanded = False  # 변환 설정 접힘/펼침 상태 (기본값: 접힘)
+        self._is_loading_settings = True   # 초기 UI 구성 및 설정 로딩 중 플래그
 
         self.init_ui()
 
@@ -2581,88 +2582,92 @@ class MainWindow(QWidget):
 
     def load_settings(self):
         """저장된 사용자 설정 불러오기 (없으면 기본값 적용)"""
-        # 기본 언어 및 테마 적용
-        self.set_language("ko")
-        self.set_theme("light")
-
-        # 기본값: 해상도 조절은 '선택하세요' (index 0)
-        self.combo_resize_mode.setCurrentIndex(0)
-        self.on_resize_mode_changed(0)
-
-        if not SETTINGS_FILE.exists():
-            return
-
+        self._is_loading_settings = True
         try:
-            with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
+            # 기본 언어 및 테마 적용
+            self.set_language("ko")
+            self.set_theme("light")
 
-            # 0. 언어 복원 (기본값: 'ko')
-            saved_lang = data.get("lang", "ko")
-            self.set_language(saved_lang)
+            # 기본값: 해상도 조절은 '선택하세요' (index 0)
+            self.combo_resize_mode.setCurrentIndex(0)
+            self.on_resize_mode_changed(0)
 
-            # 0-1. 테마 복원 (기본값: 'light')
-            saved_theme = data.get("theme", "light")
-            self.set_theme(saved_theme)
+            if not SETTINGS_FILE.exists():
+                return
 
-            # 1. 출력 포맷 복원
-            fmt_id = data.get("format_id", 1)
-            btn = self.fmt_group.button(fmt_id)
-            if btn:
-                btn.setChecked(True)
+            try:
+                with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
+                    data = json.load(f)
 
-            # 2. 이미지 품질 복원
-            q = data.get("quality", 90)
-            self.slider_quality.setValue(q)
+                # 0. 언어 복원 (기본값: 'ko')
+                saved_lang = data.get("lang", "ko")
+                self.set_language(saved_lang)
 
-            # 3. 해상도 조절 모드 및 수치 복원 (기본값: 0)
-            resize_idx = data.get("resize_mode_index", 0)
-            self.combo_resize_mode.setCurrentIndex(resize_idx)
-            self.on_resize_mode_changed(resize_idx)
+                # 0-1. 테마 복원 (기본값: 'light')
+                saved_theme = data.get("theme", "light")
+                self.set_theme(saved_theme)
 
-            self.spin_max_width.setValue(data.get("max_width", 1920))
-            self.spin_scale_percent.setValue(data.get("scale_percent", 50))
-            if hasattr(self, "combo_sns_preset"):
-                self.combo_sns_preset.setCurrentIndex(data.get("sns_preset_index", 0))
-            if hasattr(self, "combo_sns_crop"):
-                self.combo_sns_crop.setCurrentIndex(data.get("sns_crop_mode_index", 0))
+                # 1. 출력 포맷 복원
+                fmt_id = data.get("format_id", 1)
+                btn = self.fmt_group.button(fmt_id)
+                if btn:
+                    btn.setChecked(True)
 
-            custom_dir = data.get("custom_dir", "")
-            if custom_dir and Path(custom_dir).exists():
-                self.custom_dir_path = Path(custom_dir)
-                self.radio_dest_custom.setText(I18N[self.current_lang]["dest_custom"])
-                self.radio_dest_custom.setToolTip(f"선택된 경로: {self.custom_dir_path}" if self.current_lang == "ko" else f"Selected path: {self.custom_dir_path}")
-                self.btn_browse_dest.setToolTip(f"현재 선택된 폴더: {self.custom_dir_path}" if self.current_lang == "ko" else f"Selected folder: {self.custom_dir_path}")
-            else:
-                self.custom_dir_path = None
-                self.radio_dest_custom.setText(I18N[self.current_lang]["dest_custom"])
+                # 2. 이미지 품질 복원
+                q = data.get("quality", 90)
+                self.slider_quality.setValue(q)
 
-            # 4. 저장 위치 복원
-            dest_id = data.get("dest_id", 1)
-            if dest_id == 3 and not self.custom_dir_path:
-                dest_id = 1
-            dest_btn = self.dest_group.button(dest_id)
-            if dest_btn:
-                dest_btn.setChecked(True)
+                # 3. 해상도 조절 모드 및 수치 복원 (기본값: 0)
+                resize_idx = data.get("resize_mode_index", 0)
+                self.combo_resize_mode.setCurrentIndex(resize_idx)
+                self.on_resize_mode_changed(resize_idx)
 
-            # 5. 체크박스 옵션 복원
-            self.chk_remove_alpha.setChecked(data.get("remove_alpha", False))
-            self.chk_delete_orig.blockSignals(True)
-            self.chk_delete_orig.setChecked(data.get("delete_orig", False))
-            self.chk_delete_orig.blockSignals(False)
+                self.spin_max_width.setValue(data.get("max_width", 1920))
+                self.spin_scale_percent.setValue(data.get("scale_percent", 50))
+                if hasattr(self, "combo_sns_preset"):
+                    self.combo_sns_preset.setCurrentIndex(data.get("sns_preset_index", 0))
+                if hasattr(self, "combo_sns_crop"):
+                    self.combo_sns_crop.setCurrentIndex(data.get("sns_crop_mode_index", 0))
 
-            # 6. 접힘/펼침 상태 복원 (기본값: False 접힘)
-            saved_settings_expanded = data.get("settings_expanded", False)
-            self.set_settings_expanded(saved_settings_expanded, resize_window=False)
+                custom_dir = data.get("custom_dir", "")
+                if custom_dir and Path(custom_dir).exists():
+                    self.custom_dir_path = Path(custom_dir)
+                    self.radio_dest_custom.setText(I18N[self.current_lang]["dest_custom"])
+                    self.radio_dest_custom.setToolTip(f"선택된 경로: {self.custom_dir_path}" if self.current_lang == "ko" else f"Selected path: {self.custom_dir_path}")
+                    self.btn_browse_dest.setToolTip(f"현재 선택된 폴더: {self.custom_dir_path}" if self.current_lang == "ko" else f"Selected folder: {self.custom_dir_path}")
+                else:
+                    self.custom_dir_path = None
+                    self.radio_dest_custom.setText(I18N[self.current_lang]["dest_custom"])
 
-            saved_log_expanded = data.get("log_expanded", False)
-            self.set_log_expanded(saved_log_expanded, resize_window=False)
+                # 4. 저장 위치 복원
+                dest_id = data.get("dest_id", 1)
+                if dest_id == 3 and not self.custom_dir_path:
+                    dest_id = 1
+                dest_btn = self.dest_group.button(dest_id)
+                if dest_btn:
+                    dest_btn.setChecked(True)
 
-            # 7. 창 크기 복원 (가로 최소사이즈 769px 보장)
-            w = max(769, data.get("window_width", 769))
-            h = max(380, data.get("window_height", 680))
-            self.resize(w, h)
-        except Exception as e:
-            print(f"[Warning] 설정 불러오기 실패: {e}")
+                # 5. 체크박스 옵션 복원
+                self.chk_remove_alpha.setChecked(data.get("remove_alpha", False))
+                self.chk_delete_orig.blockSignals(True)
+                self.chk_delete_orig.setChecked(data.get("delete_orig", False))
+                self.chk_delete_orig.blockSignals(False)
+
+                # 6. 접힘/펼침 상태 복원 (기본값: False 접힘)
+                saved_settings_expanded = data.get("settings_expanded", False)
+                self.set_settings_expanded(saved_settings_expanded, resize_window=False)
+
+                saved_log_expanded = data.get("log_expanded", False)
+                self.set_log_expanded(saved_log_expanded, resize_window=False)
+
+                # 7. 창 크기 복원 (가로 최소사이즈 769px 보장)
+                w = max(769, data.get("window_width", 769))
+                h = max(380, data.get("window_height", 680))
+                self.resize(w, h)
+            except Exception as e:
+                print(f"[Warning] 설정 불러오기 실패: {e}")
+        finally:
+            self._is_loading_settings = False
 
     def save_settings(self):
         """현재 UI 설정값을 JSON 파일로 영구 저장"""
@@ -2703,6 +2708,13 @@ class MainWindow(QWidget):
         is_max_w = index == 2
         is_scale = index == 3
 
+        # 설정 패널이 펼쳐져 있을 때 이전 레이아웃 높이 측정
+        old_h = 0
+        has_body = hasattr(self, "settings_body") and self.settings_body is not None
+        if has_body and self.settings_body.layout() is not None:
+            self.settings_body.layout().activate()
+            old_h = self.settings_body.sizeHint().height()
+
         if hasattr(self, "resize_detail_widget"):
             self.resize_detail_widget.setVisible(is_max_w or is_scale)
 
@@ -2717,6 +2729,19 @@ class MainWindow(QWidget):
 
         if hasattr(self, "sns_detail_widget"):
             self.sns_detail_widget.setVisible(is_sns)
+
+        # 위젯 가시성 변경 후 새로운 레이아웃 높이 계산 및 창 높이 동적 조절
+        if has_body and self.settings_body.layout() is not None:
+            self.settings_body.layout().activate()
+            new_h = self.settings_body.sizeHint().height()
+            delta = new_h - old_h
+            self.saved_settings_height = max(new_h, 240)
+
+            # 설정 패널이 펼쳐져 있고 초기 설정 로딩 중이 아닐 때만 창 높이를 조절하여 기능 밀림/공백 방지
+            if getattr(self, "is_settings_expanded", False) and not getattr(self, "_is_loading_settings", False):
+                if delta != 0:
+                    new_win_h = max(self.minimumHeight(), self.height() + delta)
+                    self.resize(self.width(), new_win_h)
 
     def on_dest_custom_toggled(self, checked: bool):
         self.btn_browse_dest.setVisible(checked)
