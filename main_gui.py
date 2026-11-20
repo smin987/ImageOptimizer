@@ -1760,11 +1760,7 @@ class MainWindow(QWidget):
         desc_layout.addWidget(self.lbl_desc_text, 1)
         main_layout.addWidget(self.desc_card)
 
-        # 1. 파일 상태 알림 라벨 및 파일 추가 버튼 툴바 (드롭 영역 상단 배치)
-        self.lbl_queue_status = QLabel("최적화할 이미지 또는 폴더를 드래그하거나 버튼으로 추가하세요.")
-        self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 9.5pt; padding: 2px 4px;")
-        main_layout.addWidget(self.lbl_queue_status)
-
+        # 1. 파일 추가 버튼 툴바
         file_btn_layout = QHBoxLayout()
         self.btn_add_files = QPushButton("📄 파일 추가")
         self.btn_add_files.clicked.connect(self.choose_files)
@@ -1807,7 +1803,12 @@ class MainWindow(QWidget):
         self.drop_area.files_dropped.connect(self.on_files_added)
         main_layout.addWidget(self.drop_area)
 
-        # 2. 작업 액션 버튼 바 ([변환 시작] [작업 중단] [결과 열기] 1:1:1 균등 배치)
+        # 3. 파일 상태 알림 라벨 (드롭 영역 바로 아래 배치)
+        self.lbl_queue_status = QLabel("최적화할 이미지 또는 폴더를 드래그하거나 버튼으로 추가하세요.")
+        self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 9.5pt; padding: 2px 4px;")
+        main_layout.addWidget(self.lbl_queue_status)
+
+        # 4. 작업 액션 버튼 바 ([변환 시작] [작업 중단] [결과 열기] 1:1:1 균등 배치)
         ctrl_layout = QHBoxLayout()
         ctrl_layout.setSpacing(10)
 
