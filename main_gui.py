@@ -1793,18 +1793,18 @@ class MainWindow(QWidget):
         self.btn_queue_count.setStyleSheet("""
             QPushButton {
                 background-color: transparent;
-                color: #4da3ff;
+                color: #ffb74d;
                 font-weight: bold;
                 font-size: 11.5pt;
-                border: 1px dashed #3a4a6b;
+                border: 1px dashed #ffb74d;
                 border-radius: 6px;
                 padding: 4px 10px;
                 text-decoration: underline;
             }
             QPushButton:hover {
-                color: #80c0ff;
-                background-color: #1e2638;
-                border: 1px solid #0070f3;
+                color: #ffe0b2;
+                background-color: #2a2015;
+                border: 1px solid #f59e0b;
             }
         """)
         self.btn_queue_count.clicked.connect(self.show_queued_files_dialog)
@@ -2345,18 +2345,18 @@ class MainWindow(QWidget):
             self.btn_queue_count.setStyleSheet("""
                 QPushButton {
                     background-color: transparent;
-                    color: #38bdf8;
+                    color: #ffb74d;
                     font-weight: bold;
                     font-size: 11.5pt;
-                    border: 1px dashed #38bdf8;
+                    border: 1px dashed #ffb74d;
                     border-radius: 6px;
                     padding: 5px 10px;
                     text-decoration: underline;
                 }
                 QPushButton:hover {
-                    color: #7dd3fc;
-                    background-color: #1e293b;
-                    border: 1px solid #0284c7;
+                    color: #ffe0b2;
+                    background-color: #2a2015;
+                    border: 1px solid #f59e0b;
                 }
             """)
             if hasattr(self, "settings_card"):
@@ -2404,6 +2404,11 @@ class MainWindow(QWidget):
             self.drop_area.set_theme(theme)
         if hasattr(self, "btn_badge"):
             self.update_version_badge_ui()
+        if hasattr(self, "lbl_queue_status") and getattr(self, "queued_files", None):
+            color = "#1d4ed8" if theme == "light" else "#ffb74d"
+            self.lbl_queue_status.setStyleSheet(
+                f"color: {color}; font-size: 11.5pt; padding: 2px 4px; font-weight: bold;"
+            )
 
     def toggle_theme(self):
         """다크/라이트 테마 즉각 토글"""
@@ -2444,7 +2449,7 @@ class MainWindow(QWidget):
             self.lbl_queue_status.setText(
                 i18n["queue_status_added"].format(count=len(self.queued_files))
             )
-            color = "#1d4ed8" if self.current_theme == "light" else "#38bdf8"
+            color = "#1d4ed8" if self.current_theme == "light" else "#ffb74d"
             self.lbl_queue_status.setStyleSheet(f"color: {color}; font-size: 11.5pt; padding: 2px 4px; font-weight: bold;")
 
         self.btn_add_files.setText(i18n["btn_add_files"])
@@ -2924,7 +2929,7 @@ class MainWindow(QWidget):
         self.lbl_queue_status.setText(
             I18N[self.current_lang]["queue_status_added"].format(count=added_count)
         )
-        color = "#1d4ed8" if self.current_theme == "light" else "#38bdf8"
+        color = "#1d4ed8" if self.current_theme == "light" else "#ffb74d"
         self.lbl_queue_status.setStyleSheet(f"color: {color}; font-size: 11.5pt; padding: 2px 4px; font-weight: bold;")
 
     def choose_files(self):
@@ -2947,7 +2952,8 @@ class MainWindow(QWidget):
         self.queued_files.clear()
         self.update_queue_label()
         self.lbl_queue_status.setText(I18N[self.current_lang]["queue_status_cleared"])
-        self.lbl_queue_status.setStyleSheet("color: #ffb74d; font-size: 11.5pt; padding: 2px 4px; font-weight: 500;")
+        color = "#38bdf8" if self.current_theme == "dark" else "#ea580c"
+        self.lbl_queue_status.setStyleSheet(f"color: {color}; font-size: 11.5pt; padding: 2px 4px; font-weight: 500;")
 
     def get_options_from_ui(self) -> ConversionOptions:
         if self.btn_fmt_webp.isChecked():
