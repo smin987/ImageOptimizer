@@ -1795,7 +1795,7 @@ class MainWindow(QWidget):
                 background-color: transparent;
                 color: #4da3ff;
                 font-weight: bold;
-                font-size: 10pt;
+                font-size: 11.5pt;
                 border: 1px dashed #3a4a6b;
                 border-radius: 6px;
                 padding: 4px 10px;
@@ -2275,7 +2275,7 @@ class MainWindow(QWidget):
                     background-color: transparent;
                     color: #2563eb;
                     font-weight: bold;
-                    font-size: 10.5pt;
+                    font-size: 11.5pt;
                     border: 1px dashed #93c5fd;
                     border-radius: 6px;
                     padding: 5px 10px;
@@ -2347,7 +2347,7 @@ class MainWindow(QWidget):
                     background-color: transparent;
                     color: #38bdf8;
                     font-weight: bold;
-                    font-size: 10.5pt;
+                    font-size: 11.5pt;
                     border: 1px dashed #38bdf8;
                     border-radius: 6px;
                     padding: 5px 10px;
