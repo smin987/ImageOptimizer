@@ -17,11 +17,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Verify License Compliance (Apache-2.0 Guard)
+      - name: Verify License Compliance (License Guard)
         shell: bash
         run: |
           if grep -qi "apache license" LICENSE; then
-            echo "::error::Apache-2.0 found in LICENSE! Release blocked."
+            echo "::error::Incompatible license terms found in LICENSE! Release blocked."
             exit 1
           fi
           echo "License guard passed: Fair-Code verified."
@@ -325,8 +325,8 @@ jobs:
           apt-ftparchive release . >> Release
 
           # InRelease 및 Release.gpg 서명
-          gpg --default-key "Image Optimizer Archive" --clearsign -o InRelease Release
-          gpg --default-key "Image Optimizer Archive" -abs -o Release.gpg Release
+          gpg --batch --no-tty --default-key "Image Optimizer Archive" --clearsign -o InRelease Release
+          gpg --batch --no-tty --default-key "Image Optimizer Archive" -abs -o Release.gpg Release
 
           rm -rf deb-artifacts
 
