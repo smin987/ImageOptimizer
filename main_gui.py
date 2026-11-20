@@ -114,7 +114,7 @@ class VersionCheckWorker(QThread):
 I18N = {
     "ko": {
         "theme_dark": "🌙 다크 모드로 전환",
-        "theme_light": "☀️ 기본(라이트) 모드로 전환",
+        "theme_light": "☀️ 기본 모드로 전환",
         "lang_toggle": "🌐 English",
         "btn_sponsor": "💖 후원하기",
         "btn_sponsor_tip": "GitHub Sponsors를 통해 개발자를 후원하고 지속적인 업데이트를 응원합니다.",
