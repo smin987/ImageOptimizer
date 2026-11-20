@@ -227,6 +227,9 @@ I18N = {
         "msg_no_files_text": "변환할 이미지 파일을 먼저 추가하거나 드래그 앤 드롭해 주세요.",
         "msg_done_title": "작업 완료",
         "msg_done_text": "변환 완료! (총 {total}개 중 성공: {success}개, 건너뜀: {skipped}개, 실패: {errors}개)",
+        "msg_done_warn_title": "변환 완료 (확인 필요)",
+        "msg_done_warn_text": "변환 실패/건너 뛴 파일이 있습니다.\n(총 {total}개 중 성공 : {success}개, 건너 뜀: {skipped}개, 실패 : {errors}개).\n\n자세한 내용은 실시간 변환 로그를 참고하여 주세요.",
+        "msg_done_warn_summary": "변환 실패/건너 뛴 파일이 있습니다. (총 {total}개 중 성공: {success}개, 건너뜀: {skipped}개, 실패: {errors}개)",
         "dlg_select_files": "이미지 파일 선택",
         "dlg_select_folder": "이미지가 있는 폴더 선택",
         "dlg_select_dest": "저장할 대상 폴더 선택",
@@ -359,6 +362,9 @@ I18N = {
         "msg_no_files_text": "Please add or drag and drop image files to convert first.",
         "msg_done_title": "Conversion Completed",
         "msg_done_text": "Conversion completed! (Total {total}: Success {success}, Skipped {skipped}, Failed {errors})",
+        "msg_done_warn_title": "Conversion Completed (Check Required)",
+        "msg_done_warn_text": "Some files failed or were skipped.\n(Total {total}: Success : {success}, Skipped : {skipped}, Failed : {errors}).\n\nPlease refer to the real-time conversion log for details.",
+        "msg_done_warn_summary": "Some files failed or were skipped. (Total {total}: Success {success}, Skipped {skipped}, Failed {errors})",
         "dlg_select_files": "Select Image Files",
         "dlg_select_folder": "Select Folder with Images",
         "dlg_select_dest": "Select Destination Folder",
@@ -3110,10 +3116,23 @@ class MainWindow(QWidget):
         self.btn_open_folder.setEnabled(True)
         self.progress_bar.setValue(100)
 
-        msg = I18N[self.current_lang]["msg_done_text"].format(
-            total=total, success=success, skipped=skipped, errors=errors
-        )
-        self.lbl_status.setText(msg)
+        has_issues = (errors > 0 or skipped > 0)
+        if has_issues:
+            msg = I18N[self.current_lang]["msg_done_warn_text"].format(
+                total=total, success=success, skipped=skipped, errors=errors
+            )
+            title = I18N[self.current_lang]["msg_done_warn_title"]
+            status_text = I18N[self.current_lang]["msg_done_warn_summary"].format(
+                total=total, success=success, skipped=skipped, errors=errors
+            )
+        else:
+            msg = I18N[self.current_lang]["msg_done_text"].format(
+                total=total, success=success, skipped=skipped, errors=errors
+            )
+            title = I18N[self.current_lang]["msg_done_title"]
+            status_text = msg
+
+        self.lbl_status.setText(status_text)
 
         # 마지막 통계 결과를 보관 (언어 변경 시 다시 렌더링할 수 있도록)
         self.last_stat_result = (total, success, skipped, errors, total_orig_size, total_new_sizes)
@@ -3123,7 +3142,10 @@ class MainWindow(QWidget):
         if hasattr(self, "current_affected_dirs") and self.current_affected_dirs:
             pa.refresh_folders(self.current_affected_dirs)
 
-        QMessageBox.information(self, I18N[self.current_lang]["msg_done_title"], msg)
+        if has_issues:
+            QMessageBox.warning(self, title, msg)
+        else:
+            QMessageBox.information(self, title, msg)
 
         # 변환이 완료될 때마다 자동으로 대기 목록 비우기 실행
         if success > 0 or total > 0:
