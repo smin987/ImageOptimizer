@@ -1769,6 +1769,24 @@ class MainWindow(QWidget):
         self.btn_clear_list = QPushButton("🗑️ 대기 목록 비우기")
         self.btn_clear_list.clicked.connect(self.clear_files)
 
+        file_btn_layout.addWidget(self.btn_add_files)
+        file_btn_layout.addWidget(self.btn_add_folder)
+        file_btn_layout.addWidget(self.btn_clear_list)
+        file_btn_layout.addStretch()
+        main_layout.addLayout(file_btn_layout)
+
+        # 2. 드래그 앤 드롭 영역
+        self.drop_area = DropAreaWidget()
+        self.drop_area.files_dropped.connect(self.on_files_added)
+        main_layout.addWidget(self.drop_area)
+
+        # 3. 파일 상태 알림 및 최적화 대상 확인 바 (드롭 영역 바로 아래 배치: 좌측 알림, 우측 대상 이미지 수)
+        status_bar_layout = QHBoxLayout()
+        status_bar_layout.setContentsMargins(2, 2, 2, 2)
+
+        self.lbl_queue_status = QLabel("최적화할 이미지 또는 폴더를 드래그하거나 버튼으로 추가하세요.")
+        self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 9.5pt; padding: 2px 4px;")
+
         self.btn_queue_count = QPushButton("최적화 대상 이미지: 0개 🔍")
         self.btn_queue_count.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_queue_count.setToolTip("클릭하면 최적화 대상 이미지 전체 목록을 확인하고 개별 제외할 수 있습니다.")
@@ -1777,10 +1795,10 @@ class MainWindow(QWidget):
                 background-color: transparent;
                 color: #4da3ff;
                 font-weight: bold;
-                font-size: 10.5pt;
+                font-size: 10pt;
                 border: 1px dashed #3a4a6b;
                 border-radius: 6px;
-                padding: 5px 10px;
+                padding: 4px 10px;
                 text-decoration: underline;
             }
             QPushButton:hover {
@@ -1791,22 +1809,10 @@ class MainWindow(QWidget):
         """)
         self.btn_queue_count.clicked.connect(self.show_queued_files_dialog)
 
-        file_btn_layout.addWidget(self.btn_add_files)
-        file_btn_layout.addWidget(self.btn_add_folder)
-        file_btn_layout.addWidget(self.btn_clear_list)
-        file_btn_layout.addStretch()
-        file_btn_layout.addWidget(self.btn_queue_count)
-        main_layout.addLayout(file_btn_layout)
-
-        # 2. 드래그 앤 드롭 영역
-        self.drop_area = DropAreaWidget()
-        self.drop_area.files_dropped.connect(self.on_files_added)
-        main_layout.addWidget(self.drop_area)
-
-        # 3. 파일 상태 알림 라벨 (드롭 영역 바로 아래 배치)
-        self.lbl_queue_status = QLabel("최적화할 이미지 또는 폴더를 드래그하거나 버튼으로 추가하세요.")
-        self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 9.5pt; padding: 2px 4px;")
-        main_layout.addWidget(self.lbl_queue_status)
+        status_bar_layout.addWidget(self.lbl_queue_status, alignment=Qt.AlignmentFlag.AlignVCenter)
+        status_bar_layout.addStretch()
+        status_bar_layout.addWidget(self.btn_queue_count, alignment=Qt.AlignmentFlag.AlignVCenter)
+        main_layout.addLayout(status_bar_layout)
 
         # 4. 작업 액션 버튼 바 ([변환 시작] [작업 중단] [결과 열기] 1:1:1 균등 배치)
         ctrl_layout = QHBoxLayout()
