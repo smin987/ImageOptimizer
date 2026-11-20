@@ -17,6 +17,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Verify License Compliance (Apache-2.0 Guard)
+        shell: bash
+        run: |
+          if grep -qi "apache license" LICENSE; then
+            echo "::error::Apache-2.0 found in LICENSE! Release blocked."
+            exit 1
+          fi
+          echo "License guard passed: Fair-Code verified."
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -36,6 +45,10 @@ jobs:
                       --clean `
                       --icon="assets/icon.ico" `
                       --add-data="assets;assets" `
+                      --add-data="THIRD_PARTY_LICENSES.md;." `
+                      --add-data="LICENSE;." `
+                      --hidden-import="PIL._imagingcms" `
+                      --hidden-import="PIL.ImageCms" `
                       --name="ImageOptimizer-windows-x64" `
                       main_gui.py
 
@@ -232,9 +245,10 @@ jobs:
             sudo apt update && sudo apt install image-optimizer
             ```
 
-            ### 🪟 Windows 11 (winget)
+            ### 🪟 Windows 11 / 10
+            Download the standalone portable `.exe` directly or install via `winget`:
             ```powershell
-            winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/winget/manifests/s/smin987/ImageOptimizer/1.0.4/smin987.ImageOptimizer.yaml
+            winget install smin987.ImageOptimizer
             ```
 
             ### 📄 License

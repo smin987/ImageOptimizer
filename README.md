@@ -88,10 +88,10 @@ In addition to static formats (`PNG`, `JPG`, `BMP`, `TIFF`, etc.), it fully supp
 
 ## 📥 Installation & Downloads
 
-### 🪟 Windows 11 / 10 via winget
-Install or update **Image Optimizer** using the official Windows Package Manager (`winget`):
+### 🪟 Windows 11 / 10
+Download the standalone portable executable or setup installer directly from **[GitHub Releases](https://github.com/smin987/ImageOptimizer/releases/latest)**, or install via `winget`:
 ```powershell
-winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/winget/manifests/s/smin987/ImageOptimizer/1.0.3/smin987.ImageOptimizer.yaml
+winget install smin987.ImageOptimizer
 ```
 
 ### 🍺 macOS via Homebrew

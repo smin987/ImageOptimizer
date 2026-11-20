@@ -88,10 +88,10 @@
 
 ## 📥 설치 및 다운로드 (Installation & Downloads)
 
-### 🪟 Windows 환경 : winget을 통한 원클릭 설치
-Windows 10/11의 공식 패키지 관리자(`winget`)를 통해 터미널에서 즉시 설치할 수 있습니다:
+### 🪟 Windows 환경 (포터블 실행 파일 및 설치 마법사)
+**[GitHub Releases](https://github.com/smin987/ImageOptimizer/releases/latest)**에서 최신 단일 실행 바이너리(`ImageOptimizer.exe`) 또는 설치 마법사를 직접 내려받거나, `winget`으로 설치할 수 있습니다:
 ```powershell
-winget install --manifest https://raw.githubusercontent.com/smin987/ImageOptimizer/main/build/winget/manifests/s/smin987/ImageOptimizer/1.0.3/smin987.ImageOptimizer.yaml
+winget install smin987.ImageOptimizer
 ```
 
 ### 🍺 macOS 환경 : Homebrew를 통한 원클릭 설치
