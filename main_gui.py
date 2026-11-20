@@ -1621,34 +1621,21 @@ class AboutLicenseDialog(QDialog):
             pass
 
     def _open_license_file(self):
-        """라이선스 문서 로컬 파일 열기 (없으면 GitHub 저장소 라이선스 웹페이지 열기)"""
+        """GitHub 공식 저장소 라이선스 문서(LICENSE) 웹페이지 열기"""
+        url = "https://github.com/smin987/ImageOptimizer/blob/main/LICENSE"
         try:
-            candidates = [
-                get_resource_path("THIRD_PARTY_LICENSES.md"),
-                Path(sys.executable).parent / "THIRD_PARTY_LICENSES.md",
-                Path(__file__).resolve().parent / "THIRD_PARTY_LICENSES.md",
-                get_resource_path("LICENSE"),
-                Path(sys.executable).parent / "LICENSE",
-                Path(__file__).resolve().parent / "LICENSE",
-            ]
-            target = None
-            for p in candidates:
-                if p.exists() and p.is_file():
-                    target = p
-                    break
-
-            if target:
-                from PySide6.QtGui import QDesktopServices
-                from PySide6.QtCore import QUrl
-                if hasattr(os, "startfile"):
-                    os.startfile(str(target.resolve()))
-                elif not QDesktopServices.openUrl(QUrl.fromLocalFile(str(target.resolve()))):
-                    webbrowser.open(target.resolve().as_uri())
-            else:
-                webbrowser.open("https://github.com/smin987/ImageOptimizer/blob/main/THIRD_PARTY_LICENSES.md")
+            from PySide6.QtGui import QDesktopServices
+            from PySide6.QtCore import QUrl
+            if not QDesktopServices.openUrl(QUrl(url)):
+                import webbrowser
+                webbrowser.open(url)
         except Exception as e:
             print(f"[Warning] 라이선스 문서 열기 실패: {e}")
-            self._open_repo()
+            try:
+                import webbrowser
+                webbrowser.open(url)
+            except Exception:
+                pass
 
 
 class MainWindow(QWidget):
