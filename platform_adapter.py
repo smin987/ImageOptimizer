@@ -90,11 +90,91 @@ def send_to_trash(file_path: Path) -> bool:
     (Windows 휴지통, macOS 휴지통, Linux FreeDesktop Trash 모두 지원)
     """
     try:
-        send2trash.send2trash(str(file_path.resolve()))
+        resolved = str(file_path.resolve())
+        send2trash.send2trash(resolved)
+        notify_file_deleted(file_path)
         return True
     except Exception as e:
         print(f"[Warning] 휴지통 이동 실패: {file_path.name} ({e})")
         return False
+
+
+def notify_file_created(file_path: Path) -> None:
+    """새 파일이 디스크에 생성되었음을 OS 파일 탐색기에 즉시 통지 (0ms)"""
+    if get_current_os() == "Windows":
+        try:
+            import ctypes
+            # SHCNE_CREATE = 0x00000002, SHCNF_PATHW = 0x0005
+            ctypes.windll.shell32.SHChangeNotify(0x00000002, 0x0005, str(file_path.resolve()), 0)
+        except Exception:
+            pass
+
+
+def notify_file_deleted(file_path: Path) -> None:
+    """파일이 삭제/휴지통 이동되었음을 OS 파일 탐색기에 즉시 통지 (0ms)"""
+    if get_current_os() == "Windows":
+        try:
+            import ctypes
+            # SHCNE_DELETE = 0x00000004, SHCNF_PATHW = 0x0005
+            ctypes.windll.shell32.SHChangeNotify(0x00000004, 0x0005, str(file_path.resolve()), 0)
+        except Exception:
+            pass
+
+
+def notify_folder_updated(folder_path: Path) -> None:
+    """폴더 내 항목이 변경(생성/삭제)되었음을 쉘에 즉시 통지 (0ms)"""
+    if get_current_os() == "Windows":
+        try:
+            import ctypes
+            # SHCNE_UPDATEDIR = 0x00001000, SHCNF_PATHW = 0x0005, SHCNF_FLUSH = 0x1000
+            ctypes.windll.shell32.SHChangeNotify(0x00001000, 0x1005, str(folder_path.resolve()), 0)
+        except Exception:
+            pass
+
+
+def refresh_folder(folder_path: Path) -> None:
+    """
+    지정된 폴더에 대해 운영체제 파일 탐색기가 즉시 새로고침(F5)하도록 통지합니다.
+    열려 있는 탐색기 창이 있다면 해당 창의 뷰를 즉각 갱신합니다.
+    """
+    refresh_folders({folder_path})
+
+
+def refresh_folders(folder_paths: set[Path] | list[Path]) -> None:
+    """
+    여러 폴더에 대해 운영체제 파일 탐색기가 즉시 새로고침(F5)하도록 일괄 통지합니다.
+    """
+    valid_paths = [p for p in folder_paths if p and p.exists()]
+    if not valid_paths:
+        return
+
+    # 1. 시스템 쉘 알림 API (0ms 초고속 통지)
+    for p in valid_paths:
+        notify_folder_updated(p)
+
+    # 2. Windows 환경: 열려 있는 탐색기 창(Explorer) 새로고침(F5) 트리거
+    if get_current_os() == "Windows":
+        try:
+            resolved_list = [str(p.resolve()).replace("'", "''") for p in valid_paths]
+            paths_arr = "@(" + ", ".join(f"'{p}'" for p in resolved_list) + ")"
+            ps_script = (
+                f"$paths = {paths_arr}; "
+                "$sh = New-Object -ComObject Shell.Application; "
+                "foreach ($w in $sh.Windows()) { "
+                "  try { "
+                "    $curr = $w.Document.Folder.Self.Path; "
+                "    if ($paths -contains $curr) { $w.Refresh() } "
+                "  } catch {} "
+                "}"
+            )
+            flags = getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
+            subprocess.run(
+                ["powershell", "-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-Command", ps_script],
+                creationflags=flags,
+                timeout=2,
+            )
+        except Exception:
+            pass
 
 
 def get_system_font_family() -> str:

@@ -3017,6 +3017,11 @@ class MainWindow(QWidget):
         else:
             self.last_output_dir = self.queued_files[0].parent
 
+        # 변환 완료 후 탐색기 즉시 새로고침(F5)을 위해 영향받는 폴더 목록 보관
+        self.current_affected_dirs = {p.parent for p in self.queued_files if p}
+        if self.last_output_dir:
+            self.current_affected_dirs.add(self.last_output_dir)
+
         self.worker = ConversionWorker(self.queued_files, options)
         self.worker.progress.connect(self.on_worker_progress)
         self.worker.finished.connect(self.on_worker_finished)
@@ -3096,6 +3101,10 @@ class MainWindow(QWidget):
         # 마지막 통계 결과를 보관 (언어 변경 시 다시 렌더링할 수 있도록)
         self.last_stat_result = (total, success, skipped, errors, total_orig_size, total_new_sizes)
         self.update_stat_dashboard()
+
+        # 변환 완료 후 운영체제 파일 탐색기 즉시 새로고침 (F5 동기화)
+        if hasattr(self, "current_affected_dirs") and self.current_affected_dirs:
+            pa.refresh_folders(self.current_affected_dirs)
 
         QMessageBox.information(self, I18N[self.current_lang]["msg_done_title"], msg)
 

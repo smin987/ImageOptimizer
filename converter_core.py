@@ -12,6 +12,8 @@ from typing import Callable, Optional
 from PIL import Image, ImageCms, ImageOps, ImageSequence
 import send2trash
 
+import platform_adapter as pa
+
 # 8K 및 초대형 이미지 처리를 위해 Pillow의 픽셀 제한 해제 (DecompressionBomb 방지)
 Image.MAX_IMAGE_PIXELS = None
 
@@ -398,7 +400,7 @@ def process_single_file(file_path: Path, options: ConversionOptions) -> FileResu
                 created_files[fmt] = out_file
             tag = f"[정지 이미지 -> {', '.join(options.output_formats)}]"
 
-    # 결과 파일 정상 생성 확인
+    # 결과 파일 정상 생성 확인 및 OS 쉘 생성 통지
     new_sizes: dict[str, int] = {}
     for fmt, out_file in created_files.items():
         if not out_file.exists() or out_file.stat().st_size == 0:
@@ -408,11 +410,14 @@ def process_single_file(file_path: Path, options: ConversionOptions) -> FileResu
                 error_message=f"{fmt} 결과 파일이 정상 생성되지 않았습니다.",
             )
         new_sizes[fmt] = out_file.stat().st_size
+        pa.notify_file_created(out_file)
 
     # 원본 파일 휴지통 이동 (옵션)
     if options.delete_originals:
         try:
-            send2trash.send2trash(str(file_path.resolve()))
+            pa.send_to_trash(file_path)
+            # 원본과 동일 폴더이거나 대상 폴더의 실시간 갱신을 위해 통지
+            pa.notify_folder_updated(file_path.parent)
         except Exception as e:
             # 변환은 성공했으므로 에러로 처리하지 않고 note에 기록
             note = f"원본 휴지통 이동 실패: {e}"
