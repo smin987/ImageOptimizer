@@ -34,9 +34,15 @@
 
 <div align="center">
 
-| ☀️ 기본 라이트 모드 (Light Mode) | 🌙 다크 모드 (Dark Mode) |
+### ☀️ 기본 라이트 모드 (Light Mode)
+| 기본 화면 (설정 접힘) | 세부 옵션 설정 화면 (펼침) |
 | :---: | :---: |
-| <a href="images/screenshot_normal_kor.png"><img src="images/screenshot_normal_kor.png" alt="Image Optimizer 한국어 라이트 모드" width="450"></a> | <a href="images/screenshot_dark_kor.png"><img src="images/screenshot_dark_kor.png" alt="Image Optimizer 한국어 다크 모드" width="450"></a> |
+| <a href="images/screenshot_collapsed_kor.png"><img src="images/screenshot_collapsed_kor.png" alt="Image Optimizer 한국어 라이트 모드 (기본)" width="450"></a> | <a href="images/screenshot_expand_kor.png"><img src="images/screenshot_expand_kor.png" alt="Image Optimizer 한국어 라이트 모드 (설정 펼침)" width="450"></a> |
+
+### 🌙 다크 모드 (Dark Mode)
+| 기본 화면 (설정 접힘) | 세부 옵션 설정 화면 (펼침) |
+| :---: | :---: |
+| <a href="images/screenshot_collapsed_dark_kor.png"><img src="images/screenshot_collapsed_dark_kor.png" alt="Image Optimizer 한국어 다크 모드 (기본)" width="450"></a> | <a href="images/screenshot_expand_dark_kor.png"><img src="images/screenshot_expand_dark_kor.png" alt="Image Optimizer 한국어 다크 모드 (설정 펼침)" width="450"></a> |
 
 *💡 상단 헤더의 테마 전환 버튼(☀️/🌙)으로 언제든지 원클릭으로 라이트 모드와 다크 모드를 전환할 수 있습니다.*
 
@@ -66,8 +72,9 @@
   - 상단 버튼 클릭 한 번으로 **한국어 ↔ English** 즉시 전환 (설정 자동 저장)
 - 🌗 **다크 모드 & 라이트 모드 테마**
   - 눈이 편안한 세련된 다크 테마 및 깔끔한 라이트 테마 지원
-- 🗑️ **안전한 원본 파일 처리**
+- 🗑️ **안전한 원본 파일 처리 & 탐색기 자동 새로고침 (F5)**
   - 영구 삭제 위험 없이 **시스템 휴지통(Trash)**으로 안전하게 이동
+  - '원본과 동일 폴더' 저장 및 휴지통 이동 시 변환 완료 즉시 운영체제 탐색기(Explorer) 화면을 자동 새로고침(F5)하여 변환된 파일이 지연 없이 즉시 표시됨 (0ms I/O 최적화)
 - 📊 **실시간 성과 대시보드**
   - 변환 성공 건수, 총 절약된 용량(MB), 평균 절감률(%)을 실시간으로 집계 및 시각화
 - 💖 **원클릭 후원 연동**

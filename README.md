@@ -34,9 +34,15 @@ In addition to static formats (`PNG`, `JPG`, `BMP`, `TIFF`, etc.), it fully supp
 
 <div align="center">
 
-| ☀️ Light Mode | 🌙 Dark Mode |
+### ☀️ Light Mode
+| Default View (Collapsed) | Advanced Settings View (Expanded) |
 | :---: | :---: |
-| <a href="images/screenshot_normal_en.png"><img src="images/screenshot_normal_en.png" alt="Image Optimizer English Light Mode" width="450"></a> | <a href="images/screenshot_dark_en.png"><img src="images/screenshot_dark_en.png" alt="Image Optimizer English Dark Mode" width="450"></a> |
+| <a href="images/screenshot_collapsed_en.png"><img src="images/screenshot_collapsed_en.png" alt="Image Optimizer English Light Mode (Collapsed)" width="450"></a> | <a href="images/screenshot_expand_en.png"><img src="images/screenshot_expand_en.png" alt="Image Optimizer English Light Mode (Expanded)" width="450"></a> |
+
+### 🌙 Dark Mode
+| Default View (Collapsed) | Advanced Settings View (Expanded) |
+| :---: | :---: |
+| <a href="images/screenshot_collapsed_dark_en.png"><img src="images/screenshot_collapsed_dark_en.png" alt="Image Optimizer English Dark Mode (Collapsed)" width="450"></a> | <a href="images/screenshot_expand_dark_en.png"><img src="images/screenshot_expand_dark_en.png" alt="Image Optimizer English Dark Mode (Expanded)" width="450"></a> |
 
 *💡 Switch between Light and Dark themes anytime using the header toggle button.*
 
@@ -66,8 +72,9 @@ In addition to static formats (`PNG`, `JPG`, `BMP`, `TIFF`, etc.), it fully supp
   - Instant live toggle between **English** and **한국어 (Korean)** with persistent preferences
 - 🌗 **Dark Mode & Light Mode**
   - Modern, elegant themes designed for visual comfort
-- 🗑️ **Safe Original File Disposal**
+- 🗑️ **Safe File Disposal & Explorer Auto-Refresh (F5)**
   - Safely sends original files to the **System Trash / Recycle Bin** instead of permanent deletion
+  - Automatically triggers OS file manager refresh (F5) once batch conversion completes, guaranteeing newly converted files show up immediately without file list disappearance (0ms I/O overhead)
 - 📊 **Real-Time Savings Dashboard**
   - Tracks total files processed, success rates, cumulative data saved (MB), and percentage reduction in real time
 - 💖 **Integrated Sponsor Button**
