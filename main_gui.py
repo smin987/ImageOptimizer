@@ -135,7 +135,7 @@ I18N = {
         ),
         "drop_title": "이미지 또는 폴더를 드래그 앤 드롭하세요",
         "queue_status_init": "최적화할 이미지 또는 폴더를 드래그하거나 버튼으로 추가하세요.",
-        "queue_status_added": "✅ {count}개의 이미지가 최적화 대상 목록에 추가되었습니다.",
+        "queue_status_added": "✅ <b>{count}개의 이미지가 최적화 대상 목록에 추가되었습니다.</b>",
         "queue_status_cleared": "최적화 대상 목록이 초기화되었습니다.",
         "queue_status_auto_cleared": "변환이 완료되어 최적화 대상 목록이 자동으로 비워졌습니다.",
         "btn_add_files": "📄 파일 추가",
@@ -267,7 +267,7 @@ I18N = {
         ),
         "drop_title": "Drag & drop images or folders here",
         "queue_status_init": "Drag and drop images or folders, or use the buttons to add.",
-        "queue_status_added": "✅ {count} image(s) added to the optimization queue.",
+        "queue_status_added": "✅ <b>{count} image(s) added to the optimization queue.</b>",
         "queue_status_cleared": "Optimization queue has been cleared.",
         "queue_status_auto_cleared": "Conversion completed. Queue has been automatically cleared.",
         "btn_add_files": "📄 Add Files",
@@ -2432,10 +2432,13 @@ class MainWindow(QWidget):
 
         if not self.queued_files:
             self.lbl_queue_status.setText(i18n["queue_status_init"])
+            self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 9.5pt; padding: 2px 4px;")
         else:
             self.lbl_queue_status.setText(
                 i18n["queue_status_added"].format(count=len(self.queued_files))
             )
+            color = "#1d4ed8" if self.current_theme == "light" else "#38bdf8"
+            self.lbl_queue_status.setStyleSheet(f"color: {color}; font-size: 9.5pt; padding: 2px 4px; font-weight: bold;")
 
         self.btn_add_files.setText(i18n["btn_add_files"])
         self.btn_add_folder.setText(i18n["btn_add_folder"])
@@ -2914,7 +2917,8 @@ class MainWindow(QWidget):
         self.lbl_queue_status.setText(
             I18N[self.current_lang]["queue_status_added"].format(count=added_count)
         )
-        self.lbl_queue_status.setStyleSheet("color: #4da3ff; font-size: 9.5pt; padding: 2px 4px; font-weight: 500;")
+        color = "#1d4ed8" if self.current_theme == "light" else "#38bdf8"
+        self.lbl_queue_status.setStyleSheet(f"color: {color}; font-size: 9.5pt; padding: 2px 4px; font-weight: bold;")
 
     def choose_files(self):
         ext_filter = " ".join([f"*{ext}" for ext in SUPPORTED_EXTENSIONS])
