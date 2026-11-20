@@ -1,0 +1,44 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Origin: Image Optimizer
+Label: Image Optimizer
+Suite: stable
+Codename: stable
+Architectures: amd64 arm64
+Components: main
+Description: Official APT Repository for Image Optimizer
+Date: Fri, 20 Nov 2026 10:18:03 +0000
+MD5Sum:
+ 8090f67c540470f143e969c1500b8d0a             4939 Packages
+ f2c196b8a2e9aba81b5e343f5fbbb081              937 Packages.gz
+ 20cb612622129d11cf8aa139314a0706              217 Release
+SHA1:
+ ef494861e348f6eb6411555d13d253202542e874             4939 Packages
+ 0867c11a7edaeb7f8f2daa66b51eb03ee7c54280              937 Packages.gz
+ 18cc3451d5e51db4e2011d73c2d7c84c1af1c0bb              217 Release
+SHA256:
+ 4c78addb58c265134979986a1e999d491a34bf6f99c3fb589665c15cc651dfbe             4939 Packages
+ 2a0ae84a61bd200d22d8f6b396c536bc8bc586a3452fc1e4765ce06f475e71da              937 Packages.gz
+ 5a6bbdfa3e881fc3686442169d50b8e3c03d5c935784af86a1a386da63ec6774              217 Release
+SHA512:
+ fc9ba1758bfc1cbc41ba8afaa3491e147051a5c870292a893ec51afc8652e2e82c1d91551ff5078562210f625e7ff338ed11495e709721cf9dc444865cddf7f7             4939 Packages
+ 13d24a05a6660d9a5ec8a57093dfd78053663e8ba541903fa282df0d8f5ee2631bdd5322b2eeacbce7996b4e4e97f572f1055343f728421a65142295cf8dbc0b              937 Packages.gz
+ c184a21755c04446ea7b4b265724ea3b8e2c357815849fe504e353ce46f0e37853d066363b126c66732caf44302ed8d400122c07567cc0daaca88616ad74c129              217 Release
+-----BEGIN PGP SIGNATURE-----
+
+iQJVBAEBCgA/FiEE/wmDdlI+eRNgQTupsTAXfnefCZQFAmsAHlshHHNtaW45ODdA
+dXNlcnMubm9yZXBseS5naXRodWIuY29tAAoJELEwF353nwmUgokP/0Dprmp63gkF
+2ywdiDNycpv7ne669sv01m6Dyfdt7WNBw+OWLWVOq6HmhVINIke6m2p0zKyq5rbu
+hwulGcGGnNGDymKEHG/rl8nL1VkyMSb/Qpo01XYqoTZOK+BCxLeLP0hjT84FhYQ4
+mIXKXLlFpVwf4h/XvGDCLuXi5wAmPtXloiaCAImWl3/63JWJlFAKZEkmI8umNRjm
+mrpJGZySp8W3Q9nyeJL38Vj8N7lCtLthz5J1pf1NJOquRjAT2/nc42dU2ddKtMkF
+BzGJ6u8DM7bWbv/sC2GM7utqJFwO/sEZ5tXb1xDUs6qjTfMu6DFwsrQ3ZAS3BWaL
+M8Pl+Y0b7NWTkMq8P5UHpGIH216gVoSZqtGp3M8micIXdWS0y1vlgimjNWpHeVUC
+g+EtAv2foiIY9ZdU8bf27qI+WgTqLSkv7fKjWVoibiRPWxQVnaNKWsteMbip8BDg
+eUYEdb5XJOuCwl6AT7escSJwiLVQPcQeWM/IxpZ38WD/3CgU40KC4kf6m3wZZ97S
+TS2bfMoRU6NShBF/yaRmP/miRMQNxWJ8SJ9U8vEjChWWksKeqrviKYN8ByECmzKi
+LOL3/1gGCHMiiVkuthk1xzQ1ZptKU+jXIZ/7X/xTuXxNGU6xTKRTj6ySjRUYzRJa
+8TwsbCL/Uid4tyvuSS0jOuN+Soh7aPlP
+=Sg62
+-----END PGP SIGNATURE-----
