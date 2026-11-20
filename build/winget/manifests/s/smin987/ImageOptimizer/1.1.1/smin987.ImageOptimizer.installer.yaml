@@ -8,6 +8,6 @@ Commands:
 Installers:
   - Architecture: x64
     InstallerUrl: https://github.com/smin987/ImageOptimizer/releases/download/v1.1.1/ImageOptimizer-windows-x64.exe
-    InstallerSha256: 87241B1FC6CF31046D78A139C0716232D3A48EE3D355788D093AD415F5BFB10E
+    InstallerSha256: 0C4894E48B33763C2787727A706AB43B5137EA1ACEEAE1DA3AFD1F07D7E66C12
 ManifestType: installer
 ManifestVersion: 1.6.0
