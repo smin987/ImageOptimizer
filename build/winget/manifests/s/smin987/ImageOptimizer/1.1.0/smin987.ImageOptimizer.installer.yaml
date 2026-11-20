@@ -1,14 +1,13 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.6.0.schema.json
 
 PackageIdentifier: smin987.ImageOptimizer
-PackageVersion: 1.0.4
+PackageVersion: 1.1.0
 InstallerType: portable
 Commands:
   - ImageOptimizer
-  - iopt
 Installers:
   - Architecture: x64
-    InstallerUrl: https://github.com/smin987/ImageOptimizer/releases/download/v1.0.4/ImageOptimizer-windows-x64.exe
-    InstallerSha256: A5A0B1B4A90F00236BFF1F007A141047535FAF979283FB5CD0CED813D0192EE6
+    InstallerUrl: https://github.com/smin987/ImageOptimizer/releases/download/v1.1.0/ImageOptimizer-windows-x64.exe
+    InstallerSha256: E219C90D7F0C7A9A894898CCBA0E99185F6DCD864C15CF24A40E7F3F7E6DBD5B
 ManifestType: installer
 ManifestVersion: 1.6.0
