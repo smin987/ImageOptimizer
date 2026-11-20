@@ -1785,7 +1785,7 @@ class MainWindow(QWidget):
         status_bar_layout.setContentsMargins(2, 2, 2, 2)
 
         self.lbl_queue_status = QLabel("최적화할 이미지 또는 폴더를 드래그하거나 버튼으로 추가하세요.")
-        self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 9.5pt; padding: 2px 4px;")
+        self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 11.5pt; padding: 2px 4px;")
 
         self.btn_queue_count = QPushButton("최적화 대상 이미지: 0개 🔍")
         self.btn_queue_count.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -2439,13 +2439,13 @@ class MainWindow(QWidget):
 
         if not self.queued_files:
             self.lbl_queue_status.setText(i18n["queue_status_init"])
-            self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 9.5pt; padding: 2px 4px;")
+            self.lbl_queue_status.setStyleSheet("color: #8899aa; font-size: 11.5pt; padding: 2px 4px;")
         else:
             self.lbl_queue_status.setText(
                 i18n["queue_status_added"].format(count=len(self.queued_files))
             )
             color = "#1d4ed8" if self.current_theme == "light" else "#38bdf8"
-            self.lbl_queue_status.setStyleSheet(f"color: {color}; font-size: 9.5pt; padding: 2px 4px; font-weight: bold;")
+            self.lbl_queue_status.setStyleSheet(f"color: {color}; font-size: 11.5pt; padding: 2px 4px; font-weight: bold;")
 
         self.btn_add_files.setText(i18n["btn_add_files"])
         self.btn_add_folder.setText(i18n["btn_add_folder"])
@@ -2925,7 +2925,7 @@ class MainWindow(QWidget):
             I18N[self.current_lang]["queue_status_added"].format(count=added_count)
         )
         color = "#1d4ed8" if self.current_theme == "light" else "#38bdf8"
-        self.lbl_queue_status.setStyleSheet(f"color: {color}; font-size: 9.5pt; padding: 2px 4px; font-weight: bold;")
+        self.lbl_queue_status.setStyleSheet(f"color: {color}; font-size: 11.5pt; padding: 2px 4px; font-weight: bold;")
 
     def choose_files(self):
         ext_filter = " ".join([f"*{ext}" for ext in SUPPORTED_EXTENSIONS])
@@ -2947,7 +2947,7 @@ class MainWindow(QWidget):
         self.queued_files.clear()
         self.update_queue_label()
         self.lbl_queue_status.setText(I18N[self.current_lang]["queue_status_cleared"])
-        self.lbl_queue_status.setStyleSheet("color: #ffb74d; font-size: 9.5pt; padding: 2px 4px; font-weight: 500;")
+        self.lbl_queue_status.setStyleSheet("color: #ffb74d; font-size: 11.5pt; padding: 2px 4px; font-weight: 500;")
 
     def get_options_from_ui(self) -> ConversionOptions:
         if self.btn_fmt_webp.isChecked():
@@ -3126,7 +3126,7 @@ class MainWindow(QWidget):
                 I18N[self.current_lang]["queue_status_auto_cleared"]
             )
             self.lbl_queue_status.setStyleSheet(
-                "color: #8899aa; font-size: 9.5pt; padding: 2px 4px;"
+                "color: #8899aa; font-size: 11.5pt; padding: 2px 4px;"
             )
 
     def open_output_folder(self):
