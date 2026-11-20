@@ -107,15 +107,15 @@ Description: All-in-one cross-platform image and animation optimizer (WebP, JPG,
  Features animated GIF to WebP conversion, alpha preservation, and smart resizing.
 
 Package: image-optimizer
-Version: 1.1.2
+Version: 1.1.3
 Architecture: amd64
 Maintainer: smin987 <https://github.com/smin987/ImageOptimizer>
 Depends: libc6, libgl1, libegl1, libxkbcommon0, libdbus-1-3
-Filename: ./deb-artifacts/linux-x86_64-bin/ImageOptimizer_1.1.2_amd64.deb
-Size: 84034172
-MD5sum: f4d7a5d8d4db6c0949b3e7b02f8c15f8
-SHA1: ea0529ff88b7e106e222238045acbb77e80d6849
-SHA256: 65322475a03c05b6e968a0cf1e49cd16cbf4816e4cba00831654db329714e363
+Filename: ./ImageOptimizer_1.1.3_amd64.deb
+Size: 84034800
+MD5sum: 58a85775b5312f6d2e588c2b36d3c048
+SHA1: c18d1f2d2427b8fab2c877e02efed929b7b4ecbe
+SHA256: 7ee8260cb1360390612265fcf2a048c4bda96041730303e3e2b51072e165a27a
 Section: non-free/graphics
 Priority: optional
 Homepage: https://github.com/smin987/ImageOptimizer
@@ -125,15 +125,51 @@ Description: All-in-one cross-platform image and animation optimizer (WebP, JPG,
  Features animated GIF to WebP conversion, alpha preservation, and smart resizing.
 
 Package: image-optimizer
-Version: 1.1.2
+Version: 1.1.3
 Architecture: arm64
 Maintainer: smin987 <https://github.com/smin987/ImageOptimizer>
 Depends: libc6, libgl1, libegl1, libxkbcommon0, libdbus-1-3
-Filename: ./deb-artifacts/linux-arm64-bin/ImageOptimizer_1.1.2_arm64.deb
-Size: 81590956
-MD5sum: c2d04fcd8c4cc44ee7a0beed5674558b
-SHA1: 9a84aee3631559954bc24bf208349d6e296b9127
-SHA256: 16bcf0829eca82aa3dd542df6261b68f885f14c8fb8ca33c88e5a5399d676a50
+Filename: ./ImageOptimizer_1.1.3_arm64.deb
+Size: 81591082
+MD5sum: 7d764b6a5bde7b417636b37c5e21ddba
+SHA1: 17e84dcd32ea33f157a6d06b01608a30c56b2683
+SHA256: 3891611036f57f04941a8607908adc10e5ead128a3b21987f7a9d4de5a132689
+Section: non-free/graphics
+Priority: optional
+Homepage: https://github.com/smin987/ImageOptimizer
+Description: All-in-one cross-platform image and animation optimizer (WebP, JPG, GIF)
+ Ultra-efficient image and animated GIF optimizer for web and desktop.
+ Drastically compress image sizes by up to 90% with minimal quality loss.
+ Features animated GIF to WebP conversion, alpha preservation, and smart resizing.
+
+Package: image-optimizer
+Version: 1.1.3
+Architecture: amd64
+Maintainer: smin987 <https://github.com/smin987/ImageOptimizer>
+Depends: libc6, libgl1, libegl1, libxkbcommon0, libdbus-1-3
+Filename: ./deb-artifacts/linux-x86_64-bin/ImageOptimizer_1.1.3_amd64.deb
+Size: 84034800
+MD5sum: 58a85775b5312f6d2e588c2b36d3c048
+SHA1: c18d1f2d2427b8fab2c877e02efed929b7b4ecbe
+SHA256: 7ee8260cb1360390612265fcf2a048c4bda96041730303e3e2b51072e165a27a
+Section: non-free/graphics
+Priority: optional
+Homepage: https://github.com/smin987/ImageOptimizer
+Description: All-in-one cross-platform image and animation optimizer (WebP, JPG, GIF)
+ Ultra-efficient image and animated GIF optimizer for web and desktop.
+ Drastically compress image sizes by up to 90% with minimal quality loss.
+ Features animated GIF to WebP conversion, alpha preservation, and smart resizing.
+
+Package: image-optimizer
+Version: 1.1.3
+Architecture: arm64
+Maintainer: smin987 <https://github.com/smin987/ImageOptimizer>
+Depends: libc6, libgl1, libegl1, libxkbcommon0, libdbus-1-3
+Filename: ./deb-artifacts/linux-arm64-bin/ImageOptimizer_1.1.3_arm64.deb
+Size: 81591082
+MD5sum: 7d764b6a5bde7b417636b37c5e21ddba
+SHA1: 17e84dcd32ea33f157a6d06b01608a30c56b2683
+SHA256: 3891611036f57f04941a8607908adc10e5ead128a3b21987f7a9d4de5a132689
 Section: non-free/graphics
 Priority: optional
 Homepage: https://github.com/smin987/ImageOptimizer
