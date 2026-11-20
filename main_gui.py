@@ -81,7 +81,7 @@ def get_resource_path(relative_path: str) -> Path:
 
 SETTINGS_FILE = pa.get_app_config_dir() / "settings.json"
 
-APP_VERSION = "v1.1.2"
+APP_VERSION = "v1.1.3"
 GITHUB_REPO = "smin987/ImageOptimizer"
 LATEST_RELEASE_URL = f"https://github.com/{GITHUB_REPO}/releases/latest"
 LATEST_RELEASE_API = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
