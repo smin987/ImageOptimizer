@@ -124,7 +124,7 @@ secrets. All rights not expressly granted herein are reserved exclusively by
 the Author.
 
 ==============================================================================
-5. DISCLAIMER OF WARRANTY
+5. DISCLAIMER OF WARRANTY & LIMITATION OF LIABILITY
 ==============================================================================
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -132,6 +132,10 @@ FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. IN NO EVENT
 SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR
 OTHER LIABILITY, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+The Author assumes no responsibility or liability for how the Software operates.
+This is the foundational principle of all free software, and it is precisely why
+the Software is offered to you completely free of charge.
 
 ==============================================================================
 6. THIRD-PARTY OPEN-SOURCE NOTICES
