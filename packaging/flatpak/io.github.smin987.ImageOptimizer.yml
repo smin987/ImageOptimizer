@@ -12,34 +12,31 @@ finish-args:
   - --device=dri
   - --filesystem=home
 modules:
-  # Official prebuilt binaries from the v1.1.3 GitHub release (extra-data:
-  # downloaded at install time, pinned by sha256). The Fair-Code license
-  # permits free redistribution of official binaries, and this submission
-  # is opened by the upstream author.
+  # Official prebuilt binaries from the v1.1.3 GitHub release.
+  # The Fair-Code license permits free redistribution of official binaries,
+  # and this submission is maintained by the upstream author.
   - name: imageoptimizer-x86_64
     only-arches: [x86_64]
     buildsystem: simple
     build-commands:
       - install -Dm755 ImageOptimizer-x86_64 /app/bin/io.github.smin987.ImageOptimizer
     sources:
-      - type: extra-data
+      - type: file
         only-arches: [x86_64]
-        filename: ImageOptimizer-x86_64
+        dest-filename: ImageOptimizer-x86_64
         url: https://github.com/smin987/ImageOptimizer/releases/download/v1.1.3/ImageOptimizer-linux-x86_64
         sha256: 21d78aeaf863efe99d11b74be551cc82e69b5ed176df6a29b353bf0f28e9877a
-        size: 84979856
   - name: imageoptimizer-aarch64
     only-arches: [aarch64]
     buildsystem: simple
     build-commands:
       - install -Dm755 ImageOptimizer-aarch64 /app/bin/io.github.smin987.ImageOptimizer
     sources:
-      - type: extra-data
+      - type: file
         only-arches: [aarch64]
-        filename: ImageOptimizer-aarch64
+        dest-filename: ImageOptimizer-aarch64
         url: https://github.com/smin987/ImageOptimizer/releases/download/v1.1.3/ImageOptimizer-linux-arm64
         sha256: 976824247be06ca1b8e73396c0718fc8307843642a65bf6fe9f7d74ac00fe88d
-        size: 82588544
   - name: metadata
     buildsystem: simple
     build-commands:
