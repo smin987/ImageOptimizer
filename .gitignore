@@ -39,3 +39,6 @@ private/
 docs/
 .agents/
 cli.py
+
+# Playwright MCP
+.playwright-mcp/
