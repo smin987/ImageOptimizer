@@ -1,6 +1,4 @@
-<div align="right">
-  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
-</div>
+[ENGLISH](#english) | [한국어](#korean)
 
 <a id="english"></a>
 # 🤝 Contributing to Image Optimizer
@@ -46,9 +44,7 @@ By submitting a Pull Request, patch, code, or documentation to this repository, 
 ---
 ---
 
-<div align="right">
-  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
-</div>
+[ENGLISH](#english) | [한국어](#korean)
 
 <a id="korean"></a>
 # 🤝 Image Optimizer 기여 가이드라인 (한국어 안내)

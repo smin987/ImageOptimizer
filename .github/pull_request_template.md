@@ -1,7 +1,4 @@
-<!-- Language Navigation -->
-<div align="right">
-  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
-</div>
+[ENGLISH](#english) | [한국어](#korean)
 
 <a id="english"></a>
 ## 📋 Summary of Changes
@@ -30,9 +27,7 @@ Image Optimizer is provided as free software and may expand to include dual-lice
 ---
 ---
 
-<div align="right">
-  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
-</div>
+[ENGLISH](#english) | [한국어](#korean)
 
 <a id="korean"></a>
 ## 📋 변경 사항 요약 (한국어)

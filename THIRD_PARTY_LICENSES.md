@@ -1,6 +1,4 @@
-<div align="right">
-  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
-</div>
+[ENGLISH](#english) | [한국어](#korean)
 
 <a id="english"></a>
 # Third-Party Open Source Software Notices
@@ -84,9 +82,7 @@ Pre-compiled Pillow wheels dynamically or statically link with underlying open-s
 ---
 ---
 
-<div align="right">
-  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
-</div>
+[ENGLISH](#english) | [한국어](#korean)
 
 <a id="korean"></a>
 # 제3자 오픈소스 소프트웨어 라이선스 고지문 (한국어 안내)
