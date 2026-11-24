@@ -74,3 +74,55 @@ Pre-compiled Pillow wheels dynamically or statically link with underlying open-s
 - **Project URL**: [https://jrsoftware.org/isinfo.php](https://jrsoftware.org/isinfo.php)
 - **Copyright**: Copyright (C) 1997-2026 Jordan Russell. Portions Copyright (C) 2000-2026 Martijn Laan.
 - **License**: **Inno Setup License (Permissive)**
+
+
+---
+---
+
+# 제3자 오픈소스 소프트웨어 라이선스 고지문 (한국어 안내)
+
+Image Optimizer는 여러 제3자 오픈소스 라이브러리 및 컴포넌트를 기반으로 동작합니다. 본 문서는 각 오픈소스 라이선스에 따라 요구되는 저작권 고지, 라이선스 식별자 및 관련 약관을 제공합니다.
+
+---
+
+## 1. PySide6 (Qt for Python) / Qt 6
+- **저작권**: Copyright (C) 2026 The Qt Company Ltd. 및 기여자 일동.
+- **라이선스**: **GNU Lesser General Public License version 3 (LGPL-3.0-only)**
+- **준수 및 리링킹(Relinking) 안내**:
+  - Image Optimizer는 사용자 인터페이스(GUI)를 위해 PySide6를 사용합니다.
+  - LGPLv3 약관에 따라, 사용자는 Qt/PySide6 라이브러리를 직접 수정하고 수정된 버전으로 본 애플리케이션을 실행할 권리를 가집니다.
+  - 본 애플리케이션의 소스코드는 GitHub(https://github.com/smin987/ImageOptimizer)에 공개되어 있으므로, 가상 환경에 커스텀 PySide6를 설치하여 자유롭게 실행할 수 있습니다.
+
+---
+
+## 2. Pillow (파이썬 이미지 처리 라이브러리)
+- **저작권**: Copyright (C) 2010-2026 Jeffrey A. Clark 및 기여자 일동.
+- **라이선스**: **Historical Permission Notice and Disclaimer (HPND)**
+- **번들된 코덱 라이브러리**:
+  - libwebp (BSD-3-Clause, Google Inc.)
+  - libjpeg-turbo (IJG / BSD-3-Clause)
+  - zlib, libpng, libtiff, FreeType 2, HarfBuzz 등 포함.
+
+---
+
+## 3. send2trash (안전 휴지통 삭제)
+- **저작권**: Copyright (C) 2010-2026 Virgil Dupras 및 기여자 일동.
+- **라이선스**: **BSD 3-Clause License**
+
+---
+
+## 4. Python Runtime (CPython)
+- **저작권**: Copyright (C) 2001-2026 Python Software Foundation.
+- **라이선스**: **PSF License Agreement**
+
+---
+
+## 5. PyInstaller (실행 파일 패키징)
+- **저작권**: Copyright (C) 2005-2026 PyInstaller Development Team.
+- **라이선스**: **GPL-2.0 with Bootloader Exception** (독립 실행 파일 제작 시 앱 코드에 GPL 전파 면제)
+
+---
+
+## 6. Inno Setup (Windows 설치 프로그램 제작기)
+- **저작권**: Copyright (C) 1997-2026 Jordan Russell.
+- **라이선스**: **Inno Setup License (Permissive)**
