@@ -1,3 +1,8 @@
+<div align="right">
+  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
+</div>
+
+<a id="english"></a>
 # Third-Party Open Source Software Notices
 
 Image Optimizer utilizes several third-party open-source libraries and components. This document provides copyright attributions, license identifiers, and terms as required by their respective licenses.
@@ -79,6 +84,11 @@ Pre-compiled Pillow wheels dynamically or statically link with underlying open-s
 ---
 ---
 
+<div align="right">
+  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
+</div>
+
+<a id="korean"></a>
 # 제3자 오픈소스 소프트웨어 라이선스 고지문 (한국어 안내)
 
 Image Optimizer는 여러 제3자 오픈소스 라이브러리 및 컴포넌트를 기반으로 동작합니다. 본 문서는 각 오픈소스 라이선스에 따라 요구되는 저작권 고지, 라이선스 식별자 및 관련 약관을 제공합니다.

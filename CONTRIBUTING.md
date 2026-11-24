@@ -1,3 +1,8 @@
+<div align="right">
+  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
+</div>
+
+<a id="english"></a>
 # 🤝 Contributing to Image Optimizer
 
 Thank you for your interest in contributing to Image Optimizer! We welcome bug reports, feature requests, documentation improvements, and code contributions (Pull Requests).
@@ -41,6 +46,11 @@ By submitting a Pull Request, patch, code, or documentation to this repository, 
 ---
 ---
 
+<div align="right">
+  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
+</div>
+
+<a id="korean"></a>
 # 🤝 Image Optimizer 기여 가이드라인 (한국어 안내)
 
 Image Optimizer 프로젝트에 관심을 가져주셔서 감사합니다! 버그 제보, 기능 제안, 문서 보완, 코드 기여(Pull Request) 등 모든 형태의 기여를 환영합니다.

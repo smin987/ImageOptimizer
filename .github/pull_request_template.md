@@ -1,7 +1,9 @@
-<!-- ================================================================= -->
-<!-- ENGLISH (Default)                                                 -->
-<!-- ================================================================= -->
+<!-- Language Navigation -->
+<div align="right">
+  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
+</div>
 
+<a id="english"></a>
 ## 📋 Summary of Changes
 <!-- Briefly describe the changes or additions made in this Pull Request -->
 
@@ -25,12 +27,14 @@ Image Optimizer is provided as free software and may expand to include dual-lice
 - [ ] I confirm that this contribution is my original work, and I grant the Project Maintainer (smin987) the unrestricted right to incorporate, distribute, and relicense these contributions under future commercial, dual-licensed, or proprietary editions without separate consent or compensation.
 
 
-<!-- ================================================================= -->
-<!-- 한국어 안내 (Korean Translation)                                  -->
-<!-- ================================================================= -->
 ---
 ---
 
+<div align="right">
+  <b><a href="#english">ENGLISH</a></b> | <b><a href="#korean">한국어</a></b>
+</div>
+
+<a id="korean"></a>
 ## 📋 변경 사항 요약 (한국어)
 <!-- 이번 풀 리퀘스트에서 변경되거나 추가된 내용을 간략히 적어주세요 -->
 
