@@ -97,7 +97,7 @@ Image Optimizer는 여러 제3자 오픈소스 라이브러리 및 컴포넌트�
 - **준수 및 리링킹(Relinking) 안내**:
   - Image Optimizer는 사용자 인터페이스(GUI)를 위해 PySide6를 사용합니다.
   - LGPLv3 약관에 따라, 사용자는 Qt/PySide6 라이브러리를 직접 수정하고 수정된 버전으로 본 애플리케이션을 실행할 권리를 가집니다.
-  - 본 애플리케이션의 소스코드는 GitHub(https://github.com/smin987/ImageOptimizer)에 공개되어 있으므로, 가상 환경에 커스텀 PySide6를 설치하여 자유롭게 실행할 수 있습니다.
+  - 본 애플리케이션의 소스코드는 [GitHub](https://github.com/smin987/ImageOptimizer)에 공개되어 있으므로, 가상 환경에 커스텀 PySide6를 설치하여 자유롭게 실행할 수 있습니다.
 
 ---
 
