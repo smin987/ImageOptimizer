@@ -58,6 +58,10 @@ The Author makes the Source Code publicly available under the following terms:
     3. Fork the repository solely for the purpose of creating and submitting
        bug fixes, enhancements, or Pull Requests (PRs) back to the official
        upstream repository (https://github.com/smin987/ImageOptimizer).
+       All contributions and Pull Requests are subject to the Contributor License
+       Agreement (CLA) specified in CONTRIBUTING.md, granting the Author the
+       irrevocable right to incorporate, distribute, and relicense such contributions
+       under future commercial, dual-licensed, or proprietary editions.
 
 (b) COMMERCIAL ENTITY TERMS: AUDIT PERMITTED, MODIFICATION STRICTLY PROHIBITED:
     Commercial Entities and for-profit businesses are granted the right to inspect,
